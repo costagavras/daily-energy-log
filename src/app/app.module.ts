@@ -17,6 +17,8 @@ import { WalkingComponent } from './energy-expenditure/walking/walking.component
 import { TrainingComponent } from './energy-expenditure/training/training.component';
 import { NewTrainingComponent } from './energy-expenditure/training/new-training/new-training.component';
 import { PastTrainingComponent } from './energy-expenditure/training/past-training/past-training.component';
+import { HomeComponent } from './home/home.component';
+import { BalanceComponent } from './balance/balance.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { PastTrainingComponent } from './energy-expenditure/training/past-traini
     WalkingComponent,
     TrainingComponent,
     NewTrainingComponent,
-    PastTrainingComponent
+    PastTrainingComponent,
+    HomeComponent,
+    BalanceComponent
   ],
   imports: [
     BrowserModule,
