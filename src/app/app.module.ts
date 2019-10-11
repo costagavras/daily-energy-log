@@ -13,7 +13,7 @@ import { FoodIntakeComponent } from './food-intake/food-intake.component';
 import { PastFoodIntakeComponent } from './food-intake/past-food-intake/past-food-intake.component';
 import { NewFoodIntakeComponent } from './food-intake/new-food-intake/new-food-intake.component';
 import { EnergyExpenditureComponent } from './energy-expenditure/energy-expenditure.component';
-import { RmrComponent } from './energy-expenditure/rmr/rmr.component';
+import { BmrComponent } from './energy-expenditure/bmr/bmr.component';
 import { DailyActivityComponent } from './energy-expenditure/daily-activity/daily-activity.component';
 import { WalkingComponent } from './energy-expenditure/walking/walking.component';
 import { TrainingComponent } from './energy-expenditure/training/training.component';
@@ -23,6 +23,7 @@ import { HomeComponent } from './home/home.component';
 import { BalanceComponent } from './balance/balance.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { ViewTrainingComponent } from './energy-expenditure/training/view-training/view-training.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     PastFoodIntakeComponent,
     NewFoodIntakeComponent,
     EnergyExpenditureComponent,
-    RmrComponent,
+    BmrComponent,
     DailyActivityComponent,
     WalkingComponent,
     TrainingComponent,
@@ -42,7 +43,8 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     HomeComponent,
     BalanceComponent,
     HeaderComponent,
-    SidenavListComponent
+    SidenavListComponent,
+    ViewTrainingComponent
   ],
   imports: [
     BrowserModule,

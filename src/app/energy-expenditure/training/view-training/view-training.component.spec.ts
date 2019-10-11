@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RmrComponent } from './rmr.component';
+import { ViewTrainingComponent } from './view-training.component';
 
-describe('RmrComponent', () => {
-  let component: RmrComponent;
-  let fixture: ComponentFixture<RmrComponent>;
+describe('ViewTrainingComponent', () => {
+  let component: ViewTrainingComponent;
+  let fixture: ComponentFixture<ViewTrainingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RmrComponent ]
+      declarations: [ ViewTrainingComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RmrComponent);
+    fixture = TestBed.createComponent(ViewTrainingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
