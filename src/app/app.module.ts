@@ -21,6 +21,8 @@ import { NewTrainingComponent } from './energy-expenditure/training/new-training
 import { PastTrainingComponent } from './energy-expenditure/training/past-training/past-training.component';
 import { HomeComponent } from './home/home.component';
 import { BalanceComponent } from './balance/balance.component';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { BalanceComponent } from './balance/balance.component';
     NewTrainingComponent,
     PastTrainingComponent,
     HomeComponent,
-    BalanceComponent
+    BalanceComponent,
+    HeaderComponent,
+    SidenavListComponent
   ],
   imports: [
     BrowserModule,
