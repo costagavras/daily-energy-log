@@ -1,1 +1,61 @@
-<p>login works!</p>
+<!-- <section class="login-form">
+  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <mat-form-field>
+      <input
+        type="email"
+        matInput
+        placeholder="Your email"
+        ngModel
+        name="email"
+        email
+        required
+        #emailInput="ngModel">
+      <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty.</mat-error>
+      <mat-error *ngIf="!emailInput.hasError('required')">E-Mail is invalid.</mat-error>
+    </mat-form-field>
+    <mat-form-field hintLabel="Should be at least 6 characters long.">
+      <input
+        type="password"
+        matInput
+        placeholder="Your password"
+        ngModel
+        name="password"
+        required
+        minlength="6"
+        #pwInput="ngModel">
+      <mat-hint align="end"> {{ pwInput.value?.length}} / 6</mat-hint>
+      <mat-error>Has to be at least 6 characters long.</mat-error>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">Submit</button>
+  </form>
+</section> -->
+
+<section class="login-form">
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input
+          type="email"
+          matInput
+          placeholder="Your email"
+          formControlName="email"
+          email
+          required>
+        <mat-hint *ngIf="!email.touched || !email.dirty">Please enter a valid email.</mat-hint>
+        <mat-error *ngIf="email.hasError('required')">Field must not be empty.</mat-error>
+        <mat-error *ngIf="email.invalid && !email.hasError('required') && (email.touched || email.dirty)">E-Mail is invalid.</mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Should be at least 6 characters long.">
+        <input
+          type="password"
+          matInput
+          placeholder="Your password"
+          formControlName="password"
+          required
+          minlength="6">
+        <mat-hint align="end"> {{ password.value?.length}} / 6</mat-hint>
+        <mat-error>Has to be at least 6 characters long: {{ password.value?.length}} / 6</mat-error>
+      </mat-form-field>
+      <button *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Submit</button>
+      <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+    </form>
+  </section>
