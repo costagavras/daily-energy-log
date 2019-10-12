@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
+
+import { AuthService } from './auth/auth.service';
+
+import { AppComponent } from './app.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 import { FoodIntakeComponent } from './food-intake/food-intake.component';
@@ -67,7 +69,7 @@ import { ViewWalkingComponent } from './energy-expenditure/walking/view-walking/
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

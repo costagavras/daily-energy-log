@@ -7,11 +7,12 @@
   <div><a routerLink="/">LOGO</a></div>
   <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
     <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-      <li><a routerLink="/signup">Signup</a></li>
-      <li><a routerLink="/login">Login</a></li>
-      <li><a routerLink="/food-intake">Energy+</a></li>
-      <li><a routerLink="/energy-expenditure">Energy-</a></li>
-      <li><a routerLink="/balance">Balance</a></li>
+      <li *ngIf="!isAuth"><a routerLink="/signup">Signup</a></li>
+      <li *ngIf="!isAuth"><a routerLink="/login">Login</a></li>
+      <li *ngIf="isAuth"><a routerLink="/food-intake">Energy+</a></li>
+      <li *ngIf="isAuth"><a routerLink="/energy-expenditure">Energy-</a></li>
+      <li *ngIf="isAuth"><a routerLink="/balance">Balance</a></li>
+      <li *ngIf="isAuth"><a>Logout</a></li>
     </ul>
   </div>
 </mat-toolbar>

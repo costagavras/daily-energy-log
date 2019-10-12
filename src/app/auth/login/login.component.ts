@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { AuthService } from '../auth.service';
 // import { Subscription } from 'rxjs';
 
 // import { AuthService } from '../auth.service';
@@ -16,8 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   // isLoading = false;
   // private loadingSubs: Subscription;
 
-  constructor() { }
-  // private authService: AuthService,
+  constructor(private authService: AuthService) { }
   //             private uiService: UIService)
 
   ngOnInit() {
@@ -32,11 +33,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    // this.authService.login({
-    //   email: this.loginForm.value.email,
-    //   password: this.loginForm.value.password
-    // });
-
+    this.authService.login({
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    });
   }
 
   // getters for validation control
