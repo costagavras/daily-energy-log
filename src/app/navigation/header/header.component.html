@@ -12,7 +12,7 @@
       <li *ngIf="isAuth"><a routerLink="/food-intake">Energy+</a></li>
       <li *ngIf="isAuth"><a routerLink="/energy-expenditure">Energy-</a></li>
       <li *ngIf="isAuth"><a routerLink="/balance">Balance</a></li>
-      <li *ngIf="isAuth"><a>Logout</a></li>
+      <li *ngIf="isAuth"><a style="cursor: pointer" (click)="onLogout()">Logout</a></li>
     </ul>
   </div>
 </mat-toolbar>

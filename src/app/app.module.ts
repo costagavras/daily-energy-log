@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
 
 import { AuthService } from './auth/auth.service';
+import { TrainingService } from './energy-expenditure/training/training.service';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -69,7 +70,7 @@ import { ViewWalkingComponent } from './energy-expenditure/walking/view-walking/
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, TrainingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

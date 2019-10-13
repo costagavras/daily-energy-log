@@ -20,11 +20,8 @@
             <mat-form-field> <!-- *ngIf="!exercisesLoading && exercises"> -->
               <mat-label>Choose Exercise</mat-label>
               <mat-select ngModel name="exercise" required>
-                <!-- <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+                <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
                   {{ exercise.name }}
-                </mat-option> -->
-                <mat-option value="test">
-                  Test
                 </mat-option>
               </mat-select>
             </mat-form-field>
