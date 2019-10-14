@@ -1,33 +1,128 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
+  <form (ngSubmit)="onEnter(f)" #f="ngForm">
     <mat-card fxFlex.xs="100%" fxFlex="400px">
       <mat-form-field fxLayoutAlign="center">
-        <input
-          matInput
-          placeholder="Date of exercise"
-          [matDatepicker]="picker"
-          [ngModel]="today"
-          name="date"
-          required
-          [max]="maxDate">
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="picker">
+        <input matInput placeholder="Date of exercise" [matDatepicker]="picker" [ngModel]="today" name="date"
+          required [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <mat-card-title fxLayoutAlign="center">Completed exercise</mat-card-title>
-        <mat-card-content fxLayoutAlign="center">
-            <mat-form-field> <!-- *ngIf="!exercisesLoading && exercises"> -->
-              <mat-label>Choose Exercise</mat-label>
-              <mat-select ngModel name="exercise" required>
-                <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
-                  {{ exercise.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-        </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center">
-          <button type="Submit" mat-raised-button color="primary" (click)="onEnter()">Done!</button>
-        </mat-card-actions>
-  </mat-card>
+      <mat-card-content fxLayoutAlign="center">
+
+      <mat-accordion>
+        <!-- 1st panel -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Time-based exercises
+              </mat-panel-title>
+              <mat-panel-description>
+                Input exercise and time in minutes
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+              <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+                <mat-label>Choose Exercise</mat-label>
+                <mat-select ngModel name="exerciseTime" ngModel required>
+                  <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+                    {{ exercise.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="measurement" appearance="fill">
+                <mat-label>Time, min</mat-label>
+                <input matInput type="number" name="time" required [min]="minValue" ngModel #timeInput="ngModel">
+                <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
+                <mat-error *ngIf="!timeInput.hasError('required')">Time is invalid.</mat-error>
+              </mat-form-field>
+              <mat-action-row>
+                  <button type="Submit" mat-raised-button color="primary" [disabled]="f.invalid">Save!</button>
+              </mat-action-row>
+          </mat-expansion-panel>
+
+          <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 2nd panel -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Quantity-based exercises
+            </mat-panel-title>
+            <mat-panel-description>
+              Input exercise and quantity
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+            <mat-label>Choose Exercise</mat-label>
+            <mat-select ngModel name="exerciseQty" ngModel required>
+              <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+                {{ exercise.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="measurement" appearance="fill">
+            <mat-label>Quantity</mat-label>
+            <input matInput name="quantity" required [min]="minValue" ngModel #quantityInput="ngModel">
+            <mat-error *ngIf="quantityInput.hasError('required')">Field must not be empty.</mat-error>
+            <mat-error *ngIf="!quantityInput.hasError('required')">Time is invalid.</mat-error>
+          </mat-form-field>
+          <mat-action-row>
+              <button type="Submit" mat-raised-button color="primary" [disabled]="f.invalid">Save!</button>
+          </mat-action-row>
+
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false">
+        <!-- 3rd panel -->
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Measured-output exercises
+          </mat-panel-title>
+          <mat-panel-description>
+            Input exercise and calories
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+          <mat-label>Choose Exercise</mat-label>
+          <mat-select ngModel name="exerciseCal" ngModel required>
+            <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+              {{ exercise.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="measurement" appearance="fill">
+          <mat-label>Calories</mat-label>
+          <input matInput name="calories" required [min]="minValue" ngModel #caloriesInput="ngModel">
+          <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
+          <mat-error *ngIf="!caloriesInput.hasError('required')">Time is invalid.</mat-error>
+        </mat-form-field>
+        <mat-action-row>
+            <button type="Submit" mat-raised-button color="primary" [disabled]="calories.invalid">Save!</button>
+        </mat-action-row>
+
+      </mat-expansion-panel>
+
+      </mat-accordion>
+
+      </mat-card-content>
+      <!-- <mat-card-actions fxLayoutAlign="center">
+        <button type="Submit" mat-raised-button color="primary" [disabled]="f.invalid">Done!</button>
+      </mat-card-actions> -->
+    </mat-card>
+  </form>
 </section>

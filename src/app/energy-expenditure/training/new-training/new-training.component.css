@@ -1,3 +1,18 @@
 .new-training {
   padding: 30px;
 }
+
+.exercise {
+  display: block;
+}
+
+.measurement {
+  display: block;
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+mat-expansion-panel {
+  margin: 10px 0;
+}

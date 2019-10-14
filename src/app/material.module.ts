@@ -16,7 +16,8 @@ import { MatButtonModule,
           MatTableModule,
           MatSortModule,
           MatPaginatorModule,
-          MatSnackBarModule
+          MatSnackBarModule,
+          MatExpansionModule
 } from '@angular/material';
 
 
@@ -40,6 +41,7 @@ import { MatButtonModule,
     // MatSortModule,
     // MatPaginatorModule,
     // MatSnackBarModule
+    MatExpansionModule
   ],
   exports: [
     MatButtonModule,
@@ -60,6 +62,7 @@ import { MatButtonModule,
     // MatSortModule,
     // MatPaginatorModule,
     // MatSnackBarModule
+    MatExpansionModule
 
   ]
 })

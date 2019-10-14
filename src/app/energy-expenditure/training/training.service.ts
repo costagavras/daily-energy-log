@@ -1,6 +1,8 @@
+import { Subject } from 'rxjs';
 import { Exercise } from './exercise.model';
 
 export class TrainingService {
+  // exerciseChosen = new Subject<Exercise>();
   private availableExercises: Exercise[] = [
    { id: 'aerobics-step-hi', name: 'Aerobics, Step: High Impact', calories: 0.033, duration: 1 },
    { id: 'badminton', name: 'Badminton', duration: 1, calories: 0.015 },
@@ -13,13 +15,16 @@ export class TrainingService {
   ];
 
   private chosenExercise: Exercise;
+  private exercises: Exercise[] = [];
 
   getAvailableExercises() {
     return this.availableExercises.slice();
   }
 
-  chooseExercise(selectedId: string) {
+  chooseExercise(selectedId: string, exerciseDate: Date) {
     this.chosenExercise = this.availableExercises.find(ex => ex.id === selectedId);
+    // this.exerciseChosen.next({...this.chosenExercise }); // emitting event with chosen exercise payload
+    this.exercises.push({...this.chosenExercise, date: exerciseDate});
   }
 
 }

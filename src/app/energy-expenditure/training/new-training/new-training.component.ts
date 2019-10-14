@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-new-training',
@@ -9,8 +10,10 @@ import { Exercise } from '../exercise.model';
 })
 export class NewTrainingComponent implements OnInit {
   maxDate: Date;
+  minValue = 0;
   today = new Date();
   exercises: Exercise[] = [];
+  panelOpenState = false;
 
   constructor(private trainingService: TrainingService) { }
 
@@ -19,7 +22,7 @@ export class NewTrainingComponent implements OnInit {
     this.exercises = this.trainingService.getAvailableExercises();
   }
 
-  onEnter() {
-
+  onEnter(form: NgForm) {
+    this.trainingService.chooseExercise(form.value.exercise, form.value.date);
   }
 }
