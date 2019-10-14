@@ -37,9 +37,9 @@ import { MatButtonModule,
     MatCardModule,
     MatSelectModule,
     // MatDialogModule,
-    // MatTableModule,
-    // MatSortModule,
-    // MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     // MatSnackBarModule
     MatExpansionModule
   ],
@@ -58,9 +58,9 @@ import { MatButtonModule,
     MatCardModule,
     MatSelectModule,
     // MatDialogModule,
-    // MatTableModule,
-    // MatSortModule,
-    // MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     // MatSnackBarModule
     MatExpansionModule
 

@@ -22,9 +22,15 @@ export class TrainingService {
   }
 
   chooseExercise(selectedId: string, exerciseDate: Date) {
+    console.log(selectedId, exerciseDate);
     this.chosenExercise = this.availableExercises.find(ex => ex.id === selectedId);
     // this.exerciseChosen.next({...this.chosenExercise }); // emitting event with chosen exercise payload
     this.exercises.push({...this.chosenExercise, date: exerciseDate});
+    console.log(this.exercises);
+  }
+
+  getCompletedExercises() {
+    return this.exercises.slice();
   }
 
 }
