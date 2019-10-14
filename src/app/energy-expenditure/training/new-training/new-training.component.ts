@@ -10,37 +10,26 @@ import { NgForm } from '@angular/forms';
 })
 export class NewTrainingComponent implements OnInit {
   maxDate: Date;
-  // dateValue: Date;
-  // timeValue: number;
   minValue = 0;
   today = new Date();
-  // exercise: Exercise;
-  exercises: Exercise[] = [];
+  exercisesTime: Exercise[] = [];
+  exercisesQty: Exercise[] = [];
+  exercisesCal: Exercise[] = [];
   panelOpenState = false;
 
   constructor(private trainingService: TrainingService) { }
 
   ngOnInit() {
     this.maxDate = new Date();
-    this.exercises = this.trainingService.getAvailableExercises();
+    this.exercisesTime = this.trainingService.getAvailableExercisesTime();
+    this.exercisesQty = this.trainingService.getAvailableExercisesQty();
+    this.exercisesCal = this.trainingService.getAvailableExercisesCal();
   }
 
-  onEnter(form: NgForm) {
-    console.log(form.value);
-    if (form.value.exerciseTime) {
-      this.trainingService.chooseExercise(form.value.exerciseTime, form.value.date);
-    } else if (form.value.exerciseQty) {
-      this.trainingService.chooseExercise(form.value.exerciseQty, form.value.date);
-    } else if (form.value.exerciseCals) {
-      this.trainingService.chooseExercise(form.value.exerciseCals, form.value.date);
-    }
-  }
-
-  saveExerciseTime(dateValue: Date, exercise: Exercise, timeValue: number) {
-    console.log(dateValue, exercise, timeValue);
+  saveExercise(dateValue: Date, exercise: string, numValue: number, param: string) {
+    console.log(dateValue, exercise, numValue, param);
+    this.trainingService.chooseExercise(dateValue, exercise, numValue, param);
     // this.trainingService.chooseExercise(form.value.exercise, form.value.date);
     // form.reset();
   }
-
-
 }

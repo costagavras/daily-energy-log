@@ -1,5 +1,6 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
-  <form (ngSubmit)="onEnter(f)" #f="ngForm">
+  <!-- <form (ngSubmit)="onEnter(f)" #f="ngForm"> -->
+  <form #f="ngForm">
     <mat-card fxFlex.xs="100%" fxFlex="400px">
       <mat-form-field fxLayoutAlign="center">
         <input matInput placeholder="Date of exercise" [matDatepicker]="picker" [ngModel]="today" name="date"
@@ -25,8 +26,8 @@
 
               <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
                 <mat-label>Choose Exercise</mat-label>
-                <mat-select ngModel name="exerciseTime" required #exerciseTimeInput="ngModel">
-                  <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+                <mat-select ngModel name="exerciseTime" [required]="exerciseTimeInput.touched" #exerciseTimeInput="ngModel">
+                  <mat-option *ngFor="let exercise of exercisesTime" [value]="exercise.id">
                     {{ exercise.name }}
                   </mat-option>
                 </mat-select>
@@ -35,12 +36,13 @@
 
               <mat-form-field class="measurement" appearance="fill">
                 <mat-label>Time, min</mat-label>
-                <input matInput type="number" name="time" required [min]="minValue" ngModel #timeInput="ngModel">
+                <input matInput type="number" name="time" [required]="timeInput.touched" [min]="minValue" ngModel #timeInput="ngModel">
                 <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
               </mat-form-field>
               <mat-action-row>
-                  <button type="Submit" mat-raised-button color="primary" [disabled]="exerciseTimeInput.invalid || timeInput.invalid">Save!</button>
-                  <!-- <button type="Submit" (click)="saveExerciseTime(dateValue, exercise, timeValue)" mat-raised-button color="primary" [disabled]="exerciseTimeInput.invalid || timeInput.invalid">Save!</button> -->
+                  <!-- <button type="Submit" mat-raised-button color="primary" [disabled]="exerciseTimeInput.invalid || timeInput.invalid">Save!</button> -->
+                  <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseTime, f.value.time, 'exTime')" mat-raised-button color="primary"
+                  [disabled]="exerciseTimeInput.invalid || exerciseTimeInput.untouched || timeInput.untouched || timeInput.invalid">Save!</button>
               </mat-action-row>
           </mat-expansion-panel>
 
@@ -48,7 +50,7 @@
 
          <!-- 2nd panel -->
         <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
+                              (closed)="panelOpenState = false">
 
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -61,8 +63,8 @@
 
           <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
             <mat-label>Choose Exercise</mat-label>
-            <mat-select ngModel name="exerciseQty" required #exerciseQtyInput="ngModel">
-              <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+            <mat-select ngModel name="exerciseQty" [required]="exerciseQtyInput.touched" #exerciseQtyInput="ngModel">
+              <mat-option *ngFor="let exercise of exercisesQty" [value]="exercise.id">
                 {{ exercise.name }}
               </mat-option>
             </mat-select>
@@ -71,11 +73,12 @@
 
           <mat-form-field class="measurement" appearance="fill">
             <mat-label>Quantity</mat-label>
-            <input matInput type="number" name="quantity" required [min]="minValue" ngModel #quantityInput="ngModel">
+            <input matInput type="number" name="quantity" [required]="quantityInput.touched" [min]="minValue" ngModel #quantityInput="ngModel">
             <mat-error *ngIf="quantityInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
           <mat-action-row>
-              <button type="Submit" mat-raised-button color="primary" [disabled]="exerciseQtyInput.invalid || quantityInput.invalid">Save!</button>
+              <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, 'exQty')" mat-raised-button color="primary"
+              [disabled]="exerciseQtyInput.invalid || exerciseQtyInput.untouched || quantityInput.untouched ||  quantityInput.invalid">Save!</button>
           </mat-action-row>
 
         </mat-expansion-panel>
@@ -96,8 +99,8 @@
 
         <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
           <mat-label>Choose Exercise</mat-label>
-          <mat-select ngModel name="exerciseCal" required #exerciseCalsInput="ngModel">
-            <mat-option *ngFor="let exercise of exercises" [value]="exercise.id">
+          <mat-select ngModel name="exerciseCal" [required]="exerciseCalsInput.touched" #exerciseCalsInput="ngModel">
+            <mat-option *ngFor="let exercise of exercisesCal" [value]="exercise.id">
               {{ exercise.name }}
             </mat-option>
           </mat-select>
@@ -106,11 +109,12 @@
 
         <mat-form-field class="measurement" appearance="fill">
           <mat-label>Calories</mat-label>
-          <input matInput type="number" name="calories" required [min]="minValue" ngModel #caloriesInput="ngModel">
+          <input matInput type="number" name="calories" [required]="caloriesInput.touched" [min]="minValue" ngModel #caloriesInput="ngModel">
           <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
         <mat-action-row>
-            <button type="Submit" mat-raised-button color="primary" [disabled]="exerciseCalsInput.invalid || caloriesInput.invalid">Save!</button>
+            <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
+            [disabled]="exerciseCalsInput.invalid || exerciseCalsInput.untouched || caloriesInput.untouched ||  caloriesInput.invalid">Save!</button>
         </mat-action-row>
 
       </mat-expansion-panel>
