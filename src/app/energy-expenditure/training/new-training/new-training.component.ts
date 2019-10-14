@@ -23,6 +23,7 @@ export class NewTrainingComponent implements OnInit {
   }
 
   onEnter(form: NgForm) {
+    console.log(form.value);
     this.trainingService.chooseExercise(form.value.exercise, form.value.date);
   }
 }
