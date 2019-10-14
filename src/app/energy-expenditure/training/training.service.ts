@@ -2,7 +2,8 @@ import { Subject } from 'rxjs';
 import { Exercise } from './exercise.model';
 
 export class TrainingService {
-  // exerciseChosen = new Subject<Exercise>();
+  exerciseChosen = new Subject<void>();
+  showViewTraining = new Subject<void>();
   private availableExercisesTime: Exercise[] = [
    { id: 'aerobics-step-hi', name: 'Aerobics, Step: High Impact', calories: 0.033, duration: 0 },
    { id: 'badminton', name: 'Badminton', calories: 0.015, duration: 0 },
@@ -37,9 +38,8 @@ export class TrainingService {
     return this.availableExercisesCal.slice();
   }
 
-  chooseExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
-    console.log(exerciseDate, selectedId, volume, param);
-    // this.exerciseChosen.next({...this.chosenExercise }); // emitting event with chosen exercise payload
+  valorizeExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
+    this.showViewTraining.next(); // emitting event with no payload
     if (param === 'exTime') {
       this.chosenExercise = this.availableExercisesTime.find(ex => ex.id === selectedId);
       this.exercises.push({
@@ -64,11 +64,17 @@ export class TrainingService {
         date: exerciseDate
       });
     }
+    setTimeout(() => this.exerciseChosen.next(), 100);
+    // this.chosenExercise = null;
     console.log(this.exercises);
   }
 
   getCompletedExercises() {
     return this.exercises.slice();
+  }
+
+  getAddedExercise() {
+    return {...this.chosenExercise};
   }
 
 }

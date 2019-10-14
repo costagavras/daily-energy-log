@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-new-training',
@@ -28,8 +27,6 @@ export class NewTrainingComponent implements OnInit {
 
   saveExercise(dateValue: Date, exercise: string, numValue: number, param: string) {
     console.log(dateValue, exercise, numValue, param);
-    this.trainingService.chooseExercise(dateValue, exercise, numValue, param);
-    // this.trainingService.chooseExercise(form.value.exercise, form.value.date);
-    // form.reset();
+    this.trainingService.valorizeExercise(dateValue, exercise, numValue, param);
   }
 }
