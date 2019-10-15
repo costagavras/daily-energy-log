@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewBmrComponent } from './new-bmr.component';
+import { AnthropometryComponent } from './anthropometry.component';
 
-describe('NewBmrComponent', () => {
-  let component: NewBmrComponent;
-  let fixture: ComponentFixture<NewBmrComponent>;
+describe('AnthropometryComponent', () => {
+  let component: AnthropometryComponent;
+  let fixture: ComponentFixture<AnthropometryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewBmrComponent ]
+      declarations: [ AnthropometryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewBmrComponent);
+    fixture = TestBed.createComponent(AnthropometryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

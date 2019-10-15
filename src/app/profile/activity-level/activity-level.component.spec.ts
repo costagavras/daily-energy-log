@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BmrComponent } from './bmr.component';
+import { ActivityLevelComponent } from './activity-level.component';
 
-describe('BmrComponent', () => {
-  let component: BmrComponent;
-  let fixture: ComponentFixture<BmrComponent>;
+describe('ActivityLevelComponent', () => {
+  let component: ActivityLevelComponent;
+  let fixture: ComponentFixture<ActivityLevelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BmrComponent ]
+      declarations: [ ActivityLevelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BmrComponent);
+    fixture = TestBed.createComponent(ActivityLevelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

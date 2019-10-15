@@ -1,17 +1,10 @@
 <mat-tab-group>
-  <mat-tab label="BMR">
-    <app-new-bmr></app-new-bmr>
-    <mat-divider></mat-divider>
-    <app-view-bmr></app-view-bmr>
-  </mat-tab>
   <mat-tab label="Training">
     <app-new-training></app-new-training>
     <mat-divider></mat-divider>
     <app-view-training *ngIf="showView"></app-view-training>
   </mat-tab>
-  <mat-tab label="Walking">
-    <app-new-walking></app-new-walking>
-    <mat-divider></mat-divider>
-    <app-view-walking></app-view-walking>
+  <mat-tab label="Log">
+    <app-past-training></app-past-training>
   </mat-tab>
 </mat-tab-group>
