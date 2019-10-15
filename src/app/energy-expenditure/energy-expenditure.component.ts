@@ -14,6 +14,7 @@ export class EnergyExpenditureComponent implements OnInit, OnDestroy {
   constructor(private trainingService: TrainingService) { }
 
   ngOnInit() {
+    // subscription to open the view-training.html
         this.exerciseSubscription = this.trainingService.showViewTraining // will fire when we get a new exercise
       .subscribe(val => this.showView = true);
   }

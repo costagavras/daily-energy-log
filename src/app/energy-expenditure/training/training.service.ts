@@ -65,16 +65,15 @@ export class TrainingService {
       });
     }
     setTimeout(() => this.exerciseChosen.next(), 100);
-    // this.chosenExercise = null;
-    console.log(this.exercises);
+    // console.log(this.exercises);
   }
 
   getCompletedExercises() {
     return this.exercises.slice();
   }
 
-  getAddedExercise() {
-    return {...this.chosenExercise};
+  getTotalCalories() {
+    return this.exercises.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
   }
 
 }
