@@ -1,41 +1,76 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Exercise } from './exercise.model';
 
+@Injectable()
 export class TrainingService {
   exerciseChosen = new Subject<void>();
   showViewTraining = new Subject<void>();
-  private availableExercisesTime: Exercise[] = [
-   { id: 'aerobics-step-hi', name: 'Aerobics, Step: High Impact', calories: 0.033, duration: 0 },
-   { id: 'badminton', name: 'Badminton', calories: 0.015, duration: 0 },
-   { id: 'basketball', name: 'Basketball', calories: 0.015, duration: 0 },
-   { id: 'weightlifting', name: 'Weight Lifting: general', calories: 0.010, duration: 0 },
-   { id: 'bicycling', name: 'Bicycling', calories: 0.027, duration: 0 },
-  ];
-  private availableExercisesQty: Exercise[] = [
-   { id: 'pull-ups', name: 'Pull ups', calories: 0.75, quantity: 0 },
-   { id: 'push-ups', name: 'Push ups', calories: 0.5, quantity: 0 },
-   { id: 'dips', name: 'Dips', calories: 0.65, quantity: 0 },
-  ];
-  private availableExercisesCal: Exercise[] = [
-   { id: 'walking', name: 'Walking', calories: 0 },
-   { id: 'rowing', name: 'Rowing', calories: 0 },
-   { id: 'elliptical', name: 'Elliptical', calories: 0 },
-   { id: 'stepper', name: 'Stepper', calories: 0 },
-   { id: 'threadmill', name: 'Threadmill', calories: 0 },
-   { id: 'cycling', name: 'Cycling', calories: 0 },
-  ];
+  exercisesTimeChanged = new Subject<Exercise[]>();
+  exercisesQtyChanged = new Subject<Exercise[]>();
+  exercisesCalChanged = new Subject<Exercise[]>();
+  private availableExercisesTime: Exercise[] = [];
+  private availableExercisesQty: Exercise[] = [];
+  private availableExercisesCal: Exercise[] = [];
 
   private chosenExercise: Exercise;
   private exercises: Exercise[] = [];
 
-  getAvailableExercisesTime() {
-    return this.availableExercisesTime.slice();
+  constructor(private db: AngularFirestore) {}
+
+  fetchAvailableExercisesTime() {
+    this.db.collection('availableExercisesTime').snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          return {
+            id: doc.payload.doc.id,
+            // name: doc.payload.doc.data()['name'],
+            // duration: doc.payload.doc.data()['duration'],
+            // quantity: doc.payload.doc.data()['quantity'],
+            // calories: doc.payload.doc.data()['calories'],
+            // date: doc.payload.doc.data()['date']
+            ...doc.payload.doc.data()
+          } as Exercise;
+        });
+      }))
+      .subscribe((exercises: Exercise[]) => {
+        this.availableExercisesTime = exercises;
+        this.exercisesTimeChanged.next([...this.availableExercisesTime]);
+      });
   }
-  getAvailableExercisesQty() {
-    return this.availableExercisesQty.slice();
+  fetchAvailableExercisesQty() {
+    this.db.collection('availableExercisesQty').snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          return {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          } as Exercise;
+        });
+      }))
+      .subscribe((exercises: Exercise[]) => {
+        this.availableExercisesQty = exercises;
+        this.exercisesQtyChanged.next([...this.availableExercisesQty]);
+      });
   }
-  getAvailableExercisesCal() {
-    return this.availableExercisesCal.slice();
+  fetchAvailableExercisesCal() {
+    this.db.collection('availableExercisesCal').snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          return {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          } as Exercise;
+        });
+      }))
+      .subscribe((exercises: Exercise[]) => {
+        this.availableExercisesCal = exercises;
+        this.exercisesCalChanged.next([...this.availableExercisesCal]);
+      });
   }
 
   valorizeExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {

@@ -32,11 +32,9 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-
   }
 
   ngOnDestroy() {
