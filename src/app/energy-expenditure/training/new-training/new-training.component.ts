@@ -25,6 +25,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.maxDate = new Date();
+
     this.exerciseTimeSubscription = this.trainingService.exercisesTimeChanged
       .subscribe(
         exercises => (this.exercisesTime = exercises)

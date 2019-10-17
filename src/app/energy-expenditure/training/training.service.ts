@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, fromDocRef } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDatepickerInputEvent } from '@angular/material';
 
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Exercise } from './exercise.model';
+import { UIService } from 'src/app/shared/ui.service';
 
 @Injectable()
 export class TrainingService {
-  showViewTraining = new Subject<void>();
   exercisesTimeChanged = new Subject<Exercise[]>();
   exercisesQtyChanged = new Subject<Exercise[]>();
   exercisesCalChanged = new Subject<Exercise[]>();
@@ -20,11 +20,13 @@ export class TrainingService {
   private availableExercisesCal: Exercise[] = [];
 
   private chosenExercise: Exercise;
+  private firebaseSubscriptions: Subscription[] = [];
 
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore,
+              private uiService: UIService) {}
 
   fetchAvailableExercisesTime() {
-    this.db.collection('availableExercisesTime').snapshotChanges()
+    this.firebaseSubscriptions.push(this.db.collection('availableExercisesTime').snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -41,10 +43,10 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesTime = exercises;
         this.exercisesTimeChanged.next([...this.availableExercisesTime]);
-      });
+      }));
   }
   fetchAvailableExercisesQty() {
-    this.db.collection('availableExercisesQty').snapshotChanges()
+    this.firebaseSubscriptions.push(this.db.collection('availableExercisesQty').snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -56,10 +58,10 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesQty = exercises;
         this.exercisesQtyChanged.next([...this.availableExercisesQty]);
-      });
+      }));
   }
   fetchAvailableExercisesCal() {
-    this.db.collection('availableExercisesCal').snapshotChanges()
+    this.firebaseSubscriptions.push(this.db.collection('availableExercisesCal').snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -71,7 +73,7 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesCal = exercises;
         this.exercisesCalChanged.next([...this.availableExercisesCal]);
-      });
+      }));
   }
 
   saveExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
@@ -102,10 +104,16 @@ export class TrainingService {
   }
 
   fetchCompletedExercises() {
-    this.db.collection('finishedExercises').valueChanges()
-      .subscribe((exercises: Exercise[]) => {
-        this.finishedExercisesChanged.next(exercises);
-      });
+    this.uiService.loadingStateChanged.next(true);
+    this.firebaseSubscriptions.push(this.db.collection('finishedExercises').valueChanges()
+    .subscribe((exercises: Exercise[]) => {
+      this.uiService.loadingStateChanged.next(false);
+      this.finishedExercisesChanged.next(exercises);
+    }));
+  }
+
+  cancelSubscriptions() {
+    this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
   }
 
   filterDate(event: MatDatepickerInputEvent<Date>) {
