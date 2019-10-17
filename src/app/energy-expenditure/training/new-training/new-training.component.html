@@ -4,7 +4,7 @@
     <mat-card fxFlex.xs="100%" fxFlex="400px">
       <mat-form-field fxLayoutAlign="center">
         <input matInput placeholder="Date of exercise" [matDatepicker]="picker" [ngModel]="today" name="date"
-          required [max]="maxDate">
+          required [max]="maxDate" (dateChange)="trainingService.filterDate($event)">
         <mat-datepicker-toggle matSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

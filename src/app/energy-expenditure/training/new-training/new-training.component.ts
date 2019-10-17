@@ -21,7 +21,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   exerciseCalSubscription: Subscription;
   panelOpenState = false;
 
-  constructor(private trainingService: TrainingService) { }
+  constructor(public trainingService: TrainingService) { }
 
   ngOnInit() {
     this.maxDate = new Date();
@@ -30,32 +30,22 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
         exercises => (this.exercisesTime = exercises)
       );
     this.trainingService.fetchAvailableExercisesTime();
+
     this.exerciseQtySubscription = this.trainingService.exercisesQtyChanged
     .subscribe(
       exercises => (this.exercisesQty = exercises)
     );
     this.trainingService.fetchAvailableExercisesQty();
+
     this.exerciseCalSubscription = this.trainingService.exercisesCalChanged
     .subscribe(
       exercises => (this.exercisesCal = exercises)
     );
     this.trainingService.fetchAvailableExercisesCal();
-
-
-
-
-
-
-    // this.exercisesQty = this.db.collection('availableExercisesQty').valueChanges();
-    // this.exercisesCal = this.db.collection('availableExercisesCal').valueChanges();
-
-    // this.exercisesTime = this.trainingService.getAvailableExercisesTime();
-    // this.exercisesQty = this.trainingService.getAvailableExercisesQty();
-    // this.exercisesCal = this.trainingService.getAvailableExercisesCal();
   }
 
   saveExercise(dateValue: Date, exercise: string, numValue: number, param: string) {
-    console.log(dateValue, exercise, numValue, param);
+    // console.log(dateValue, exercise, numValue, param);
     this.trainingService.valorizeExercise(dateValue, exercise, numValue, param);
   }
 
