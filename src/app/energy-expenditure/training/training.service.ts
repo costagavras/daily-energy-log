@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, fromDocRef } from '@angular/fire/firestore';
 import { MatDatepickerInputEvent } from '@angular/material';
 
 import { Subject } from 'rxjs';
@@ -20,8 +20,6 @@ export class TrainingService {
   private availableExercisesCal: Exercise[] = [];
 
   private chosenExercise: Exercise;
-  private finishedExercises: Exercise[] = [];
-  private finishedExercisesByDate: Exercise[] = [];
 
   constructor(private db: AngularFirestore) {}
 
@@ -76,8 +74,7 @@ export class TrainingService {
       });
   }
 
-  valorizeExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
-    this.showViewTraining.next(); // emitting event with no payload
+  saveExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
     if (param === 'exTime') {
       this.chosenExercise = this.availableExercisesTime.find(ex => ex.id === selectedId);
       this.addDataToDatabase({
@@ -107,22 +104,26 @@ export class TrainingService {
   fetchCompletedExercises() {
     this.db.collection('finishedExercises').valueChanges()
       .subscribe((exercises: Exercise[]) => {
-        this.finishedExercises = exercises;
         this.finishedExercisesChanged.next(exercises);
       });
   }
-
 
   filterDate(event: MatDatepickerInputEvent<Date>) {
     this.dateFilter.next(event.value);
   }
 
-  getTotalCalories() {
-    return this.finishedExercisesByDate.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
+  private addDataToDatabase(exercise: Exercise) {
+    this.db.collection('finishedExercises/').add(exercise)
+      .then(docRef => {
+        this.db.collection('finishedExercises/').doc(docRef.id).update({
+          id: docRef.id
+        });
+      });
   }
 
-  private addDataToDatabase(exercise: Exercise) {
-    this.db.collection('finishedExercises').add(exercise);
+  // called from the template
+  private deleteDataFromDatabase(exercise: Exercise) {
+    this.db.doc('finishedExercises/' + exercise.id).delete();
   }
 
 }

@@ -44,11 +44,6 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.trainingService.fetchAvailableExercisesCal();
   }
 
-  saveExercise(dateValue: Date, exercise: string, numValue: number, param: string) {
-    // console.log(dateValue, exercise, numValue, param);
-    this.trainingService.valorizeExercise(dateValue, exercise, numValue, param);
-  }
-
   ngOnDestroy() {
     this.exerciseTimeSubscription.unsubscribe();
     this.exerciseQtySubscription.unsubscribe();

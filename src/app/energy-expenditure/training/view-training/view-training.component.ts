@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./view-training.component.css']
 })
 export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns = ['date', 'name', 'calories', 'duration', 'quantity'];
+  displayedColumns = ['date', 'name', 'calories', 'duration', 'quantity', 'actions'];
   dataSource = new MatTableDataSource<Exercise>();
   filteredDay: Date;
   startFilteredDay: number;
@@ -24,7 +24,7 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  constructor(private trainingService: TrainingService) { }
+  constructor(public trainingService: TrainingService) { }
   totalCalories: number;
 
   ngOnInit() {
@@ -51,7 +51,6 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
           return val.date['seconds'] * 1000 >= this.startFilteredDay &&
                 val.date['seconds'] * 1000  <= this.endFilteredDay;
         });
-        // this.totalCalories = this.trainingService.getTotalCalories();
         this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
       });
     this.trainingService.fetchCompletedExercises();
@@ -65,7 +64,6 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
           return val.date['seconds'] * 1000 >= this.startFilteredDay &&
           val.date['seconds'] * 1000  <= this.endFilteredDay;
         });
-        // this.totalCalories = this.trainingService.getTotalCalories();
         this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
       });
       this.trainingService.fetchCompletedExercises();
@@ -79,6 +77,15 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   doFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  // rowClicked(row) {
+  //   console.log(this.dataSource.data);
+  //   const index = this.dataSource.data.indexOf(this.dataSource.data.find(ex => ex.id === row.id));
+  //   console.log(index);
+  //   this.dataSource.data.splice(index, 1);
+  //   console.log(this.dataSource.data);
+  //   this.trainingService.fetchCompletedExercises();
+  // }
 
   ngOnDestroy() {
     this.exerciseChangedSubscription.unsubscribe();

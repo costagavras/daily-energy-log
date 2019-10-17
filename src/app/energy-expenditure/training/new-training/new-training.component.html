@@ -24,7 +24,7 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-              <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+              <mat-form-field class="exercise" appearance="fill">
                 <mat-label>Choose Exercise</mat-label>
                 <mat-select ngModel name="exerciseTime" [required]="exerciseTimeInput.touched" #exerciseTimeInput="ngModel">
                   <mat-option *ngFor="let exercise of exercisesTime" [value]="exercise.id">
@@ -40,8 +40,7 @@
                 <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
               </mat-form-field>
               <mat-action-row>
-                  <!-- <button type="Submit" mat-raised-button color="primary" [disabled]="exerciseTimeInput.invalid || timeInput.invalid">Save!</button> -->
-                  <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseTime, f.value.time, 'exTime')" mat-raised-button color="primary"
+                  <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseTime, f.value.time, 'exTime')" mat-raised-button color="primary"
                   [disabled]="exerciseTimeInput.invalid || exerciseTimeInput.untouched || timeInput.untouched || timeInput.invalid">Save!</button>
               </mat-action-row>
           </mat-expansion-panel>
@@ -61,7 +60,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+          <mat-form-field class="exercise" appearance="fill">
             <mat-label>Choose Exercise</mat-label>
             <mat-select ngModel name="exerciseQty" [required]="exerciseQtyInput.touched" #exerciseQtyInput="ngModel">
               <mat-option *ngFor="let exercise of exercisesQty" [value]="exercise.id">
@@ -77,7 +76,7 @@
             <mat-error *ngIf="quantityInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
           <mat-action-row>
-              <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, 'exQty')" mat-raised-button color="primary"
+              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, 'exQty')" mat-raised-button color="primary"
               [disabled]="exerciseQtyInput.invalid || exerciseQtyInput.untouched || quantityInput.untouched ||  quantityInput.invalid">Save!</button>
           </mat-action-row>
 
@@ -97,7 +96,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <mat-form-field class="exercise" appearance="fill"> <!-- *ngIf="exercises"> -->
+        <mat-form-field class="exercise" appearance="fill">
           <mat-label>Choose Exercise</mat-label>
           <mat-select ngModel name="exerciseCal" [required]="exerciseCalsInput.touched" #exerciseCalsInput="ngModel">
             <mat-option *ngFor="let exercise of exercisesCal" [value]="exercise.id">
@@ -113,7 +112,7 @@
           <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
         <mat-action-row>
-            <button type="Submit" (click)="saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
+            <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
             [disabled]="exerciseCalsInput.invalid || exerciseCalsInput.untouched || caloriesInput.untouched ||  caloriesInput.invalid">Save!</button>
         </mat-action-row>
 
