@@ -1,3 +1,12 @@
 mat-footer-row {
   font-weight: bold;
 }
+
+.clickable:hover{
+  cursor: pointer;
+  background-color: rgba(211, 211, 211, 0.349);
+}
+
+.clickable{
+  background-color: rgba(211, 211, 211, 0.349);
+}

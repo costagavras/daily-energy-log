@@ -90,7 +90,7 @@ export class TrainingService {
         ...this.chosenExercise,
         duration: volume,
         calories: Math.round(volume * this.chosenExercise.calories),
-        date: exerciseDate
+        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else if (param === 'exQty') {
       this.chosenExercise = this.availableExercisesQty.find(ex => ex.id === selectedId);
@@ -98,14 +98,14 @@ export class TrainingService {
         ...this.chosenExercise,
         quantity: volume,
         calories: Math.round(volume * this.chosenExercise.calories),
-        date: exerciseDate
+        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else {
       this.chosenExercise = this.availableExercisesCal.find(ex => ex.id === selectedId);
       this.addDataToDatabase({
         ...this.chosenExercise,
         calories: volume,
-        date: exerciseDate
+        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     }
   }

@@ -9,7 +9,7 @@
 
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.date.toDate() | date: 'mediumDate' }}</mat-cell>
+      <mat-cell *matCellDef="let element">{{ element.date.toDate() | date: 'EEE, d MMM, y' }}</mat-cell>
       <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
     </ng-container>
 
