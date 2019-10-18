@@ -43,11 +43,14 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesTime = exercises;
         this.exercisesTimeChanged.next([...this.availableExercisesTime]);
+      }, error => {
+        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
       }));
   }
   fetchAvailableExercisesQty() {
     this.firebaseSubscriptions.push(this.db.collection('availableExercisesQty').snapshotChanges()
       .pipe(map(docArray => {
+        // throw(new Error());
         return docArray.map(doc => {
           return {
             id: doc.payload.doc.id,
@@ -58,6 +61,8 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesQty = exercises;
         this.exercisesQtyChanged.next([...this.availableExercisesQty]);
+      }, error => {
+        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
       }));
   }
   fetchAvailableExercisesCal() {
@@ -73,6 +78,8 @@ export class TrainingService {
       .subscribe((exercises: Exercise[]) => {
         this.availableExercisesCal = exercises;
         this.exercisesCalChanged.next([...this.availableExercisesCal]);
+      }, error => {
+        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
       }));
   }
 
@@ -109,11 +116,10 @@ export class TrainingService {
     .subscribe((exercises: Exercise[]) => {
       this.uiService.loadingStateChanged.next(false);
       this.finishedExercisesChanged.next(exercises);
+    }, error => {
+      this.uiService.loadingStateChanged.next(false);
+      this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
     }));
-  }
-
-  cancelSubscriptions() {
-    this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
   }
 
   filterDate(event: MatDatepickerInputEvent<Date>) {
@@ -122,11 +128,11 @@ export class TrainingService {
 
   private addDataToDatabase(exercise: Exercise) {
     this.db.collection('finishedExercises/').add(exercise)
-      .then(docRef => {
-        this.db.collection('finishedExercises/').doc(docRef.id).update({
-          id: docRef.id
-        });
+    .then(docRef => {
+      this.db.collection('finishedExercises/').doc(docRef.id).update({
+        id: docRef.id
       });
+    });
   }
 
   // called from the template
@@ -134,4 +140,9 @@ export class TrainingService {
     this.db.doc('finishedExercises/' + exercise.id).delete();
   }
 
+  cancelSubscriptions() {
+    if (this.firebaseSubscriptions) {
+      this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
+    }
+  }
 }

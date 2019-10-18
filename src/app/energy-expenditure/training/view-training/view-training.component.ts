@@ -22,9 +22,9 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   totalCalories: number;
   private exerciseChangedSubscription: Subscription;
   private filteredDateSubscription: Subscription;
+  private loadingSubs: Subscription;
 
   isLoading = false;
-  private loadingSubs: Subscription;
 
   // @ViewChild(MatSort, {static: false}) sort: MatSort;
   // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -50,6 +50,7 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log(new Date(this.startFilteredDay));
     // console.log(new Date(this.endFilteredDay));
 
+    // subscription when filter date changes
     this.filteredDateSubscription = this.trainingService.dateFilter
     .subscribe((date: Date) => {
         this.filteredDay = date; // comes from datepicker change event formatted as 0:0:00
@@ -87,9 +88,15 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-      this.exerciseChangedSubscription.unsubscribe();
-      this.filteredDateSubscription.unsubscribe();
-      this.loadingSubs.unsubscribe();
+      if (this.exerciseChangedSubscription) {
+        this.exerciseChangedSubscription.unsubscribe();
+      }
+      if (this.filteredDateSubscription) {
+        this.filteredDateSubscription.unsubscribe();
+      }
+      if (this.loadingSubs) {
+        this.loadingSubs.unsubscribe();
+      }
     }
 
 }
