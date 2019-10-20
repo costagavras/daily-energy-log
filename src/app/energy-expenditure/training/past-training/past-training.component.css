@@ -1,5 +1,6 @@
-mat-footer-row {
+mat-footer-row, mat-header-cell {
   font-weight: bold;
+  font-size: large;
 }
 
 .clickable:hover{
@@ -7,6 +8,7 @@ mat-footer-row {
   background-color: rgba(211, 211, 211, 0.349);
 }
 
-.clickable{
+.clickable, mat-list-item {
   background-color: rgba(211, 211, 211, 0.349);
 }
+

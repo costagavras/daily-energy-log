@@ -114,6 +114,7 @@ export class TrainingService {
     this.uiService.loadingStateChanged.next(true);
     this.firebaseSubscriptions.push(this.db.collection('finishedExercises').valueChanges()
     .subscribe((exercises: Exercise[]) => {
+      // const exercisesRef = this.db.collection('finishedExercises').ref('')
       this.uiService.loadingStateChanged.next(false);
       this.finishedExercisesChanged.next(exercises);
     }, error => {

@@ -14,27 +14,25 @@ import { UIService } from 'src/app/shared/ui.service';
 export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns = ['date', 'name', 'calories', 'duration', 'quantity', 'actions'];
-  displayedColumnsGroup = ['date', 'name'];
+  displayedColumnsGroup = ['Date', 'Name'];
   useDatePipe: boolean;
   dataSource = new MatTableDataSource<Exercise>();
-  private paginator: MatPaginator;
   private sort: MatSort;
   totalCalories: number;
   private exerciseChangedSubscription: Subscription;
   private loadingSubs: Subscription;
   panelOpenState = false;
   isLoading = false;
+  isGrouperRun = false;
 
   // filter
   groupingColumn;
+  columnName: string;
   reducedGroups = [];
   private initialData: Exercise[] = [];
 
   @ViewChild(MatSort, {static: false}) set matSort(sort: MatSort) {
     this.dataSource.sort = sort;
-  }
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(paginator: MatPaginator) {
-    this.dataSource.paginator = paginator;
   }
 
   constructor(public trainingService: TrainingService,
@@ -45,36 +43,49 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     .subscribe(isLoading => {
       this.isLoading = isLoading;
     });
-
     this.fetchAllExercises();
 
   }
 
   // filter
   buildDataSource() {
-
-    this.dataSource = this.groupBy(this.groupingColumn, this.initialData, this.reducedGroups);
+    this.reducedGroups = [];
+    this.isGrouperRun = true; // avoid showing filter and sort after group is activated
+    this.groupingColumn === null ? this.columnName = null : this.columnName = this.groupingColumn.toLowerCase();
+    this.dataSource = this.groupBy(this.columnName, this.initialData, this.reducedGroups);
   }
 
   // filter
   groupBy(column: string, data: any[], reducedGroups?: any[]) {
     if (!column) { return data; }
-    column === 'name' ? this.useDatePipe = false : this.useDatePipe = true;
+    column === 'date' ? this.useDatePipe = true : this.useDatePipe = false; // make sure date pipe is correct in template
     let collapsedGroups = reducedGroups;
     if (!reducedGroups) { collapsedGroups = []; }
+    let groupCalories = 0;
+    let addGroupCalories = {};
     const customReducer = (accumulator, currentValue) => {
-      const currentGroup = currentValue[column];
+      const currentGroup = currentValue[column]; // each of the items in names column
       if (!accumulator[currentGroup]) {
-        accumulator[currentGroup] = [{
-          groupName: currentValue[column],
-          value: currentValue[column],
-          isGroup: true,
-          reduced: collapsedGroups.some((group) => group.value === currentValue[column])
-        }];
-      }
+          accumulator[currentGroup] = [{
+            groupName: currentValue[column],
+            value: JSON.stringify(currentValue[column].seconds), // hack to avoid Timestamp object with sec and nanosec
+            isGroup: true,
+            reduced: collapsedGroups.some((group) => group.value === JSON.stringify(currentValue[column].seconds)),
+          }];
+          groupCalories = 0;
+        }
 
+      if (accumulator[currentGroup][0].totalCaloriesGrp) {
+        groupCalories = accumulator[currentGroup][0].totalCaloriesGrp;
+      }
+      groupCalories = groupCalories + currentValue.calories;
+
+      addGroupCalories = {
+        totalCaloriesGrp: groupCalories, // adding calories to group
+      };
+
+      accumulator[currentGroup][0] = Object.assign(accumulator[currentGroup][0], addGroupCalories);
       accumulator[currentGroup].push(currentValue);
-      // console.log(currentValue);
       return accumulator;
     };
 
@@ -85,7 +96,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return flatList.filter((rawLine) => {
         return rawLine.isGroup ||
-        collapsedGroups.every((group) => rawLine[column] !== group.value);
+        collapsedGroups.every((group) => JSON.stringify(rawLine[column].seconds) !== group.value);
       });
   }
 
@@ -102,7 +113,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.reducedGroups = this.reducedGroups.filter((el) => el.value !== row.value);
     }
-    this.buildDataSource();
+    this.dataSource = this.groupBy(this.columnName, this.initialData, this.reducedGroups);
   }
 
   fetchAllExercises() {
@@ -117,7 +128,6 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   doFilter(filterValue: string) {
