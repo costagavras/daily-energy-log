@@ -112,9 +112,8 @@ export class TrainingService {
 
   fetchCompletedExercises() {
     this.uiService.loadingStateChanged.next(true);
-    this.firebaseSubscriptions.push(this.db.collection('finishedExercises').valueChanges()
+    this.firebaseSubscriptions.push(this.db.collection<Exercise>('finishedExercises', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((exercises: Exercise[]) => {
-      // const exercisesRef = this.db.collection('finishedExercises').ref('')
       this.uiService.loadingStateChanged.next(false);
       this.finishedExercisesChanged.next(exercises);
     }, error => {

@@ -82,7 +82,6 @@
       </ng-container>
       <ng-container matColumnDef="groupHeader">
         <mat-cell mat-cell *matCellDef="let group">
-          <!-- <strong>{{group.groupName}}</strong> -->
           <strong *ngIf="useDatePipe">{{group.groupName.toDate() | date: 'EEE, d MMM, y' }}</strong>
           <strong *ngIf="!useDatePipe">{{group.groupName}}</strong>
         </mat-cell>

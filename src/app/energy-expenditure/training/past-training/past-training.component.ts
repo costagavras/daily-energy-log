@@ -44,7 +44,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading = isLoading;
     });
     this.fetchAllExercises();
-
+    console.log('I ran');
   }
 
   // filter
@@ -84,7 +84,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
         totalCaloriesGrp: groupCalories, // adding calories to group
       };
 
-      accumulator[currentGroup][0] = Object.assign(accumulator[currentGroup][0], addGroupCalories);
+      accumulator[currentGroup][0] = Object.assign(accumulator[currentGroup][0], addGroupCalories); // mergin calories to accumulator
       accumulator[currentGroup].push(currentValue);
       return accumulator;
     };
@@ -116,6 +116,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource = this.groupBy(this.columnName, this.initialData, this.reducedGroups);
   }
 
+  // event listener
   fetchAllExercises() {
     this.exerciseChangedSubscription = this.trainingService.finishedExercisesChanged
     .subscribe((exercises: Exercise[]) => {
