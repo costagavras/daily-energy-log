@@ -112,7 +112,7 @@
               <mat-error *ngIf="servingDessertsInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDesserts, f.value.servingDesserts, 'Desserts')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDesserts, f.value.servingDesserts, 'desserts')" mat-raised-button color="primary"
                 [disabled]="foodNameDessertsInput.invalid || foodNameDessertsInput.untouched || servingDessertsInput.untouched || servingDessertsInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -148,7 +148,7 @@
               <mat-error *ngIf="servingDishesInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDishes, f.value.servingDishes, 'Dishes')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDishes, f.value.servingDishes, 'dishes')" mat-raised-button color="primary"
                 [disabled]="foodNameDishesInput.invalid || foodNameDishesInput.untouched || servingDishesInput.untouched || servingDishesInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -184,7 +184,7 @@
               <mat-error *ngIf="servingFatsInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFats, f.value.servingFats, 'Fats')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFats, f.value.servingFats, 'fats')" mat-raised-button color="primary"
                 [disabled]="foodNameFatsInput.invalid || foodNameFatsInput.untouched || servingFatsInput.untouched || servingFatsInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -220,7 +220,7 @@
               <mat-error *ngIf="servingFishInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFish, f.value.servingFish, 'Fish')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFish, f.value.servingFish, 'fish')" mat-raised-button color="primary"
                 [disabled]="foodNameFishInput.invalid || foodNameFishInput.untouched || servingFishInput.untouched || servingFishInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -256,7 +256,7 @@
               <mat-error *ngIf="servingFruitsInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFruits, f.value.servingFruits, 'Fruits')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFruits, f.value.servingFruits, 'fruits')" mat-raised-button color="primary"
                 [disabled]="foodNameFruitsInput.invalid || foodNameFruitsInput.untouched || servingFruitsInput.untouched || servingFruitsInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -292,7 +292,7 @@
               <mat-error *ngIf="servingGrainsInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameGrains, f.value.servingGrains, 'Grains')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameGrains, f.value.servingGrains, 'grains')" mat-raised-button color="primary"
                 [disabled]="foodNameGrainsInput.invalid || foodNameGrainsInput.untouched || servingGrainsInput.untouched || servingGrainsInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -328,7 +328,7 @@
               <mat-error *ngIf="servingMeatInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameMeat, f.value.servingMeat, 'Meat')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameMeat, f.value.servingMeat, 'meat')" mat-raised-button color="primary"
                 [disabled]="foodNameMeatInput.invalid || foodNameMeatInput.untouched || servingMeatInput.untouched || servingMeatInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
@@ -364,7 +364,7 @@
               <mat-error *ngIf="servingVegetablesInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
             <mat-action-row>
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameVegetables, f.value.servingVegetables, 'Vegetables')" mat-raised-button color="primary"
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameVegetables, f.value.servingVegetables, 'vegetables')" mat-raised-button color="primary"
                 [disabled]="foodNameVegetablesInput.invalid || foodNameVegetablesInput.untouched || servingVegetablesInput.untouched || servingVegetablesInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>

@@ -1,0 +1,13 @@
+mat-footer-row, mat-header-cell {
+  font-weight: bold;
+  font-size: large;
+}
+
+.clickable:hover{
+  cursor: pointer;
+  background-color: rgba(211, 211, 211, 0.349);
+}
+
+.clickable, mat-list-item {
+  background-color: rgba(211, 211, 211, 0.349);
+}

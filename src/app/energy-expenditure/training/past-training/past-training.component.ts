@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort } from '@angular/material';
 
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
@@ -44,7 +44,6 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading = isLoading;
     });
     this.fetchAllExercises();
-    console.log('I ran');
   }
 
   // filter
