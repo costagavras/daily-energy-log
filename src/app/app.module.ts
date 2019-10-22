@@ -34,6 +34,7 @@ import { ViewFoodIntakeComponent } from './food-intake/view-food-intake/view-foo
 import { ProfileComponent } from './profile/profile.component';
 import { AnthropometryComponent } from './profile/anthropometry/anthropometry.component';
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
+import { FoodService } from './food-intake/food.service';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,7 @@ import { ActivityLevelComponent } from './profile/activity-level/activity-level.
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
   ],
-  providers: [AuthService, TrainingService, UIService],
+  providers: [AuthService, TrainingService, FoodService, UIService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

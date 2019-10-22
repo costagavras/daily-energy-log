@@ -1,1 +1,380 @@
-<p>new-food-intake works!</p>
+<section class="new-food-item" fxLayout fxLayoutAlign="center">
+  <form #f="ngForm">
+    <mat-card fxFlex.xs="100%" fxFlex="500px">
+      <mat-form-field fxLayoutAlign="center">
+        <input matInput placeholder="Date of meal" [matDatepicker]="picker" [ngModel]="today" name="date"
+          required [max]="maxDate" (dateChange)="foodService.filterDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-card-title fxLayoutAlign="center">Food intake</mat-card-title>
+      <mat-card-content fxLayoutAlign="center">
+
+      <mat-accordion>
+
+        <!-- 1st panel - Beverages -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Beverages
+              </mat-panel-title>
+              <mat-panel-description>
+                Input food item and serving size in grams
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+              <mat-form-field class="food-item" appearance="fill">
+                <mat-label>Choose food item</mat-label>
+                <mat-select ngModel name="foodNameBeverages" [required]="foodNameBeveragesInput.touched" #foodNameBeveragesInput="ngModel">
+                  <mat-option *ngFor="let food_item of foodItemsBeverages" [value]="food_item.id">
+                    {{ food_item.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="foodNameBeveragesInput.hasError('required')">Field must not be empty.</mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="measurement" appearance="fill">
+                <mat-label>Serving, gr</mat-label>
+                <input matInput type="number" name="servingBeverages" [required]="servingBeveragesInput.touched" [min]="minValue" ngModel #servingBeveragesInput="ngModel">
+                <mat-error *ngIf="servingBeveragesInput.hasError('required')">Field must not be empty.</mat-error>
+              </mat-form-field>
+              <mat-action-row>
+                  <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameBeverages, f.value.servingBeverages, 'beverages')" mat-raised-button color="primary"
+                  [disabled]="foodNameBeveragesInput.invalid || foodNameBeveragesInput.untouched || servingBeveragesInput.untouched || servingBeveragesInput.invalid">Save!</button>
+              </mat-action-row>
+          </mat-expansion-panel>
+
+          <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 2nd panel - Dairy -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Dairy
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameDairy" [required]="foodNameDairyInput.touched" #foodNameDairyInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsDairy" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameDairyInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingDairy" [required]="servingDairyInput.touched" [min]="minValue" ngModel #servingDairyInput="ngModel">
+              <mat-error *ngIf="servingDairyInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDairy, f.value.servingDairy, 'dairy')" mat-raised-button color="primary"
+                [disabled]="foodNameDairyInput.invalid || foodNameDairyInput.untouched || servingDairyInput.untouched || servingDairyInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 3rd panel - Desserts -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Desserts
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameDesserts" [required]="foodNameDessertsInput.touched" #foodNameDessertsInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsDesserts" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameDessertsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingDesserts" [required]="servingDessertsInput.touched" [min]="minValue" ngModel #servingDessertsInput="ngModel">
+              <mat-error *ngIf="servingDessertsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDesserts, f.value.servingDesserts, 'Desserts')" mat-raised-button color="primary"
+                [disabled]="foodNameDessertsInput.invalid || foodNameDessertsInput.untouched || servingDessertsInput.untouched || servingDessertsInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 4th panel - Dishes -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Dishes
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameDishes" [required]="foodNameDishesInput.touched" #foodNameDishesInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsDishes" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameDishesInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingDishes" [required]="servingDishesInput.touched" [min]="minValue" ngModel #servingDishesInput="ngModel">
+              <mat-error *ngIf="servingDishesInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameDishes, f.value.servingDishes, 'Dishes')" mat-raised-button color="primary"
+                [disabled]="foodNameDishesInput.invalid || foodNameDishesInput.untouched || servingDishesInput.untouched || servingDishesInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 5th panel - Fats -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Fats
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameFats" [required]="foodNameFatsInput.touched" #foodNameFatsInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsFats" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameFatsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingFats" [required]="servingFatsInput.touched" [min]="minValue" ngModel #servingFatsInput="ngModel">
+              <mat-error *ngIf="servingFatsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFats, f.value.servingFats, 'Fats')" mat-raised-button color="primary"
+                [disabled]="foodNameFatsInput.invalid || foodNameFatsInput.untouched || servingFatsInput.untouched || servingFatsInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 6th panel - Fish -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Fish
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameFish" [required]="foodNameFishInput.touched" #foodNameFishInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsFish" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameFishInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingFish" [required]="servingFishInput.touched" [min]="minValue" ngModel #servingFishInput="ngModel">
+              <mat-error *ngIf="servingFishInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFish, f.value.servingFish, 'Fish')" mat-raised-button color="primary"
+                [disabled]="foodNameFishInput.invalid || foodNameFishInput.untouched || servingFishInput.untouched || servingFishInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 7th panel - Fruits -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Fruits
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameFruits" [required]="foodNameFruitsInput.touched" #foodNameFruitsInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsFruits" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameFruitsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingFruits" [required]="servingFruitsInput.touched" [min]="minValue" ngModel #servingFruitsInput="ngModel">
+              <mat-error *ngIf="servingFruitsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameFruits, f.value.servingFruits, 'Fruits')" mat-raised-button color="primary"
+                [disabled]="foodNameFruitsInput.invalid || foodNameFruitsInput.untouched || servingFruitsInput.untouched || servingFruitsInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 8th panel - Grains -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Grains
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameGrains" [required]="foodNameGrainsInput.touched" #foodNameGrainsInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsGrains" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameGrainsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingGrains" [required]="servingGrainsInput.touched" [min]="minValue" ngModel #servingGrainsInput="ngModel">
+              <mat-error *ngIf="servingGrainsInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameGrains, f.value.servingGrains, 'Grains')" mat-raised-button color="primary"
+                [disabled]="foodNameGrainsInput.invalid || foodNameGrainsInput.untouched || servingGrainsInput.untouched || servingGrainsInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 9th panel - Meat -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Meat
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameMeat" [required]="foodNameMeatInput.touched" #foodNameMeatInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsMeat" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameMeatInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingMeat" [required]="servingMeatInput.touched" [min]="minValue" ngModel #servingMeatInput="ngModel">
+              <mat-error *ngIf="servingMeatInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameMeat, f.value.servingMeat, 'Meat')" mat-raised-button color="primary"
+                [disabled]="foodNameMeatInput.invalid || foodNameMeatInput.untouched || servingMeatInput.untouched || servingMeatInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 10th panel - Vegetables -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Vegetables
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameVegetables" [required]="foodNameVegetablesInput.touched" #foodNameVegetablesInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsVegetables" [value]="food_item.id">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameVegetablesInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingVegetables" [required]="servingVegetablesInput.touched" [min]="minValue" ngModel #servingVegetablesInput="ngModel">
+              <mat-error *ngIf="servingVegetablesInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameVegetables, f.value.servingVegetables, 'Vegetables')" mat-raised-button color="primary"
+                [disabled]="foodNameVegetablesInput.invalid || foodNameVegetablesInput.untouched || servingVegetablesInput.untouched || servingVegetablesInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+      </mat-accordion>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+</section>
+

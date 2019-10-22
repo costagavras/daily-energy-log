@@ -44,7 +44,7 @@ export class TrainingService {
         this.availableExercisesTime = exercises;
         this.exercisesTimeChanged.next([...this.availableExercisesTime]);
       }, error => {
-        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
+        this.uiService.showSnackbar('Fetching exercises failed, please try again later', null, 3000);
       }));
   }
   fetchAvailableExercisesQty() {
@@ -62,7 +62,7 @@ export class TrainingService {
         this.availableExercisesQty = exercises;
         this.exercisesQtyChanged.next([...this.availableExercisesQty]);
       }, error => {
-        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
+        this.uiService.showSnackbar('Fetching exercises failed, please try again later', null, 3000);
       }));
   }
   fetchAvailableExercisesCal() {
@@ -79,7 +79,7 @@ export class TrainingService {
         this.availableExercisesCal = exercises;
         this.exercisesCalChanged.next([...this.availableExercisesCal]);
       }, error => {
-        this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
+        this.uiService.showSnackbar('Fetching exercises failed, please try again later', null, 3000);
       }));
   }
 
@@ -118,7 +118,7 @@ export class TrainingService {
       this.finishedExercisesChanged.next(exercises);
     }, error => {
       this.uiService.loadingStateChanged.next(false);
-      this.uiService.showSnackbar('Fetching Exercises failed, please try again later', null, 3000);
+      this.uiService.showSnackbar('Fetching exercises failed, please try again later', null, 3000);
     }));
   }
 

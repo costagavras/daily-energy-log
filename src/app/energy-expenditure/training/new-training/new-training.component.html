@@ -1,7 +1,7 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
   <!-- <form (ngSubmit)="onEnter(f)" #f="ngForm"> -->
   <form #f="ngForm">
-    <mat-card fxFlex.xs="100%" fxFlex="400px">
+    <mat-card fxFlex.xs="100%" fxFlex="500px">
       <mat-form-field fxLayoutAlign="center">
         <input matInput placeholder="Date of exercise" [matDatepicker]="picker" [ngModel]="today" name="date"
           required [max]="maxDate" (dateChange)="trainingService.filterDate($event)">
@@ -84,39 +84,39 @@
 
         <mat-divider [inset]="true"></mat-divider>
 
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                                 (closed)="panelOpenState = false">
-        <!-- 3rd panel -->
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Measured-output exercises
-          </mat-panel-title>
-          <mat-panel-description>
-            Input exercise and calories
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+          <!-- 3rd panel -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                                  (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Measured-output exercises
+            </mat-panel-title>
+            <mat-panel-description>
+              Input exercise and calories
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-        <mat-form-field class="exercise" appearance="fill">
-          <mat-label>Choose Exercise</mat-label>
-          <mat-select ngModel name="exerciseCal" [required]="exerciseCalsInput.touched" #exerciseCalsInput="ngModel">
-            <mat-option *ngFor="let exercise of exercisesCal" [value]="exercise.id">
-              {{ exercise.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="exerciseCalsInput.hasError('required')">Field must not be empty.</mat-error>
-        </mat-form-field>
+          <mat-form-field class="exercise" appearance="fill">
+            <mat-label>Choose Exercise</mat-label>
+            <mat-select ngModel name="exerciseCal" [required]="exerciseCalsInput.touched" #exerciseCalsInput="ngModel">
+              <mat-option *ngFor="let exercise of exercisesCal" [value]="exercise.id">
+                {{ exercise.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="exerciseCalsInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
 
-        <mat-form-field class="measurement" appearance="fill">
-          <mat-label>Calories</mat-label>
-          <input matInput type="number" name="calories" [required]="caloriesInput.touched" [min]="minValue" ngModel #caloriesInput="ngModel">
-          <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
-        </mat-form-field>
-        <mat-action-row>
-            <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
-            [disabled]="exerciseCalsInput.invalid || exerciseCalsInput.untouched || caloriesInput.untouched ||  caloriesInput.invalid">Save!</button>
-        </mat-action-row>
+          <mat-form-field class="measurement" appearance="fill">
+            <mat-label>Calories</mat-label>
+            <input matInput type="number" name="calories" [required]="caloriesInput.touched" [min]="minValue" ngModel #caloriesInput="ngModel">
+            <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
+          <mat-action-row>
+              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
+              [disabled]="exerciseCalsInput.invalid || exerciseCalsInput.untouched || caloriesInput.untouched ||  caloriesInput.invalid">Save!</button>
+          </mat-action-row>
 
-      </mat-expansion-panel>
+        </mat-expansion-panel>
 
       </mat-accordion>
 

@@ -14,11 +14,9 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   minValue = 0;
   today = new Date();
   exercisesTime: Exercise[];
-  exerciseTimeSubscription: Subscription;
   exercisesQty: Exercise[];
-  exerciseQtySubscription: Subscription;
   exercisesCal: Exercise[];
-  exerciseCalSubscription: Subscription;
+  private fbAvailableExercisesSubs: Subscription[] = [];
   panelOpenState = false;
 
   constructor(public trainingService: TrainingService) { }
@@ -26,34 +24,28 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.maxDate = new Date();
 
-    this.exerciseTimeSubscription = this.trainingService.exercisesTimeChanged
+    this.fbAvailableExercisesSubs.push(this.trainingService.exercisesTimeChanged
       .subscribe(
         exercises => (this.exercisesTime = exercises)
-      );
+      ));
     this.trainingService.fetchAvailableExercisesTime();
 
-    this.exerciseQtySubscription = this.trainingService.exercisesQtyChanged
+    this.fbAvailableExercisesSubs.push(this.trainingService.exercisesQtyChanged
     .subscribe(
       exercises => (this.exercisesQty = exercises)
-    );
+    ));
     this.trainingService.fetchAvailableExercisesQty();
 
-    this.exerciseCalSubscription = this.trainingService.exercisesCalChanged
+    this.fbAvailableExercisesSubs.push(this.trainingService.exercisesCalChanged
     .subscribe(
       exercises => (this.exercisesCal = exercises)
-    );
+    ));
     this.trainingService.fetchAvailableExercisesCal();
   }
 
   ngOnDestroy() {
-    if (this.exerciseTimeSubscription) {
-      this.exerciseTimeSubscription.unsubscribe();
-    }
-    if (this.exerciseQtySubscription) {
-      this.exerciseQtySubscription.unsubscribe();
-    }
-    if (this.exerciseCalSubscription) {
-      this.exerciseCalSubscription.unsubscribe();
+    if (this.fbAvailableExercisesSubs) {
+      this.fbAvailableExercisesSubs.forEach(sub => sub.unsubscribe());
     }
   }
 

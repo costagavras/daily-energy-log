@@ -4,5 +4,5 @@ export interface Exercise {
   calories: number;
   duration?: number;
   quantity?: number;
-  date?: Date;
+  date: Date;
 }

@@ -1,0 +1,27 @@
+.new-food-item {
+  padding: 10px;
+}
+
+.food-item {
+  display: block;
+}
+
+.measurement {
+  display: block;
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+mat-expansion-panel {
+  margin: 10px 0;
+}
+
+mat-expansion-panel-header {
+  padding: 0 15px 0 8px;
+  height: 60px;
+}
+
+mat-expansion-panel-body {
+  padding: 0 24px;
+}

@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthData } from './auth-data.model';
 import { TrainingService } from '../energy-expenditure/training/training.service';
 import { UIService } from '../shared/ui.service';
+import { FoodService } from '../food-intake/food.service';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     constructor(private router: Router,
                 private afAuth: AngularFireAuth,
                 private trainingService: TrainingService,
+                private foodService: FoodService,
                 private uiService: UIService) {}
 
     initAuthListener() {
@@ -26,6 +28,7 @@ export class AuthService {
           this.router.navigate(['/food-intake']);
         } else {
           this.trainingService.cancelSubscriptions();
+          this.foodService.cancelSubscriptions();
           // false bc boolean payload (false = unregistered user), listened to in #header and #navigation to show contextual menu
           this.authChange.next(false);
           this.router.navigate(['/login']);

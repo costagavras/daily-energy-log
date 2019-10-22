@@ -47,8 +47,6 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filteredDay = new Date();
     this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
     this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
-    // console.log(new Date(this.startFilteredDay));
-    // console.log(new Date(this.endFilteredDay));
 
     // subscription when filter date changes
     this.filteredDateSubscription = this.trainingService.dateFilter
@@ -56,8 +54,6 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filteredDay = date; // comes from datepicker change event formatted as 0:0:00
         this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
         this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
-        // console.log(new Date(this.startFilteredDay));
-        // console.log(new Date(this.endFilteredDay));
         this.updateFilteredDate();
       });
 
