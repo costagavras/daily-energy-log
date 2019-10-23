@@ -1,1 +1,87 @@
-<p>anthropometry works!</p>
+<div fxLayoutAlign="center center">
+  <h1>Anthropometric data</h1>
+</div>
+<div fxLayoutAlign="center center">
+  <h2>Create or update your user profile</h2>
+</div>
+
+<div fxLayoutAlign="center center" fxLayout="column">
+  <mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="nameFormGroup">
+    <form [formGroup]="nameFormGroup">
+      <ng-template matStepLabel>Fill out your name</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name" required>
+        <mat-hint *ngIf="!name.touched || !name.dirty">Please enter a name.</mat-hint>
+        <mat-error *ngIf="name.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="genderFormGroup">
+    <form [formGroup]="genderFormGroup">
+      <ng-template matStepLabel>Specify your gender</ng-template>
+      <mat-radio-group matInput  formControlName="gender" required aria-label="Select an option">
+        <mat-radio-button value="1">Female</mat-radio-button>
+        <mat-radio-button value="2">Male</mat-radio-button>
+        <!-- <mat-error *ngIf="gender.hasError('required')">Field must not be empty.</mat-error> -->
+        </mat-radio-group>
+      <div>
+        <button mat-raised-button matStepperPrevious fxLayoutGap="10px">Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="ageFormGroup">
+    <form [formGroup]="ageFormGroup">
+      <ng-template matStepLabel>Fill out your age</ng-template>
+      <mat-form-field>
+        <input matInput type="number" [min]="minAgeValue" placeholder="Age" formControlName="age" required>
+        <mat-hint *ngIf="!age.touched || !age.dirty">Please enter your age.</mat-hint>
+        <mat-error *ngIf="age.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="heightFormGroup">
+    <form [formGroup]="heightFormGroup">
+      <ng-template matStepLabel>Fill out your height</ng-template>
+      <mat-form-field>
+        <input matInput type="number" [min]="minHeightValue" placeholder="Height, cm" formControlName="height" required>
+        <mat-hint *ngIf="!height.touched || !height.dirty">Please enter your height.</mat-hint>
+        <mat-error *ngIf="height.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+    <mat-step [stepControl]="weightFormGroup">
+      <form [formGroup]="weightFormGroup">
+        <ng-template matStepLabel>Fill out your weight</ng-template>
+        <mat-form-field>
+          <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weight" required>
+          <mat-hint *ngIf="!weight.touched || !weight.dirty">Please enter your weight.</mat-hint>
+          <mat-error *ngIf="weight.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Submit</ng-template>
+      <div>
+        <button mat-raised-button (click)="stepper.reset()">Reset</button>
+        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()">Save</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+</div>

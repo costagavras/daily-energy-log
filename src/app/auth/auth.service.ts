@@ -25,7 +25,7 @@ export class AuthService {
           this.isAuthenticated = true;
           // true bc boolean payload (true = registered user), listened to in #header and #navigation to show contextual menu
           this.authChange.next(true);
-          this.router.navigate(['/food-intake']);
+          this.router.navigate(['/profile']);
         } else {
           this.trainingService.cancelSubscriptions();
           this.foodService.cancelSubscriptions();

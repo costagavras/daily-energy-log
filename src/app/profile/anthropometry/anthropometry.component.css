@@ -1,0 +1,8 @@
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+  padding-bottom: 20px;
+}
+
+button {
+  margin: 5px 10px;
+}
