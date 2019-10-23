@@ -14,6 +14,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './auth/auth.service';
 import { TrainingService } from './energy-expenditure/training/training.service';
 import { UIService } from './shared/ui.service';
+import { FoodService } from './food-intake/food.service';
+import { ProfileService } from './profile/profile.service';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -34,7 +36,6 @@ import { ViewFoodIntakeComponent } from './food-intake/view-food-intake/view-foo
 import { ProfileComponent } from './profile/profile.component';
 import { AnthropometryComponent } from './profile/anthropometry/anthropometry.component';
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
-import { FoodService } from './food-intake/food.service';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { FoodService } from './food-intake/food.service';
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
   ],
-  providers: [AuthService, TrainingService, FoodService, UIService],
+  providers: [AuthService, TrainingService, FoodService, UIService, ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

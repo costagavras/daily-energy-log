@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TrainingService } from './training/training.service';
 
 @Component({
   selector: 'app-energy-expenditure',
@@ -8,7 +7,7 @@ import { TrainingService } from './training/training.service';
 })
 export class EnergyExpenditureComponent implements OnInit, OnDestroy {
 
-  constructor(private trainingService: TrainingService) { }
+  constructor() { }
 
   ngOnInit() {}
 

@@ -1,6 +1,13 @@
-<mat-tab-group>
+<mat-tab-group #tabGroup>
   <mat-tab label="Anthropometry">
     <app-anthropometry></app-anthropometry>
+    <button class="reviewActivityLevelButton"
+      mat-raised-button
+      color="primary"
+      (click)="tabGroup.selectedIndex=1"
+      *ngIf="loadLinkToActivityLevel">
+      Review Activity Level
+    </button>
   </mat-tab>
   <mat-tab label="Activity Level">
     <app-activity-level></app-activity-level>

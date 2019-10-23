@@ -24,9 +24,8 @@
     <form [formGroup]="genderFormGroup">
       <ng-template matStepLabel>Specify your gender</ng-template>
       <mat-radio-group matInput  formControlName="gender" required aria-label="Select an option">
-        <mat-radio-button value="1">Female</mat-radio-button>
-        <mat-radio-button value="2">Male</mat-radio-button>
-        <!-- <mat-error *ngIf="gender.hasError('required')">Field must not be empty.</mat-error> -->
+        <mat-radio-button value="female">Female</mat-radio-button>
+        <mat-radio-button value="male">Male</mat-radio-button>
         </mat-radio-group>
       <div>
         <button mat-raised-button matStepperPrevious fxLayoutGap="10px">Back</button>
@@ -41,6 +40,7 @@
         <input matInput type="number" [min]="minAgeValue" placeholder="Age" formControlName="age" required>
         <mat-hint *ngIf="!age.touched || !age.dirty">Please enter your age.</mat-hint>
         <mat-error *ngIf="age.hasError('required')">Field must not be empty.</mat-error>
+        <mat-error *ngIf="age.hasError('min') || age.hasError('max')">Age limit not respected!</mat-error>
       </mat-form-field>
       <div>
         <button mat-raised-button matStepperPrevious>Back</button>
@@ -62,22 +62,32 @@
       </div>
     </form>
   </mat-step>
-    <mat-step [stepControl]="weightFormGroup">
-      <form [formGroup]="weightFormGroup">
-        <ng-template matStepLabel>Fill out your weight</ng-template>
-        <mat-form-field>
-          <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weight" required>
-          <mat-hint *ngIf="!weight.touched || !weight.dirty">Please enter your weight.</mat-hint>
-          <mat-error *ngIf="weight.hasError('required')">Field must not be empty.</mat-error>
+  <mat-step [stepControl]="weightFormGroup">
+    <form [formGroup]="weightFormGroup">
+      <ng-template matStepLabel>Fill out your weight</ng-template>
+      <mat-form-field>
+        <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weight" required>
+        <mat-hint *ngIf="!weight.touched || !weight.dirty">Please enter your weight.</mat-hint>
+        <mat-error *ngIf="weight.hasError('required')">Field must not be empty.</mat-error>
+        <mat-error *ngIf="weight.hasError('min') || weight.hasError('max')">Weight limit not respected!</mat-error>
       </mat-form-field>
       <div>
         <button mat-raised-button matStepperPrevious>Back</button>
-        <button mat-raised-button matStepperNext>Next</button>
+        <button mat-raised-button matStepperNext (click)="calculate_BMI_BMR()">Next</button>
       </div>
       </form>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Submit</ng-template>
+      <mat-card *ngIf="calcResults">
+        <mat-card-title>Results</mat-card-title>
+        <mat-card-content>
+          Body Mass Index (BMI) is <mat-chip>{{bmi}}</mat-chip>
+          and your Basal Metabolic Rate (BMR) is between <mat-chip>{{bmr1}}</mat-chip>
+          and <mat-chip>{{bmr2}}</mat-chip>
+
+        </mat-card-content>
+    </mat-card>
       <div>
         <button mat-raised-button (click)="stepper.reset()">Reset</button>
         <button mat-raised-button color="accent" type="submit" (click)="onSubmit()">Save</button>
