@@ -242,9 +242,9 @@ export class FoodService {
   }
 
   private addDataToDatabase(foodItem: FoodItem) {
-    this.db.collection('finishedFoodItems/').add(foodItem)
+    this.db.collection('finishedFoodItems').add(foodItem)
     .then(docRef => {
-      this.db.collection('finishedFoodItems/').doc(docRef.id).update({
+      this.db.collection('finishedFoodItems').doc(docRef.id).update({
         id: docRef.id
       });
     });

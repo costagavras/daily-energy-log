@@ -81,16 +81,22 @@
       <ng-template matStepLabel>Submit</ng-template>
       <mat-card *ngIf="calcResults">
         <mat-card-title>Results</mat-card-title>
-        <mat-card-content>
-          Body Mass Index (BMI) is <mat-chip>{{bmi}}</mat-chip>
-          and your Basal Metabolic Rate (BMR) is between <mat-chip>{{bmr1}}</mat-chip>
-          and <mat-chip>{{bmr2}}</mat-chip>
-
-        </mat-card-content>
-    </mat-card>
+        <mat-chip-list fxLayout="column">
+          <ul>
+            <li>
+              <mat-card-content>Body Mass Index (BMI) is <mat-chip>{{bmi}}</mat-chip>
+              </mat-card-content>
+            </li>
+            <li>
+              <mat-card-content>Basal Metabolic Rate (BMR) is <mat-chip>{{bmr}}</mat-chip>
+              </mat-card-content>
+            </li>
+          </ul>
+        </mat-chip-list>
+      </mat-card>
       <div>
         <button mat-raised-button (click)="stepper.reset()">Reset</button>
-        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()">Save</button>
+        <button mat-raised-button color="accent" matStepperNext type="submit" (click)="onSave()">Save</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>

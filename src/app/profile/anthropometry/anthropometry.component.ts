@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProfileService } from '../profile.service';
-import { Subject } from 'rxjs';
+import { User } from '../../auth/user.model';
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-anthropometry',
@@ -14,16 +16,17 @@ minAgeValue = 10;
 minHeightValue = 100;
 minWeightValue = 20;
 bmi = 0;
-bmr1 = 0;
-bmr2 = 0;
+bmr = 0;
 nameFormGroup: FormGroup;
 genderFormGroup: FormGroup;
 ageFormGroup: FormGroup;
 weightFormGroup: FormGroup;
 heightFormGroup: FormGroup;
 calcResults = false;
+private user: User;
 
-  constructor(public profileService: ProfileService) {}
+  constructor(public profileService: ProfileService,
+              private afAuth: AngularFireAuth) {}
 
   ngOnInit() {
     this.nameFormGroup = new FormGroup ({
@@ -50,20 +53,26 @@ calcResults = false;
   get height() { return this.heightFormGroup.get('height'); }
 
   calculate_BMI_BMR() {
+    this.bmi = this.profileService.calcBMI(this.weightFormGroup.value.weight, this.heightFormGroup.value.height / 100);
+    this.bmr = this.profileService.calcBMR(
+      this.genderFormGroup.value.gender, this.ageFormGroup.value.age, this.weightFormGroup.value.weight, this.heightFormGroup.value.height);
+    this.calcResults = true;
   }
 
-  onSubmit() {
-    console.log(this.nameFormGroup.value);
-    console.log(this.genderFormGroup.value);
-    console.log(this.ageFormGroup.value);
-    console.log(this.weightFormGroup.value);
-    console.log(this.heightFormGroup.value);
+  onSave() {
+    const user = firebase.auth().currentUser;
+    this.profileService.addOrUpdateUser({
+      email: user.email,
+      userId: user.uid,
+      name: this.nameFormGroup.value.name,
+      gender: this.genderFormGroup.value.gender,
+      age: this.ageFormGroup.value.age,
+      weight: this.weightFormGroup.value.weight,
+      height: this.heightFormGroup.value.height,
+      bmi: this.bmi,
+      bmr: this.bmr,
+    });
     this.profileService.linkToActivityLevel();
-
-    // this.authService.login({
-    //   email: this.loginForm.value.email,
-    //   password: this.loginForm.value.password
-    // });
   }
 
 }
