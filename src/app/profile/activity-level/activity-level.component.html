@@ -1,1 +1,34 @@
-<p>activity-level works!</p>
+<section class="activityLevel" fxLayoutAlign="center center">
+    <form #f="ngForm" (ngSubmit)="onSave(f)">
+      <mat-card fxFlex.xs="100%" fxFlex="500px">
+        <mat-card-title fxLayoutAlign="center">List of daily activities</mat-card-title>
+        <mat-card-subtitle fxLayoutAlign="center">
+          <mat-chip-list>
+            <mat-chip>{{24 - total}}</mat-chip> hours left to allocate
+          </mat-chip-list>
+          </mat-card-subtitle>
+        <mat-card-content fxLayoutAlign="center">
+          <mat-list>
+            <mat-list-item *ngFor="let listActivity of listActivities | keyvalue; let i = index">
+              <p>{{listActivity.key}}</p>
+              <mat-form-field class="hours" style="padding: 0px;">
+                  <input matInput
+                    [ngModel]="0"
+                    type="number"
+                    name="hours_{{i}}"
+                    (change)="sumHours(f)"
+                    required
+                    [min]="minValue"
+                    [max]="maxValue"
+                    [errorStateMatcher]="errorMatcher"
+                    #hoursInput="ngModel">
+                  <mat-error *ngIf="errorMatcher">Keep hours between 0 and 24</mat-error>
+                </mat-form-field>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <button class="activityButton" mat-raised-button color="accent" type="submit" [disabled]="!f.valid || checkMinMax(f) || total !== 24">Save</button>
+      </mat-card>
+    </form>
+</section>
+

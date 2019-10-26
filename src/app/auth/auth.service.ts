@@ -7,6 +7,7 @@ import { AuthData } from './auth-data.model';
 import { TrainingService } from '../energy-expenditure/training/training.service';
 import { UIService } from '../shared/ui.service';
 import { FoodService } from '../food-intake/food.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
                 private afAuth: AngularFireAuth,
                 private trainingService: TrainingService,
                 private foodService: FoodService,
-                private uiService: UIService) {}
+                private uiService: UIService,
+                private profileService: ProfileService) {}
 
     initAuthListener() {
       this.afAuth.authState.subscribe(user => {
@@ -29,6 +31,7 @@ export class AuthService {
         } else {
           this.trainingService.cancelSubscriptions();
           this.foodService.cancelSubscriptions();
+          this.profileService.cancelSubscriptions();
           // false bc boolean payload (false = unregistered user), listened to in #header and #navigation to show contextual menu
           this.authChange.next(false);
           this.router.navigate(['/login']);

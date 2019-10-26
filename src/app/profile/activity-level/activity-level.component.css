@@ -1,0 +1,20 @@
+.activityLevel {
+  padding: 10px;
+}
+
+.hours {
+  display: block;
+  width: 60px;
+  padding: 0px;
+  margin: 0 0 0 50px;
+  text-align: center;
+}
+
+.hours ~ .mat-form-field-flex {
+  padding: 0px;
+}
+
+.activityButton {
+  display: block;
+  margin: 0 auto;
+}
