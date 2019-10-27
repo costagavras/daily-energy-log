@@ -1,5 +1,5 @@
 export interface User {
-    email: string;
+    email?: string;
     userId: string;
     name?: string;
     gender?: string;
@@ -8,6 +8,5 @@ export interface User {
     height?: number;
     bmi?: number;
     bmr?: number;
-    activityLevel?: number;
-    rmr?: number; // BMR * activity level (extra ex+walking)
+    activityLevel?: number; // BMR * activity level (extra ex+walking)
 }

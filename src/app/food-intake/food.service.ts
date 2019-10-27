@@ -33,7 +33,8 @@ export class FoodService {
               private uiService: UIService) {}
 
   fetchAvailableFoodItemsBeverages() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsBeverages').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsBeverages', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -51,7 +52,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDairy() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsDairy').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsDairy', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -69,7 +71,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDesserts() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsDesserts').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsDesserts', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -87,7 +90,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDishes() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsDishes').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsDishes', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -105,7 +109,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFats() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsFats').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsFats', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -123,7 +128,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFish() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsFish').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsFish', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -141,7 +147,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFruits() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsFruits').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsFruits', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -159,7 +166,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsGrains() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsGrains').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsGrains', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -177,7 +185,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsMeat() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsMeat').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsMeat', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -195,7 +204,8 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsVegetables() {
-    this.fbAvailableFoodItemsSubs.push(this.db.collection('availableFoodItemsVegetables').snapshotChanges()
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('availableFoodItemsVegetables', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {

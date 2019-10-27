@@ -34,17 +34,17 @@ private fbAvailableUserDataSubs: Subscription[] = [];
 
     this.fbUser = firebase.auth().currentUser;
 
-    this.profileService.getUserData(this.fbUser.uid);
+    // need it to activate event emitter in the service
+    this.profileService.getUserData();
 
     this.fbAvailableUserDataSubs.push(this.profileService.userProfileData
       .subscribe(
         userProfileData => {
-          this.userProfile = userProfileData;
-          this.nameFormGroup.patchValue({name: this.userProfile.name });
-          this.genderFormGroup.patchValue({gender: this.userProfile.gender });
-          this.ageFormGroup.patchValue({age: this.userProfile.age });
-          this.heightFormGroup.patchValue({height: this.userProfile.height });
-          this.weightFormGroup.patchValue({weight: this.userProfile.weight });
+          this.nameFormGroup.patchValue({name: userProfileData.name });
+          this.genderFormGroup.patchValue({gender: userProfileData.gender });
+          this.ageFormGroup.patchValue({age: userProfileData.age });
+          this.heightFormGroup.patchValue({height: userProfileData.height });
+          this.weightFormGroup.patchValue({weight: userProfileData.weight });
         }));
 
     this.nameFormGroup = new FormGroup ({

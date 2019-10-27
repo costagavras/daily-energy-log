@@ -40,7 +40,7 @@
                 <mat-error *ngIf="timeInput.hasError('required')">Field must not be empty.</mat-error>
               </mat-form-field>
               <mat-action-row>
-                  <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseTime, f.value.time, 'exTime')" mat-raised-button color="primary"
+                  <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseTime, f.value.time, userWeight, 'exTime')" mat-raised-button color="primary"
                   [disabled]="exerciseTimeInput.invalid || exerciseTimeInput.untouched || timeInput.untouched || timeInput.invalid">Save!</button>
               </mat-action-row>
           </mat-expansion-panel>
@@ -76,7 +76,7 @@
             <mat-error *ngIf="quantityInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
           <mat-action-row>
-              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, 'exQty')" mat-raised-button color="primary"
+              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, userWeight, 'exQty')" mat-raised-button color="primary"
               [disabled]="exerciseQtyInput.invalid || exerciseQtyInput.untouched || quantityInput.untouched ||  quantityInput.invalid">Save!</button>
           </mat-action-row>
 
@@ -112,7 +112,7 @@
             <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
           <mat-action-row>
-              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, 'exCal')" mat-raised-button color="primary"
+              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseCal, f.value.calories, userWeight, 'exCal')" mat-raised-button color="primary"
               [disabled]="exerciseCalsInput.invalid || exerciseCalsInput.untouched || caloriesInput.untouched ||  caloriesInput.invalid">Save!</button>
           </mat-action-row>
 

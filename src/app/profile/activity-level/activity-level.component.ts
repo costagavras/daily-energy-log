@@ -35,17 +35,21 @@ export class ActivityLevelComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // need it to activate event emitter in the service
     this.profileService.getActivitiesList();
 
     this.fbActivitiesListSub = this.profileService.activitiesList
       .subscribe(actList => {
         this.listActivities = actList;
-        // console.log(this.listActivities);
       });
+
+    // need it to activate event emitter in the service
+    this.profileService.getUserData();
+
   }
 
   onSave(form: NgForm) {
-    console.log("I saved");
+    this.profileService.calcRMR(this.listActivities, Object.values(form.value));
   }
 
   checkMinMax(form: NgForm) {
@@ -55,14 +59,8 @@ export class ActivityLevelComponent implements OnInit, OnDestroy {
   }
 
   sumHours(form: NgForm) {
-    // console.log(form.value.hours_0);
     // 0 stands for initial value
     this.total = Object.values(form.value).reduce((a: number, b: number) => a + b, 0);
-
-    // Object.keys(form.value).forEach((key: string) => {
-    //   this.total += form.value[key];
-    // });
-    // return this.total;
   }
 
 ngOnDestroy() {

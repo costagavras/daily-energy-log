@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
 import { Subscription } from 'rxjs';
+import { ProfileService } from 'src/app/profile/profile.service';
 
 @Component({
   selector: 'app-new-training',
@@ -18,11 +19,22 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   exercisesCal: Exercise[];
   private fbAvailableExercisesSubs: Subscription[] = [];
   panelOpenState = false;
+  userWeight: number;
 
-  constructor(public trainingService: TrainingService) { }
+  constructor(public trainingService: TrainingService,
+              private profileService: ProfileService) { }
 
   ngOnInit() {
     this.maxDate = new Date();
+
+    this.profileService.getUserData();
+
+    this.fbAvailableExercisesSubs.push(this.profileService.userProfileData
+      .subscribe(
+        userProfileData => {
+          this.userWeight = userProfileData.weight;
+        })
+    );
 
     this.fbAvailableExercisesSubs.push(this.trainingService.exercisesTimeChanged
       .subscribe(

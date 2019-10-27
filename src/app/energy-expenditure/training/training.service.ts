@@ -26,7 +26,8 @@ export class TrainingService {
               private uiService: UIService) {}
 
   fetchAvailableExercisesTime() {
-    this.firebaseSubscriptions.push(this.db.collection('availableExercisesTime').snapshotChanges()
+    this.firebaseSubscriptions.push(
+      this.db.collection<Exercise>('availableExercisesTime', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -48,7 +49,8 @@ export class TrainingService {
       }));
   }
   fetchAvailableExercisesQty() {
-    this.firebaseSubscriptions.push(this.db.collection('availableExercisesQty').snapshotChanges()
+    this.firebaseSubscriptions.push(
+      this.db.collection<Exercise>('availableExercisesQty', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         // throw(new Error());
         return docArray.map(doc => {
@@ -66,7 +68,8 @@ export class TrainingService {
       }));
   }
   fetchAvailableExercisesCal() {
-    this.firebaseSubscriptions.push(this.db.collection('availableExercisesCal').snapshotChanges()
+    this.firebaseSubscriptions.push(
+      this.db.collection<Exercise>('availableExercisesCal', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -83,13 +86,13 @@ export class TrainingService {
       }));
   }
 
-  saveExercise(exerciseDate: Date, selectedId: string, volume: number, param: string) {
+  saveExercise(exerciseDate: Date, selectedId: string, volume: number, userWeight: number, param: string) {
     if (param === 'exTime') {
       this.chosenExercise = this.availableExercisesTime.find(ex => ex.id === selectedId);
       this.addDataToDatabase({
         ...this.chosenExercise,
         duration: volume,
-        calories: Math.round(volume * this.chosenExercise.calories),
+        calories: Math.round(volume * this.chosenExercise.calories * userWeight),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else if (param === 'exQty') {
@@ -97,7 +100,7 @@ export class TrainingService {
       this.addDataToDatabase({
         ...this.chosenExercise,
         quantity: volume,
-        calories: Math.round(volume * this.chosenExercise.calories),
+        calories: Math.round(volume * this.chosenExercise.calories * userWeight / 65),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else {
