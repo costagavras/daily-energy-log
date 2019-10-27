@@ -34,6 +34,29 @@ private fbAvailableUserProfileItemsSubs: Subscription[] = [];
     return this.userProfile;
   }
 
+  getFirebaseUser() {
+    return firebase.auth().currentUser;
+  }
+
+  // getUserData2() {
+  //   this.fbUser = firebase.auth().currentUser;
+  //   const userRef = this.db.collection('users').doc(this.fbUser.uid);
+  //   userRef.get().toPromise()
+  //     .then(doc => {
+  //       if (!doc.exists) {
+  //         console.log('No such document!');
+  //         this.userProfile = null;
+  //       } else {
+  //         this.userProfile = doc.data();
+  //         this.userProfileData.next(doc.data());
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log('Error getting document', err);
+  //     });
+  //   return this.userProfile;
+  // }
+
   getActivitiesList() {
     this.fbAvailableUserProfileItemsSubs.push(
       this.db.collection('activityLevelActivities').doc('list').valueChanges()
@@ -76,8 +99,10 @@ private fbAvailableUserProfileItemsSubs: Subscription[] = [];
       .subscribe(doc => {
         if (doc.payload.exists) {
           this.db.collection('users').doc(userData.userId).update(userData);
+          this.uiService.showSnackbar(userData.name + 'was successfully updated', null, 3000);
         } else {
           this.db.collection('users').doc(userData.userId).set(userData);
+          this.uiService.showSnackbar(userData.name + 'was successfully created', null, 3000);
         }
     }));
   }

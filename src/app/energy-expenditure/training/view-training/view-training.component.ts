@@ -20,14 +20,9 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   startFilteredDay: number;
   endFilteredDay: number;
   totalCalories: number;
-  private exerciseChangedSubscription: Subscription;
-  private filteredDateSubscription: Subscription;
-  private loadingSubs: Subscription;
+  private viewTrainingSubs: Subscription[] = [];
 
   isLoading = false;
-
-  // @ViewChild(MatSort, {static: false}) sort: MatSort;
-  // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   @ViewChild(MatSort, {static: false}) set matSort(sort: MatSort) {
     this.dataSource.sort = sort;
@@ -40,29 +35,29 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
               private uiService: UIService) { }
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged
+    this.viewTrainingSubs.push(this.uiService.loadingStateChanged
     .subscribe(isLoading => {
       this.isLoading = isLoading;
-    });
+    }));
     this.filteredDay = new Date();
     this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
     this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
 
     // subscription when filter date changes
-    this.filteredDateSubscription = this.trainingService.dateFilter
+    this.viewTrainingSubs.push(this.trainingService.dateFilter
     .subscribe((date: Date) => {
         this.filteredDay = date; // comes from datepicker change event formatted as 0:0:00
         this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
         this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
         this.updateFilteredDate();
-      });
+      }));
 
     this.updateFilteredDate();
 
     }
 
     updateFilteredDate() {
-      this.exerciseChangedSubscription = this.trainingService.finishedExercisesChanged
+      this.viewTrainingSubs.push(this.trainingService.finishedExercisesChanged
       .subscribe((exercises: Exercise[]) => {
         // this.dataSource.data = exercises;
         this.dataSource.data = exercises.filter(val => {
@@ -70,7 +65,7 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
           val.date['seconds'] * 1000  <= this.endFilteredDay;
         });
         this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
-      });
+      }));
       this.trainingService.fetchCompletedExercises();
     }
 
@@ -84,14 +79,8 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-      if (this.exerciseChangedSubscription) {
-        this.exerciseChangedSubscription.unsubscribe();
-      }
-      if (this.filteredDateSubscription) {
-        this.filteredDateSubscription.unsubscribe();
-      }
-      if (this.loadingSubs) {
-        this.loadingSubs.unsubscribe();
+      if (this.viewTrainingSubs) {
+        this.viewTrainingSubs.forEach(sub => sub.unsubscribe());
       }
     }
 

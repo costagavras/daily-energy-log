@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { FoodItem } from './food-item.model';
 import { UIService } from 'src/app/shared/ui.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class FoodService {
@@ -30,7 +31,8 @@ export class FoodService {
   private fbAvailableFoodItemsSubs: Subscription[] = [];
 
   constructor(private db: AngularFirestore,
-              private uiService: UIService) {}
+              private uiService: UIService,
+              private profileService: ProfileService) {}
 
   fetchAvailableFoodItemsBeverages() {
     this.fbAvailableFoodItemsSubs.push(
@@ -231,13 +233,17 @@ export class FoodService {
       protein: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.protein),
       carbs: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.carbs),
       fat: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.fat),
+      dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
       date: new Date(foodDate.setHours(12, 0, 0, 0))
     });
   }
 
   fetchCompletedFoodItems() {
     this.uiService.loadingStateChanged.next(true);
-    this.fbAvailableFoodItemsSubs.push(this.db.collection<FoodItem>('finishedFoodItems', ref => ref.orderBy('date', 'desc')).valueChanges()
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+
+    this.fbAvailableFoodItemsSubs.push(
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/finishedFoodItems', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((foodItem: FoodItem[]) => {
       this.uiService.loadingStateChanged.next(false);
       this.finishedFoodItemChanged.next(foodItem);
@@ -252,17 +258,21 @@ export class FoodService {
   }
 
   private addDataToDatabase(foodItem: FoodItem) {
-    this.db.collection('finishedFoodItems').add(foodItem)
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    this.db.collection('users').doc(userFirebaseId).collection('finishedFoodItems').add(foodItem)
     .then(docRef => {
-      this.db.collection('finishedFoodItems').doc(docRef.id).update({
+      this.db.collection('users').doc(userFirebaseId).collection('finishedFoodItems').doc(docRef.id).update({
         id: docRef.id
       });
+      // this.uiService.showSnackbar(foodItem.name + 'was successfully added', null, 3000);
     });
   }
 
   // called from the template
   private deleteDataFromDatabase(foodItem: FoodItem) {
-    this.db.doc('finishedFoodItems/' + foodItem.id).delete();
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    this.db.collection('users').doc(userFirebaseId).collection('finishedFoodItems').doc(foodItem.id).delete();
+    this.uiService.showSnackbar(foodItem.name + 'was successfully deleted', null, 3000);
   }
 
   cancelSubscriptions() {

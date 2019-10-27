@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 
-import * as firebase from 'firebase/app';
+// import * as firebase from 'firebase/app';
 import { User } from '../../auth/user.model';
 import { Subscription } from 'rxjs';
 
@@ -32,7 +32,8 @@ private fbAvailableUserDataSubs: Subscription[] = [];
 
   ngOnInit() {
 
-    this.fbUser = firebase.auth().currentUser;
+    // this.fbUser = firebase.auth().currentUser;
+    this.fbUser = this.profileService.getFirebaseUser();
 
     // need it to activate event emitter in the service
     this.profileService.getUserData();
@@ -40,11 +41,11 @@ private fbAvailableUserDataSubs: Subscription[] = [];
     this.fbAvailableUserDataSubs.push(this.profileService.userProfileData
       .subscribe(
         userProfileData => {
-          this.nameFormGroup.patchValue({name: userProfileData.name });
-          this.genderFormGroup.patchValue({gender: userProfileData.gender });
-          this.ageFormGroup.patchValue({age: userProfileData.age });
-          this.heightFormGroup.patchValue({height: userProfileData.height });
-          this.weightFormGroup.patchValue({weight: userProfileData.weight });
+          this.nameFormGroup.patchValue({name: userProfileData.name || '' });
+          this.genderFormGroup.patchValue({gender: userProfileData.gender || null });
+          this.ageFormGroup.patchValue({age: userProfileData.age || null });
+          this.heightFormGroup.patchValue({height: userProfileData.height || null });
+          this.weightFormGroup.patchValue({weight: userProfileData.weight || null });
         }));
 
     this.nameFormGroup = new FormGroup ({
@@ -79,6 +80,7 @@ private fbAvailableUserDataSubs: Subscription[] = [];
   }
 
   onSave() {
+    this.calculate_BMI_BMR();
     this.profileService.addOrUpdateUser({
       email: this.fbUser.email,
       userId: this.fbUser.uid,

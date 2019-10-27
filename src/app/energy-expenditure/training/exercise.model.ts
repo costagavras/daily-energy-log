@@ -5,4 +5,5 @@ export interface Exercise {
   duration?: number;
   quantity?: number;
   date: Date;
+  dateStr: string;
 }

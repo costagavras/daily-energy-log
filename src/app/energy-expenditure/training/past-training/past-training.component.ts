@@ -19,8 +19,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource = new MatTableDataSource<Exercise>();
   private sort: MatSort;
   totalCalories: number;
-  private exerciseChangedSubscription: Subscription;
-  private loadingSubs: Subscription;
+  private pastTrainingSubs: Subscription[] = [];
   panelOpenState = false;
   isLoading = false;
   isGrouperRun = false;
@@ -39,10 +38,10 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
               private uiService: UIService) {}
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged
+    this.pastTrainingSubs.push(this.uiService.loadingStateChanged
     .subscribe(isLoading => {
       this.isLoading = isLoading;
-    });
+    }));
     this.fetchAllExercises();
   }
 
@@ -117,12 +116,12 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // event listener
   fetchAllExercises() {
-    this.exerciseChangedSubscription = this.trainingService.finishedExercisesChanged
+    this.pastTrainingSubs.push(this.trainingService.finishedExercisesChanged
     .subscribe((exercises: Exercise[]) => {
       this.dataSource.data = exercises;
       this.initialData = exercises;
       this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
-    });
+    }));
     this.trainingService.fetchCompletedExercises();
   }
 
@@ -135,11 +134,8 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.exerciseChangedSubscription) {
-      this.exerciseChangedSubscription.unsubscribe();
-    }
-    if (this.loadingSubs) {
-      this.loadingSubs.unsubscribe();
+    if (this.pastTrainingSubs) {
+      this.pastTrainingSubs.forEach(sub => sub.unsubscribe());
     }
   }
 

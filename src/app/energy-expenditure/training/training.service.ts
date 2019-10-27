@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { Exercise } from './exercise.model';
 import { UIService } from 'src/app/shared/ui.service';
+import { ProfileService } from 'src/app/profile/profile.service';
 
 @Injectable()
 export class TrainingService {
@@ -23,7 +24,8 @@ export class TrainingService {
   private firebaseSubscriptions: Subscription[] = [];
 
   constructor(private db: AngularFirestore,
-              private uiService: UIService) {}
+              private uiService: UIService,
+              private profileService: ProfileService) {}
 
   fetchAvailableExercisesTime() {
     this.firebaseSubscriptions.push(
@@ -93,6 +95,7 @@ export class TrainingService {
         ...this.chosenExercise,
         duration: volume,
         calories: Math.round(volume * this.chosenExercise.calories * userWeight),
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else if (param === 'exQty') {
@@ -101,6 +104,7 @@ export class TrainingService {
         ...this.chosenExercise,
         quantity: volume,
         calories: Math.round(volume * this.chosenExercise.calories * userWeight / 65),
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else {
@@ -108,6 +112,7 @@ export class TrainingService {
       this.addDataToDatabase({
         ...this.chosenExercise,
         calories: volume,
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     }
@@ -115,7 +120,10 @@ export class TrainingService {
 
   fetchCompletedExercises() {
     this.uiService.loadingStateChanged.next(true);
-    this.firebaseSubscriptions.push(this.db.collection<Exercise>('finishedExercises', ref => ref.orderBy('date', 'desc')).valueChanges()
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+
+    this.firebaseSubscriptions.push(
+      this.db.collection<Exercise>('users/' + userFirebaseId + '/finishedExercises', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((exercises: Exercise[]) => {
       this.uiService.loadingStateChanged.next(false);
       this.finishedExercisesChanged.next(exercises);
@@ -130,17 +138,21 @@ export class TrainingService {
   }
 
   private addDataToDatabase(exercise: Exercise) {
-    this.db.collection('finishedExercises/').add(exercise)
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    this.db.collection('users').doc(userFirebaseId).collection('finishedExercises').add(exercise)
     .then(docRef => {
-      this.db.collection('finishedExercises/').doc(docRef.id).update({
+      this.db.collection('users').doc(userFirebaseId).collection('finishedExercises').doc(docRef.id).update({
         id: docRef.id
       });
+      // this.uiService.showSnackbar(exercise.name + 'was successfully added', null, 3000);
     });
   }
 
   // called from the template
   private deleteDataFromDatabase(exercise: Exercise) {
-    this.db.doc('finishedExercises/' + exercise.id).delete();
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    this.db.collection('users').doc(userFirebaseId).collection('finishedExercises').doc(exercise.id).delete();
+    this.uiService.showSnackbar(exercise.name + 'was successfully deleted', null, 3000);
   }
 
   cancelSubscriptions() {
