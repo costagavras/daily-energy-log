@@ -19,8 +19,7 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
   dataSource = new MatTableDataSource<FoodItem>();
   private sort: MatSort;
   totalCalories: number;
-  private finishedFoodChangedSubscription: Subscription;
-  private loadingSubs: Subscription;
+  private pastFoodIntakeSubs: Subscription[] = [];
   panelOpenState = false;
   isLoading = false;
   isGrouperRun = false;
@@ -39,10 +38,10 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
               private uiService: UIService) {}
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged
+    this.pastFoodIntakeSubs.push(this.uiService.loadingStateChanged
     .subscribe(isLoading => {
       this.isLoading = isLoading;
-    });
+    }));
     this.fetchAllFoods();
   }
 
@@ -77,7 +76,7 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
       if (accumulator[currentGroup][0].totalCaloriesGrp) {
         groupCalories = accumulator[currentGroup][0].totalCaloriesGrp;
       }
-      groupCalories = groupCalories + currentValue.calories;
+      groupCalories = groupCalories + currentValue.caloriesIn;
 
       addGroupCalories = {
         totalCaloriesGrp: groupCalories, // adding calories to group
@@ -117,12 +116,12 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
 
   // event listener
   fetchAllFoods() {
-    this.finishedFoodChangedSubscription = this.foodService.finishedFoodItemChanged
+    this.pastFoodIntakeSubs.push(this.foodService.finishedFoodItemsChanged
     .subscribe((foodItems: FoodItem[]) => {
       this.dataSource.data = foodItems;
       this.initialData = foodItems;
-      this.totalCalories = this.dataSource.data.map(fdIt => fdIt.calories).reduce((acc, value) => acc + value, 0);
-    });
+      this.totalCalories = this.dataSource.data.map(fdIt => fdIt.caloriesIn).reduce((acc, value) => acc + value, 0);
+    }));
     this.foodService.fetchCompletedFoodItems();
   }
 
@@ -135,11 +134,8 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnDestroy() {
-    if (this.finishedFoodChangedSubscription) {
-      this.finishedFoodChangedSubscription.unsubscribe();
-    }
-    if (this.loadingSubs) {
-      this.loadingSubs.unsubscribe();
+    if (this.pastFoodIntakeSubs) {
+      this.pastFoodIntakeSubs.forEach(sub => sub.unsubscribe());
     }
   }
 

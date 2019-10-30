@@ -3,8 +3,9 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
-import { Subscription } from 'rxjs';
 import { UIService } from 'src/app/shared/ui.service';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-training',
@@ -64,7 +65,7 @@ export class ViewTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
           return val.date['seconds'] * 1000 >= this.startFilteredDay &&
           val.date['seconds'] * 1000  <= this.endFilteredDay;
         });
-        this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
+        this.totalCalories = this.dataSource.data.map(ex => ex.caloriesOut).reduce((acc, value) => acc + value, 0);
       }));
       this.trainingService.fetchCompletedExercises();
     }

@@ -76,7 +76,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
       if (accumulator[currentGroup][0].totalCaloriesGrp) {
         groupCalories = accumulator[currentGroup][0].totalCaloriesGrp;
       }
-      groupCalories = groupCalories + currentValue.calories;
+      groupCalories = groupCalories + currentValue.caloriesOut;
 
       addGroupCalories = {
         totalCaloriesGrp: groupCalories, // adding calories to group
@@ -120,7 +120,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     .subscribe((exercises: Exercise[]) => {
       this.dataSource.data = exercises;
       this.initialData = exercises;
-      this.totalCalories = this.dataSource.data.map(ex => ex.calories).reduce((acc, value) => acc + value, 0);
+      this.totalCalories = this.dataSource.data.map(ex => ex.caloriesOut).reduce((acc, value) => acc + value, 0);
     }));
     this.trainingService.fetchCompletedExercises();
   }

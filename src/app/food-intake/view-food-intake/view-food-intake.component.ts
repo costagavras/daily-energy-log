@@ -3,8 +3,9 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 import { FoodItem } from '../food-item.model';
 import { FoodService } from '../food.service';
-import { Subscription } from 'rxjs';
 import { UIService } from 'src/app/shared/ui.service';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-food-intake',
@@ -20,9 +21,7 @@ export class ViewFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
   startFilteredDay: number;
   endFilteredDay: number;
   totalCalories: number;
-  private foodChangedSubscription: Subscription;
-  private filteredDateSubscription: Subscription;
-  private loadingSubs: Subscription;
+  private viewFoodIntakeSubs: Subscription[] = [];
 
   isLoading = false;
 
@@ -37,37 +36,37 @@ export class ViewFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
               private uiService: UIService) { }
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged
+    this.viewFoodIntakeSubs.push(this.uiService.loadingStateChanged
     .subscribe(isLoading => {
       this.isLoading = isLoading;
-    });
+    }));
     this.filteredDay = new Date();
     this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
     this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
 
     // subscription when filter date changes
-    this.filteredDateSubscription = this.foodService.dateFilter
+    this.viewFoodIntakeSubs.push(this.foodService.dateFilter
     .subscribe((date: Date) => {
         this.filteredDay = date; // comes from datepicker change event formatted as 0:0:00
         this.startFilteredDay = this.filteredDay.setHours(0, 0, 0, 0);
         this.endFilteredDay = this.filteredDay.setHours(24, 0, 0, -1);
         this.updateFilteredDate();
-      });
+      }));
 
     this.updateFilteredDate();
 
     }
 
     updateFilteredDate() {
-      this.foodChangedSubscription = this.foodService.finishedFoodItemChanged
+      this.viewFoodIntakeSubs.push(this.foodService.finishedFoodItemsChanged
       .subscribe((foodItem: FoodItem[]) => {
         // this.dataSource.data = exercises;
         this.dataSource.data = foodItem.filter(val => {
           return val.date['seconds'] * 1000 >= this.startFilteredDay &&
           val.date['seconds'] * 1000  <= this.endFilteredDay;
         });
-        this.totalCalories = this.dataSource.data.map(fdIt => fdIt.calories).reduce((acc, value) => acc + value, 0);
-      });
+        this.totalCalories = this.dataSource.data.map(fdIt => fdIt.caloriesIn).reduce((acc, value) => acc + value, 0);
+      }));
       this.foodService.fetchCompletedFoodItems();
     }
 
@@ -81,14 +80,8 @@ export class ViewFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnDestroy() {
-      if (this.foodChangedSubscription) {
-        this.foodChangedSubscription.unsubscribe();
-      }
-      if (this.filteredDateSubscription) {
-        this.filteredDateSubscription.unsubscribe();
-      }
-      if (this.loadingSubs) {
-        this.loadingSubs.unsubscribe();
+      if (this.viewFoodIntakeSubs) {
+        this.viewFoodIntakeSubs.forEach(sub => sub.unsubscribe());
       }
     }
 

@@ -94,8 +94,8 @@ export class TrainingService {
       this.addDataToDatabase({
         ...this.chosenExercise,
         duration: volume,
-        calories: Math.round(volume * this.chosenExercise.calories * userWeight),
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
+        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * userWeight),
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else if (param === 'exQty') {
@@ -103,16 +103,16 @@ export class TrainingService {
       this.addDataToDatabase({
         ...this.chosenExercise,
         quantity: volume,
-        calories: Math.round(volume * this.chosenExercise.calories * userWeight / 65),
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
+        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * userWeight / 65),
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     } else {
       this.chosenExercise = this.availableExercisesCal.find(ex => ex.id === selectedId);
       this.addDataToDatabase({
         ...this.chosenExercise,
-        calories: volume,
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
+        caloriesOut: volume,
+        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });
     }

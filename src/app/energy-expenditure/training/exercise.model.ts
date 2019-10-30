@@ -1,7 +1,7 @@
 export interface Exercise {
   id: string;
   name: string;
-  calories: number;
+  caloriesOut: number;
   duration?: number;
   quantity?: number;
   date: Date;

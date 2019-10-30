@@ -21,7 +21,7 @@
 
     <ng-container matColumnDef="calories">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Calories</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.calories | number }}</mat-cell>
+      <mat-cell *matCellDef="let element">{{ element.caloriesOut | number }}</mat-cell>
       <mat-footer-cell *matFooterCellDef>{{ totalCalories | number }}</mat-footer-cell>
     </ng-container>
 

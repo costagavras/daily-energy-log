@@ -22,7 +22,7 @@ export class FoodService {
   foodItemsMeatChanged = new Subject<FoodItem[]>();
   foodItemsVegetablesChanged = new Subject<FoodItem[]>();
 
-  finishedFoodItemChanged = new Subject<FoodItem[]>();
+  finishedFoodItemsChanged = new Subject<FoodItem[]>();
   dateFilter = new Subject<Date>();
 
   private availableFoodItemsStorage = {} as any;
@@ -229,11 +229,12 @@ export class FoodService {
     this.addDataToDatabase({
       ...this.chosenFoodItem,
       serving: size,
-      calories: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.calories),
+      caloriesIn: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.caloriesIn),
       protein: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.protein),
       carbs: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.carbs),
       fat: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.fat),
-      dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
+      // dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
+      dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
       date: new Date(foodDate.setHours(12, 0, 0, 0))
     });
   }
@@ -246,7 +247,7 @@ export class FoodService {
       this.db.collection<FoodItem>('users/' + userFirebaseId + '/finishedFoodItems', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((foodItem: FoodItem[]) => {
       this.uiService.loadingStateChanged.next(false);
-      this.finishedFoodItemChanged.next(foodItem);
+      this.finishedFoodItemsChanged.next(foodItem);
     }, error => {
       this.uiService.loadingStateChanged.next(false);
       this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
