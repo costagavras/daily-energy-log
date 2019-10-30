@@ -152,7 +152,7 @@ export class TrainingService {
   private deleteDataFromDatabase(exercise: Exercise) {
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.db.collection('users').doc(userFirebaseId).collection('finishedExercises').doc(exercise.id).delete();
-    this.uiService.showSnackbar(exercise.name + 'was successfully deleted', null, 3000);
+    this.uiService.showSnackbar(exercise.name + ' was successfully deleted', null, 3000);
   }
 
   cancelSubscriptions() {

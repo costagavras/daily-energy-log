@@ -20,11 +20,10 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
   private sort: MatSort;
   totalCalories: number;
   private pastFoodIntakeSubs: Subscription[] = [];
-  panelOpenState = false;
   isLoading = false;
-  isGrouperRun = false;
 
   // filter
+  isGrouperRun = false;
   groupingColumn;
   columnName: string;
   reducedGroups = [];
@@ -82,7 +81,7 @@ export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy
         totalCaloriesGrp: groupCalories, // adding calories to group
       };
 
-      accumulator[currentGroup][0] = Object.assign(accumulator[currentGroup][0], addGroupCalories); // mergin calories to accumulator
+      accumulator[currentGroup][0] = Object.assign(accumulator[currentGroup][0], addGroupCalories); // merging calories to accumulator
       accumulator[currentGroup].push(currentValue);
       return accumulator;
     };
