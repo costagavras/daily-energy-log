@@ -75,8 +75,22 @@
             <input matInput type="number" name="quantity" [required]="quantityInput.touched" [min]="minValue" ngModel #quantityInput="ngModel">
             <mat-error *ngIf="quantityInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
+          <mat-card class="result">
+            <mat-card-content>
+              <mat-panel-title>Weighted (0 - 25 kgs)?</mat-panel-title>
+              <mat-slider class="slider"
+                thumbLabel
+                ngModel
+                name="slider"
+                [max]="maxSlider"
+                [min]="minSlider"
+                [step]="stepSlider"
+                [tickInterval]="tickIntervalSlider">
+              </mat-slider>
+            </mat-card-content>
+          </mat-card>
           <mat-action-row>
-              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, userWeight, 'exQty')" mat-raised-button color="primary"
+              <button type="Submit" (click)="trainingService.saveExercise(f.value.date, f.value.exerciseQty, f.value.quantity, userWeight, 'exQty', f.value.slider)" mat-raised-button color="primary"
               [disabled]="exerciseQtyInput.invalid || exerciseQtyInput.untouched || quantityInput.untouched ||  quantityInput.invalid">Save!</button>
           </mat-action-row>
 

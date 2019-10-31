@@ -88,7 +88,7 @@ export class TrainingService {
       }));
   }
 
-  saveExercise(exerciseDate: Date, selectedId: string, volume: number, userWeight: number, param: string) {
+  saveExercise(exerciseDate: Date, selectedId: string, volume: number, userWeight: number, param: string, addWeight: number) {
     if (param === 'exTime') {
       this.chosenExercise = this.availableExercisesTime.find(ex => ex.id === selectedId);
       this.addDataToDatabase({
@@ -103,7 +103,7 @@ export class TrainingService {
       this.addDataToDatabase({
         ...this.chosenExercise,
         quantity: volume,
-        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * userWeight / 65),
+        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * (userWeight + addWeight)),
         dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
         date: new Date(exerciseDate.setHours(12, 0, 0, 0))
       });

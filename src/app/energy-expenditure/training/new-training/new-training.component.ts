@@ -20,6 +20,10 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   private fbAvailableExercisesSubs: Subscription[] = [];
   panelOpenState = false;
   userWeight: number;
+  maxSlider = 25;
+  minSlider = 0;
+  stepSlider = 1;
+  tickIntervalSlider = 1;
 
   constructor(public trainingService: TrainingService,
               private profileService: ProfileService) { }

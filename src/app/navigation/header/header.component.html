@@ -10,8 +10,8 @@
       <li *ngIf="!isAuth"><a routerLink="/signup">Signup</a></li>
       <li *ngIf="!isAuth"><a routerLink="/login">Login</a></li>
       <li *ngIf="isAuth"><a routerLink="/profile">Profile</a></li>
-      <li *ngIf="isAuth"><a routerLink="/food-intake">Energy+</a></li>
-      <li *ngIf="isAuth"><a routerLink="/energy-expenditure">Energy-</a></li>
+      <li *ngIf="isAuth"><a routerLink="/food-intake">Food</a></li>
+      <li *ngIf="isAuth"><a routerLink="/energy-expenditure">Exercising</a></li>
       <li *ngIf="isAuth"><a routerLink="/balance">Balance</a></li>
       <li *ngIf="isAuth"><a style="cursor: pointer" (click)="onLogout()">Logout</a></li>
     </ul>
