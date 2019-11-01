@@ -16,14 +16,14 @@ activitiesList = new Subject<any>();
 userProfile: User;
 fbUser;
 
-private fbAvailableUserProfileItemsSubs: Subscription[] = [];
+private profileServiceSubs: Subscription[] = [];
 
   constructor(private db: AngularFirestore,
               private uiService: UIService) {}
 
   getUserData() {
     this.fbUser = firebase.auth().currentUser;
-    this.fbAvailableUserProfileItemsSubs.push(
+    this.profileServiceSubs.push(
       this.db.collection('users').doc(this.fbUser.uid).valueChanges()
       .subscribe((userData: User) => {
         this.userProfileData.next(userData); // event emitter via Subject
@@ -58,7 +58,7 @@ private fbAvailableUserProfileItemsSubs: Subscription[] = [];
   // }
 
   getActivitiesList() {
-    this.fbAvailableUserProfileItemsSubs.push(
+    this.profileServiceSubs.push(
       this.db.collection('activityLevelActivities').doc('list').valueChanges()
       .subscribe(actList => {
         this.activitiesList.next(actList);
@@ -95,21 +95,21 @@ private fbAvailableUserProfileItemsSubs: Subscription[] = [];
   }
 
   addOrUpdateUser(userData: User) {
-    this.fbAvailableUserProfileItemsSubs.push(this.db.collection('users').doc(userData.userId).snapshotChanges() // check if doc exists
+    this.profileServiceSubs.push(this.db.collection('users').doc(userData.userId).snapshotChanges() // check if doc exists
       .subscribe(doc => {
         if (doc.payload.exists) {
           this.db.collection('users').doc(userData.userId).update(userData);
-          this.uiService.showSnackbar(userData.name + 'was successfully updated', null, 3000);
+          this.uiService.showSnackbar(userData.name + ' successfully updated', null, 3000);
         } else {
           this.db.collection('users').doc(userData.userId).set(userData);
-          this.uiService.showSnackbar(userData.name + 'was successfully created', null, 3000);
+          this.uiService.showSnackbar(userData.name + ' was successfully created', null, 3000);
         }
     }));
   }
 
   cancelSubscriptions() {
-    if (this.fbAvailableUserProfileItemsSubs) {
-      this.fbAvailableUserProfileItemsSubs.forEach(sub => sub.unsubscribe());
+    if (this.profileServiceSubs) {
+      this.profileServiceSubs.forEach(sub => sub.unsubscribe());
     }
   }
 

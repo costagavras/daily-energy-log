@@ -1,14 +1,37 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { TrainingService } from '../training.service';
-import { Exercise } from '../exercise.model';
-import { Subscription } from 'rxjs';
 import { ProfileService } from 'src/app/profile/profile.service';
+
+import { Exercise } from '../exercise.model';
+
+import { Subscription } from 'rxjs';
+import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
+import { AppDateAdapter } from 'src/app/shared/date-adapter';
+
+export const APP_DATE_FORMATS = {
+    parse: {
+        dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+    },
+    display: {
+        dateInput: 'my_format',
+        // dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+        monthYearLabel: { year: 'numeric', month: 'short' },
+        dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+        monthYearA11yLabel: { year: 'numeric', month: 'long' },
+    }
+};
+
 
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
-  styleUrls: ['./new-training.component.css']
+  styleUrls: ['./new-training.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter
+  },
+  { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+  }]
 })
 export class NewTrainingComponent implements OnInit, OnDestroy {
   maxDate: Date;

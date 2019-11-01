@@ -11,17 +11,17 @@
       <mat-icon>accessibility_new</mat-icon>
       <span class="nav-caption">Profile</span>
     </a>
-    <a *ngIf="isAuth" mat-list-item routerLink="/food-intake" (click)="onClose()">
+    <a *ngIf="isAuth && profileFinished" mat-list-item routerLink="/food-intake" (click)="onClose()">
       <mat-icon>restaurant</mat-icon>
       <span class="nav-caption">Food</span>
     </a>
-    <a *ngIf="isAuth" mat-list-item routerLink="/energy-expenditure" (click)="onClose()">
+    <a *ngIf="isAuth && profileFinished" mat-list-item routerLink="/energy-expenditure" (click)="onClose()">
       <mat-icon>fitness_center</mat-icon>
       <span class="nav-caption">Exercising</span>
     </a>
-    <a *ngIf="isAuth" mat-list-item routerLink="/balance" (click)="onClose()">
+    <a *ngIf="isAuth && profileFinished" mat-list-item routerLink="/balance" (click)="onClose()">
       <mat-icon>list_alt</mat-icon>
-      <span class="nav-caption">Balance</span>
+      <span class="nav-caption">Log</span>
     </a>
     <mat-list-item>
       <button mat-icon-button  (click)="onLogout()" *ngIf="isAuth">

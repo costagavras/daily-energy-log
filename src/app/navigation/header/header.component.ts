@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
+import { ProfileService } from 'src/app/profile/profile.service';
+import { User } from '../../auth/user.model';
 
 @Component({
   selector: 'app-header',
@@ -10,14 +12,25 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   @Output() sidenavToggle = new EventEmitter<void>();
   isAuth = false;
-  authSubscription: Subscription;
+  profileFinished = false;
+  userProfileData: User;
+  private headerSubs: Subscription[] = [];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private profileService: ProfileService) { }
 
-  ngOnInit() {
-    this.authService.authChange.subscribe(authStatus => {
+  ngOnInit()  {
+    this.headerSubs.push(this.authService.authChange.subscribe(authStatus => {
       this.isAuth = authStatus;
-    });
+    }));
+    this.headerSubs.push(this.profileService.userProfileData.subscribe((userProfile: User) => {
+      if (typeof userProfile !== 'undefined' && typeof userProfile.activityLevel !== 'undefined') {
+            this.profileFinished = true;
+            this.userProfileData = userProfile;
+        } else {
+          this.profileFinished = false;
+        }
+    }));
   }
 
   onToggleSidenav() {
@@ -29,7 +42,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSubscription.unsubscribe();
+    if (this.headerSubs) {
+      this.headerSubs.forEach(sub => sub.unsubscribe());
+    }
   }
-
 }

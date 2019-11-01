@@ -4,15 +4,16 @@
       <mat-icon>menu</mat-icon>
     </button>
   </div>
-  <div><a routerLink="/">My Energy Log</a></div>
-  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+  <div fxFlex fxLayout fxLayoutAlign="flex-start"><a routerLink="/">My Energy Log</a></div>
+  <h3 fxFlex fxLayout fxLayoutAlign="center" *ngIf="isAuth && profileFinished">Hello {{userProfileData.name}}!</h3>
+  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs class="flex-header">
     <ul fxLayout fxLayoutGap="10px" class="navigation-items">
       <li *ngIf="!isAuth"><a routerLink="/signup">Signup</a></li>
       <li *ngIf="!isAuth"><a routerLink="/login">Login</a></li>
       <li *ngIf="isAuth"><a routerLink="/profile">Profile</a></li>
-      <li *ngIf="isAuth"><a routerLink="/food-intake">Food</a></li>
-      <li *ngIf="isAuth"><a routerLink="/energy-expenditure">Exercising</a></li>
-      <li *ngIf="isAuth"><a routerLink="/balance">Balance</a></li>
+      <li *ngIf="isAuth && profileFinished"><a routerLink="/food-intake">Food</a></li>
+      <li *ngIf="isAuth && profileFinished"><a routerLink="/energy-expenditure">Exercising</a></li>
+      <li *ngIf="isAuth && profileFinished"><a routerLink="/log">Log</a></li>
       <li *ngIf="isAuth"><a style="cursor: pointer" (click)="onLogout()">Logout</a></li>
     </ul>
   </div>

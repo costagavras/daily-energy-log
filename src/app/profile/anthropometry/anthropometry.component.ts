@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 
-// import * as firebase from 'firebase/app';
-import { User } from '../../auth/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -25,27 +23,26 @@ weightFormGroup: FormGroup;
 heightFormGroup: FormGroup;
 calcResults = false;
 fbUser;
-userProfile: User;
-private fbAvailableUserDataSubs: Subscription[] = [];
+private anthropometrySubs: Subscription[] = [];
 
   constructor(public profileService: ProfileService) {}
 
   ngOnInit() {
 
-    // this.fbUser = firebase.auth().currentUser;
     this.fbUser = this.profileService.getFirebaseUser();
 
     // need it to activate event emitter in the service
-    this.profileService.getUserData();
+    // this.profileService.getUserData();
+    // this.profileService.userProfileData.next(this.userProfile);
 
-    this.fbAvailableUserDataSubs.push(this.profileService.userProfileData
+    this.anthropometrySubs.push(this.profileService.userProfileData
       .subscribe(
         userProfileData => {
-          this.nameFormGroup.patchValue({name: userProfileData.name || '' });
-          this.genderFormGroup.patchValue({gender: userProfileData.gender || null });
-          this.ageFormGroup.patchValue({age: userProfileData.age || null });
-          this.heightFormGroup.patchValue({height: userProfileData.height || null });
-          this.weightFormGroup.patchValue({weight: userProfileData.weight || null });
+          this.nameFormGroup.patchValue({name: typeof userProfileData !== 'undefined' ? userProfileData.name : null });
+          this.genderFormGroup.patchValue({gender: typeof userProfileData !== 'undefined' ? userProfileData.gender : null });
+          this.ageFormGroup.patchValue({age: typeof userProfileData !== 'undefined' ? userProfileData.age : null });
+          this.heightFormGroup.patchValue({height: typeof userProfileData !== 'undefined' ? userProfileData.height : null });
+          this.weightFormGroup.patchValue({weight: typeof userProfileData !== 'undefined' ? userProfileData.weight : null });
         }));
 
     this.nameFormGroup = new FormGroup ({
@@ -96,8 +93,8 @@ private fbAvailableUserDataSubs: Subscription[] = [];
   }
 
   ngOnDestroy() {
-    if (this.fbAvailableUserDataSubs) {
-      this.fbAvailableUserDataSubs.forEach(sub => sub.unsubscribe());
+    if (this.anthropometrySubs) {
+      this.anthropometrySubs.forEach(sub => sub.unsubscribe());
     }
   }
 

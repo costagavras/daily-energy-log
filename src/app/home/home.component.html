@@ -1,9 +1,20 @@
-<div class="welcome" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="20px" fxLayoutAlign="center center">
-    <section>
-      <h1>Daily Energy Log</h1>
-      <h3>It will help you to</h3>
-      <p>- Maintain a healthy weight.</p>
-      <p>- Manage your calorie intake.</p>
-      <p>- Keep track of your exercise routine.</p>
-    </section>
-  </div>
+<div class="welcome" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="center center">
+  <section>
+    <h1>Daily Energy Log</h1>
+    <h3>will help you to</h3>
+    <p>- Maintain a healthy weight.</p>
+    <p>- Manage your calorie intake.</p>
+    <p>- Keep track of your exercise routine.</p>
+  </section>
+  <!-- <div [ngClass]="{'hidden': gotActivityLevel}"> -->
+    <mat-card class="profile-link" *ngIf="!profileFinished">
+      <mat-card-content>
+        <mat-panel-title><h4>Your profile needs completing</h4></mat-panel-title>
+        <mat-card-actions>
+            <a mat-raised-button
+            routerLink="/profile">Review profile <mat-icon>double_arrow</mat-icon></a>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  <!-- </div> -->
+</div>

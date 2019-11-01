@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'food-intake', component: FoodIntakeComponent, canActivate: [AuthGuard] },
   { path: 'energy-expenditure', component: EnergyExpenditureComponent, canActivate: [AuthGuard] },
-  { path: 'balance', component: BalanceComponent, canActivate: [AuthGuard] }
+  { path: 'log', component: BalanceComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

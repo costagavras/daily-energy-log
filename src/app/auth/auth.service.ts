@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AuthData } from './auth-data.model';
+
 import { TrainingService } from '../energy-expenditure/training/training.service';
 import { UIService } from '../shared/ui.service';
 import { FoodService } from '../food-intake/food.service';
@@ -21,13 +22,15 @@ export class AuthService {
                 private uiService: UIService,
                 private profileService: ProfileService) {}
 
+      // fired in app.component.ts
     initAuthListener() {
       this.afAuth.authState.subscribe(user => {
         if (user) {
           this.isAuthenticated = true;
           // true bc boolean payload (true = registered user), listened to in #header and #navigation to show contextual menu
           this.authChange.next(true);
-          this.router.navigate(['/profile']);
+          this.profileService.getUserData();
+          this.router.navigate(['/']);
         } else {
           this.trainingService.cancelSubscriptions();
           this.foodService.cancelSubscriptions();
@@ -59,8 +62,8 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(
         authData.email,
         authData.password
-      ).then(result => {
-        this.uiService.loadingStateChanged.next(false);
+        ).then(result => {
+          this.uiService.loadingStateChanged.next(false);
       }).
         catch(error => {
           this.uiService.loadingStateChanged.next(false);
