@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Exercise } from './exercise.model';
 import { UIService } from 'src/app/shared/ui.service';
 import { ProfileService } from 'src/app/profile/profile.service';
+import { User, UserStamp } from 'src/app/auth/user.model';
 
 @Injectable()
 export class TrainingService {
@@ -16,19 +17,34 @@ export class TrainingService {
   exercisesCalChanged = new Subject<Exercise[]>();
   finishedExercisesChanged = new Subject<Exercise[]>();
   dateFilter = new Subject<Date>();
+
   private availableExercisesTime: Exercise[] = [];
   private availableExercisesQty: Exercise[] = [];
   private availableExercisesCal: Exercise[] = [];
 
   private chosenExercise: Exercise;
-  private firebaseSubscriptions: Subscription[] = [];
+
+  private trainingServiceSubs: Subscription[] = [];
+
+  userData: User;
 
   constructor(private db: AngularFirestore,
               private uiService: UIService,
               private profileService: ProfileService) {}
 
+  getUserInfo() {
+    this.profileService.getUserData();
+    return new Promise (resolve => {
+      this.trainingServiceSubs.push(this.profileService.userProfileData
+        .subscribe((userData: User) => {
+          this.userData = userData;
+          resolve(this.userData);
+      }));
+    });
+  }
+
   fetchAvailableExercisesTime() {
-    this.firebaseSubscriptions.push(
+    this.trainingServiceSubs.push(
       this.db.collection<Exercise>('availableExercisesTime', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -51,7 +67,7 @@ export class TrainingService {
       }));
   }
   fetchAvailableExercisesQty() {
-    this.firebaseSubscriptions.push(
+    this.trainingServiceSubs.push(
       this.db.collection<Exercise>('availableExercisesQty', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         // throw(new Error());
@@ -70,7 +86,7 @@ export class TrainingService {
       }));
   }
   fetchAvailableExercisesCal() {
-    this.firebaseSubscriptions.push(
+    this.trainingServiceSubs.push(
       this.db.collection<Exercise>('availableExercisesCal', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -88,41 +104,51 @@ export class TrainingService {
       }));
   }
 
-  saveExercise(exerciseDate: Date, selectedId: string, volume: number, userWeight: number, param: string, addWeight: number) {
+  async saveExercise(exerciseDate: Date, selectedId: string, volume: number, userWeight: number, param: string, addWeight: number) {
+    let durationValue = 0;
+    let caloriesOutValue = 0;
+    let quantityValue = 0;
+    await this.getUserInfo();
     if (param === 'exTime') {
       this.chosenExercise = this.availableExercisesTime.find(ex => ex.id === selectedId);
-      this.addDataToDatabase({
-        ...this.chosenExercise,
-        duration: volume,
-        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * userWeight),
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
-        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
-      });
+      durationValue = volume;
+      caloriesOutValue = Math.round(volume * this.chosenExercise.caloriesOut * userWeight);
+      quantityValue = 0;
     } else if (param === 'exQty') {
       this.chosenExercise = this.availableExercisesQty.find(ex => ex.id === selectedId);
-      this.addDataToDatabase({
-        ...this.chosenExercise,
-        quantity: volume,
-        caloriesOut: Math.round(volume * this.chosenExercise.caloriesOut * (userWeight + addWeight)),
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
-        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
-      });
-    } else {
+      durationValue = 0;
+      caloriesOutValue = Math.round(volume * this.chosenExercise.caloriesOut * (userWeight + addWeight));
+      quantityValue = volume;
+    } else if (param === 'exCal') {
       this.chosenExercise = this.availableExercisesCal.find(ex => ex.id === selectedId);
-      this.addDataToDatabase({
-        ...this.chosenExercise,
-        caloriesOut: volume,
-        dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
-        date: new Date(exerciseDate.setHours(12, 0, 0, 0))
-      });
+      durationValue = 0;
+      caloriesOutValue = volume;
+      quantityValue = 0;
     }
+    this.addDataToDatabase({
+      ...this.chosenExercise,
+      duration: durationValue,
+      quantity: quantityValue,
+      caloriesOut: caloriesOutValue,
+      dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
+      date: new Date(exerciseDate.setHours(12, 0, 0, 0))
+    }, {
+      date: new Date(exerciseDate.setHours(12, 0, 0, 0)),
+      dateStr: new Date(exerciseDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
+      age: this.userData.age,
+      weight: this.userData.weight,
+      bmi: this.userData.bmi,
+      bmr: this.userData.bmr,
+      activityLevel: this.userData.activityLevel
+    });
+
   }
 
   fetchCompletedExercises() {
     this.uiService.loadingStateChanged.next(true);
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
 
-    this.firebaseSubscriptions.push(
+    this.trainingServiceSubs.push(
       this.db.collection<Exercise>('users/' + userFirebaseId + '/finishedExercises', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((exercises: Exercise[]) => {
       this.uiService.loadingStateChanged.next(false);
@@ -137,7 +163,7 @@ export class TrainingService {
     this.dateFilter.next(event.value);
   }
 
-  private addDataToDatabase(exercise: Exercise) {
+  private addDataToDatabase(exercise: Exercise, userStamp: UserStamp) {
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.db.collection('users').doc(userFirebaseId).collection('finishedExercises').add(exercise)
     .then(docRef => {
@@ -146,6 +172,7 @@ export class TrainingService {
       });
       // this.uiService.showSnackbar(exercise.name + 'was successfully added', null, 3000);
     });
+    this.db.collection('users').doc(userFirebaseId).collection('userStamp').doc(userStamp.dateStr).set(userStamp);
   }
 
   // called from the template
@@ -156,8 +183,8 @@ export class TrainingService {
   }
 
   cancelSubscriptions() {
-    if (this.firebaseSubscriptions) {
-      this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
+    if (this.trainingServiceSubs) {
+      this.trainingServiceSubs.forEach(sub => sub.unsubscribe());
     }
   }
 }

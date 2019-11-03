@@ -18,3 +18,8 @@
   display: block;
   margin: 0 auto;
 }
+
+.nextButton {
+  display: block;
+  margin: 30px auto 0;
+}

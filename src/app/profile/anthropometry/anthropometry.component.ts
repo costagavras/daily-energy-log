@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 
@@ -10,20 +10,21 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./anthropometry.component.css']
 })
 export class AnthropometryComponent implements OnInit, OnDestroy {
+  @Output() tabSelected = new EventEmitter<void>();
 
-minAgeValue = 10;
-minHeightValue = 100;
-minWeightValue = 20;
-bmi = 0;
-bmr = 0;
-nameFormGroup: FormGroup;
-genderFormGroup: FormGroup;
-ageFormGroup: FormGroup;
-weightFormGroup: FormGroup;
-heightFormGroup: FormGroup;
-calcResults = false;
-fbUser;
-private anthropometrySubs: Subscription[] = [];
+  minAgeValue = 10;
+  minHeightValue = 100;
+  minWeightValue = 20;
+  bmi = 0;
+  bmr = 0;
+  nameFormGroup: FormGroup;
+  genderFormGroup: FormGroup;
+  ageFormGroup: FormGroup;
+  weightFormGroup: FormGroup;
+  heightFormGroup: FormGroup;
+  loadLinkToActivityLevel = false;
+  fbUser;
+  private anthropometrySubs: Subscription[] = [];
 
   constructor(public profileService: ProfileService) {}
 
@@ -32,8 +33,7 @@ private anthropometrySubs: Subscription[] = [];
     this.fbUser = this.profileService.getFirebaseUser();
 
     // need it to activate event emitter in the service
-    // this.profileService.getUserData();
-    // this.profileService.userProfileData.next(this.userProfile);
+    this.profileService.getUserData();
 
     this.anthropometrySubs.push(this.profileService.userProfileData
       .subscribe(
@@ -46,19 +46,19 @@ private anthropometrySubs: Subscription[] = [];
         }));
 
     this.nameFormGroup = new FormGroup ({
-      name: new FormControl('', {validators: [Validators.required]}),
+      name: new FormControl('', {validators: [Validators.required]})
     });
     this.genderFormGroup = new FormGroup ({
-      gender: new FormControl('', {validators: [Validators.required]}),
+      gender: new FormControl('', {validators: [Validators.required]})
     });
     this.ageFormGroup = new FormGroup ({
-      age: new FormControl('', {validators: [Validators.required, Validators.min(10), Validators.max(130)]}),
+      age: new FormControl('', {validators: [Validators.required, Validators.min(10), Validators.max(130)]})
     });
     this.heightFormGroup = new FormGroup ({
-      height: new FormControl('', {validators: [Validators.required, Validators.min(90), Validators.max(290)]}),
+      height: new FormControl('', {validators: [Validators.required, Validators.min(90), Validators.max(290)]})
     });
     this.weightFormGroup = new FormGroup ({
-      weight: new FormControl('', {validators: [Validators.required, Validators.min(20), Validators.max(320)]}),
+      weight: new FormControl('', {validators: [Validators.required, Validators.min(20), Validators.max(320)]})
     });
 
   }
@@ -73,7 +73,6 @@ private anthropometrySubs: Subscription[] = [];
     this.bmi = this.profileService.calcBMI(this.weightFormGroup.value.weight, this.heightFormGroup.value.height / 100);
     this.bmr = this.profileService.calcBMR(
       this.genderFormGroup.value.gender, this.ageFormGroup.value.age, this.weightFormGroup.value.weight, this.heightFormGroup.value.height);
-    this.calcResults = true;
   }
 
   onSave() {
@@ -89,7 +88,11 @@ private anthropometrySubs: Subscription[] = [];
       bmi: this.bmi,
       bmr: this.bmr,
     });
-    this.profileService.linkToActivityLevel();
+    this.loadLinkToActivityLevel = true;
+  }
+
+  tabSelect() {
+    this.tabSelected.emit();
   }
 
   ngOnDestroy() {

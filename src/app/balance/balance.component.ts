@@ -10,7 +10,7 @@ import { FoodService } from '../food-intake/food.service';
 import { ProfileService } from '../profile/profile.service';
 
 import { Subscription } from 'rxjs';
-import { User } from '../auth/user.model';
+import { User, UserStamp } from '../auth/user.model';
 
 @Component({
   selector: 'app-balance',
@@ -22,9 +22,10 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumnsGroup = ['Week', 'Month', 'Year'];
   dataSourceExercises = new MatTableDataSource<Exercise>();
   dataSourceFoodItems = new MatTableDataSource<FoodItem>();
+  dataSource = new MatTableDataSource<any>();
   objExercises: Exercise[] = [];
   objFoodItems: FoodItem[] = [];
-  dataSource = new MatTableDataSource<any>();
+  userStampData: UserStamp[] = [];
   private paginator: MatPaginator;
   private sort: MatSort;
 
@@ -67,6 +68,7 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.trainingService.fetchCompletedExercises();
     this.foodService.fetchCompletedFoodItems();
     this.profileService.getUserData();
+    this.profileService.getUserStampData();
     this.transformData();
   }
 
@@ -76,6 +78,16 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((userProfileData: User) => {
             this.userData = userProfileData;
             resolve(this.userData);
+        }));
+    });
+  }
+
+  getUserStampInfo() {
+    return new Promise (resolve => {
+      this.balanceSubs.push(this.profileService.userStampsCollection
+        .subscribe((userStamps: UserStamp[]) => {
+            this.userStampData = userStamps;
+            resolve(this.userStampData);
         }));
     });
   }
@@ -101,10 +113,10 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async transformData() {
-    await Promise.all([this.getUserInfo(), this.getExercises(), this.getFoodItems()]);
+    await Promise.all([this.getUserInfo(), this.getUserStampInfo(), this.getExercises(), this.getFoodItems()]);
 
-    const userRMR = this.userData.bmr * this.userData.activityLevel;
-    const arCombinedData = Array().concat(this.objExercises, this.objFoodItems);
+    // const userRMR = this.userData.bmr * this.userData.activityLevel;
+    const arCombinedData = Array().concat(this.objExercises, this.objFoodItems, this.userStampData);
 
     // accept array and key (property)
     const groupByProperty = (objectArray, property) => {
@@ -123,12 +135,14 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     const groupedByDate = groupByProperty(arCombinedData, 'dateStr');
-    // console.log(groupedByDate);
+    console.log(groupedByDate);
 
     const summaryByDay = Object.keys(groupedByDate).map((key => {
       const calsIn = groupedByDate[key].filter(keys => keys.caloriesIn > 0).reduce((total, obj) => obj.caloriesIn + total, 0);
       const calsExercise = groupedByDate[key].filter(keys => keys.caloriesOut > 0).reduce((total, obj) => obj.caloriesOut + total, 0);
-      const totalEnergyDay = userRMR + calsExercise;
+      // const totalEnergyDay = userRMR + calsExercise;
+      const totalEnergyDay = groupedByDate[key].find(keys => keys.bmr).bmr *
+        groupedByDate[key].find(keys => keys.activityLevel).activityLevel + calsExercise;
       const endBalance = calsIn - totalEnergyDay;
       const getTimezoneOffset = new Date(key).getTimezoneOffset();
       const dateAdj4Tz = new Date((Date.parse(key) + (getTimezoneOffset * 60 * 1000)));
@@ -269,7 +283,6 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.dataSource = this.groupBy(this.columnName, this.initialData, this.reducedGroups);
   }
-
 
   ngOnDestroy() {
     if (this.balanceSubs) {

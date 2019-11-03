@@ -36,6 +36,7 @@ import { ViewFoodIntakeComponent } from './food-intake/view-food-intake/view-foo
 import { ProfileComponent } from './profile/profile.component';
 import { AnthropometryComponent } from './profile/anthropometry/anthropometry.component';
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
+import { ProfileCompletedComponent } from './profile/profile-completed/profile-completed.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { ActivityLevelComponent } from './profile/activity-level/activity-level.
     ProfileComponent,
     AnthropometryComponent,
     ActivityLevelComponent,
+    ProfileCompletedComponent,
   ],
   imports: [
     BrowserModule,

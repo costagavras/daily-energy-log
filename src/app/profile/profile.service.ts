@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User } from '.././auth/user.model';
+import { User, UserStamp } from '.././auth/user.model';
 import * as firebase from 'firebase/app';
 
 
 import { Subject, Subscription } from 'rxjs';
 import { UIService } from '../shared/ui.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ProfileService {
@@ -13,12 +14,14 @@ export class ProfileService {
 openActivityLevel = new Subject<boolean>();
 userProfileData = new Subject<User>();
 activitiesList = new Subject<any>();
+userStampsCollection = new Subject<UserStamp[]>();
 userProfile: User;
 fbUser;
 
 private profileServiceSubs: Subscription[] = [];
 
   constructor(private db: AngularFirestore,
+              private router: Router,
               private uiService: UIService) {}
 
   getUserData() {
@@ -29,9 +32,21 @@ private profileServiceSubs: Subscription[] = [];
         this.userProfileData.next(userData); // event emitter via Subject
         this.userProfile = userData;
       }, error => {
-        this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+        this.uiService.showSnackbar('Fetching user info failed, please try again later', null, 3000);
     }));
     return this.userProfile;
+  }
+
+  getUserStampData() {
+    const userFirebaseId = this.getFirebaseUser().uid;
+    this.profileServiceSubs.push(
+      this.db.collection('users/' + userFirebaseId + '/userStamp').valueChanges()
+      .subscribe((userStamps: UserStamp[]) => {
+        this.userStampsCollection.next(userStamps);
+      }, error => {
+        this.uiService.showSnackbar('Fetching user info failed, please try again later', null, 3000);
+      }
+    ));
   }
 
   getFirebaseUser() {
@@ -105,6 +120,12 @@ private profileServiceSubs: Subscription[] = [];
           this.uiService.showSnackbar(userData.name + ' was successfully created', null, 3000);
         }
     }));
+  }
+
+  deleteUser(user: User) {
+    this.db.collection('users').doc(user.userId).delete();
+    this.router.navigate(['/login']);
+    this.uiService.showSnackbar('User ' + user.name + ' was successfully deleted', null, 3000);
   }
 
   cancelSubscriptions() {

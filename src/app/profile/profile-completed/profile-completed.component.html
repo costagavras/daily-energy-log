@@ -1,0 +1,64 @@
+  <mat-card  fxLayoutAlign="center center" fxLayout="column" *ngIf="dataLoaded">
+    <!-- <mat-card-title></mat-card-title> -->
+    <mat-chip-list fxLayout="column">
+      <ul>
+        <li>
+          <mat-card-content>User name:
+            <mat-chip *ngIf="userData?.name">{{userData?.name}}</mat-chip>
+            <mat-chip *ngIf="!userData?.name">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Age:
+            <mat-chip *ngIf="userData?.age">{{userData?.age}}</mat-chip>
+            <mat-chip *ngIf="!userData?.age">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Gender:
+            <mat-chip *ngIf="userData?.gender">{{userData?.gender}}</mat-chip>
+            <mat-chip *ngIf="!userData?.gender">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Height:
+            <mat-chip *ngIf="userData?.height">{{userData?.height}}</mat-chip>
+            <mat-chip *ngIf="!userData?.height">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Weight:
+            <mat-chip *ngIf="userData?.weight">{{userData?.weight}}</mat-chip>
+            <mat-chip *ngIf="!userData?.weight">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Body Mass Index (BMI):
+            <mat-chip *ngIf="userData?.bmi">{{userData?.bmi}}</mat-chip>
+            <mat-chip *ngIf="!userData?.bmi">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Basal Metabolic Rate (BMR):
+            <mat-chip *ngIf="userData?.bmr">{{userData?.bmr}}</mat-chip>
+            <mat-chip *ngIf="!userData?.bmr">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+        <li>
+          <mat-card-content>Activity Level:
+            <mat-chip *ngIf="userData?.activityLevel">{{userData?.activityLevel}}</mat-chip>
+            <mat-chip *ngIf="!userData?.activityLevel">N/A</mat-chip>
+          </mat-card-content>
+        </li>
+      </ul>
+    </mat-chip-list>
+    <div>
+        <button mat-raised-button color="warn" (click)="profileService.deleteUser(userData)">Delete user</button>
+        <button class="nextButton"
+          mat-raised-button
+          color="primary"
+          (click)="tabSelect()">
+          Update User <mat-icon>double_arrow</mat-icon>
+        </button>
+      </div>
+  </mat-card>

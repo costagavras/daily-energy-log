@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { FoodItem } from './food-item.model';
 import { UIService } from 'src/app/shared/ui.service';
 import { ProfileService } from '../profile/profile.service';
+import { UserStamp, User } from '../auth/user.model';
 
 @Injectable()
 export class FoodService {
@@ -23,19 +24,33 @@ export class FoodService {
   foodItemsVegetablesChanged = new Subject<FoodItem[]>();
 
   finishedFoodItemsChanged = new Subject<FoodItem[]>();
+
   dateFilter = new Subject<Date>();
+
+  userData: User;
 
   private availableFoodItemsStorage = {} as any;
 
   private chosenFoodItem: FoodItem;
-  private fbAvailableFoodItemsSubs: Subscription[] = [];
+  private foodServiceSubs: Subscription[] = [];
 
   constructor(private db: AngularFirestore,
               private uiService: UIService,
               private profileService: ProfileService) {}
 
+  getUserInfo() {
+    this.profileService.getUserData();
+    return new Promise (resolve => {
+      this.foodServiceSubs.push(this.profileService.userProfileData
+        .subscribe((userData: User) => {
+          this.userData = userData;
+          resolve(this.userData);
+      }));
+    });
+  }
+
   fetchAvailableFoodItemsBeverages() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsBeverages', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -54,7 +69,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDairy() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsDairy', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -73,7 +88,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDesserts() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsDesserts', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -92,7 +107,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDishes() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsDishes', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -111,7 +126,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFats() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsFats', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -130,7 +145,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFish() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsFish', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -149,7 +164,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFruits() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsFruits', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -168,7 +183,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsGrains() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsGrains', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -187,7 +202,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsMeat() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsMeat', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -206,7 +221,7 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsVegetables() {
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('availableFoodItemsVegetables', ref => ref.orderBy('name', 'asc')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
@@ -224,8 +239,9 @@ export class FoodService {
       }));
   }
 
-  saveFoodItem(foodDate: Date, selectedId: string, size: number, param: string) {
+  async saveFoodItem(foodDate: Date, selectedId: string, size: number, param: string) {
     this.chosenFoodItem = this.availableFoodItemsStorage[param].find(ex => ex.id === selectedId);
+    await this.getUserInfo();
     this.addDataToDatabase({
       ...this.chosenFoodItem,
       serving: size,
@@ -236,6 +252,14 @@ export class FoodService {
       // dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
       dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
       date: new Date(foodDate.setHours(12, 0, 0, 0))
+    }, {
+      date: new Date(foodDate.setHours(12, 0, 0, 0)),
+      dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
+      age: this.userData.age,
+      weight: this.userData.weight,
+      bmi: this.userData.bmi,
+      bmr: this.userData.bmr,
+      activityLevel: this.userData.activityLevel
     });
   }
 
@@ -243,7 +267,7 @@ export class FoodService {
     this.uiService.loadingStateChanged.next(true);
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
 
-    this.fbAvailableFoodItemsSubs.push(
+    this.foodServiceSubs.push(
       this.db.collection<FoodItem>('users/' + userFirebaseId + '/finishedFoodItems', ref => ref.orderBy('date', 'desc')).valueChanges()
     .subscribe((foodItem: FoodItem[]) => {
       this.uiService.loadingStateChanged.next(false);
@@ -258,7 +282,7 @@ export class FoodService {
     this.dateFilter.next(event.value);
   }
 
-  private addDataToDatabase(foodItem: FoodItem) {
+  private addDataToDatabase(foodItem: FoodItem, userStamp: UserStamp) {
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.db.collection('users').doc(userFirebaseId).collection('finishedFoodItems').add(foodItem)
     .then(docRef => {
@@ -267,6 +291,7 @@ export class FoodService {
       });
       // this.uiService.showSnackbar(foodItem.name + 'was successfully added', null, 3000);
     });
+    this.db.collection('users').doc(userFirebaseId).collection('userStamp').doc(userStamp.dateStr).set(userStamp);
   }
 
   // called from the template
@@ -277,8 +302,8 @@ export class FoodService {
   }
 
   cancelSubscriptions() {
-    if (this.fbAvailableFoodItemsSubs) {
-      this.fbAvailableFoodItemsSubs.forEach(sub => sub.unsubscribe());
+    if (this.foodServiceSubs) {
+      this.foodServiceSubs.forEach(sub => sub.unsubscribe());
     }
   }
 }

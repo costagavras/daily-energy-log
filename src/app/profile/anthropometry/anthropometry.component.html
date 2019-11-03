@@ -2,7 +2,7 @@
   <h1>Anthropometric data</h1>
 </div>
 <div fxLayoutAlign="center center">
-  <h2>Create or update your user profile</h2>
+  <h2>Manage your user profile</h2>
 </div>
 
 <div fxLayoutAlign="center center" fxLayout="column">
@@ -79,24 +79,18 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Submit</ng-template>
-      <mat-card *ngIf="calcResults">
-        <mat-card-title>Results</mat-card-title>
-        <mat-chip-list fxLayout="column">
-          <ul>
-            <li>
-              <mat-card-content>Body Mass Index (BMI) is <mat-chip>{{bmi}}</mat-chip>
-              </mat-card-content>
-            </li>
-            <li>
-              <mat-card-content>Basal Metabolic Rate (BMR) is <mat-chip>{{bmr}}</mat-chip>
-              </mat-card-content>
-            </li>
-          </ul>
-        </mat-chip-list>
-      </mat-card>
       <div>
         <button mat-raised-button (click)="stepper.reset()">Reset</button>
         <button mat-raised-button color="accent" matStepperNext type="submit" (click)="onSave()">Save</button>
+      </div>
+      <div>
+        <button class="nextButton"
+          mat-raised-button
+          color="primary"
+          (click)="tabSelect()"
+          *ngIf="loadLinkToActivityLevel">
+          Review Activity Level <mat-icon>double_arrow</mat-icon>
+        </button>
       </div>
     </mat-step>
   </mat-vertical-stepper>

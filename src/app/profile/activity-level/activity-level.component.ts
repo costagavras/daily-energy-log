@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ProfileService } from '../profile.service';
 import { Subscription } from 'rxjs';
 import { NgForm, FormControl, FormGroupDirective } from '@angular/forms';
@@ -23,11 +23,14 @@ export class InputErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./activity-level.component.css']
 })
 export class ActivityLevelComponent implements OnInit, OnDestroy {
+  @Output() tabSelected = new EventEmitter<void>();
 
   listActivities = [];
   minValue = 0;
+  maxValue = 24;
   total: any = 0;
   negativeError: boolean;
+  loadLinkToProfileCompleted = false;
   private fbActivitiesListSub: Subscription;
   errorMatcher = new InputErrorStateMatcher();
 
@@ -50,6 +53,7 @@ export class ActivityLevelComponent implements OnInit, OnDestroy {
 
   onSave(form: NgForm) {
     this.profileService.calcRMR(this.listActivities, Object.values(form.value));
+    this.loadLinkToProfileCompleted = true;
   }
 
   checkMinMax(form: NgForm) {
@@ -61,6 +65,10 @@ export class ActivityLevelComponent implements OnInit, OnDestroy {
   sumHours(form: NgForm) {
     // 0 stands for initial value
     this.total = Object.values(form.value).reduce((a: number, b: number) => a + b, 0);
+  }
+
+  tabSelect() {
+    this.tabSelected.emit();
   }
 
 ngOnDestroy() {
