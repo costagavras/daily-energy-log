@@ -1,4 +1,13 @@
-.reviewActivityLevelButton {
-  display: block;
-  margin: 30px auto 0;
+:host ::ng-deep .mat-tab-header {
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 64px; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+  background-color: white;
+}
+
+@media (max-width: 599px) {
+  :host ::ng-deep .mat-tab-header {
+    top: 56px;
+  }
 }

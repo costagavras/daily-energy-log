@@ -37,6 +37,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AnthropometryComponent } from './profile/anthropometry/anthropometry.component';
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
 import { ProfileCompletedComponent } from './profile/profile-completed/profile-completed.component';
+import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog-delete-profile.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ProfileCompletedComponent } from './profile/profile-completed/profile-c
     AnthropometryComponent,
     ActivityLevelComponent,
     ProfileCompletedComponent,
+    DialogDeleteProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,7 @@ import { ProfileCompletedComponent } from './profile/profile-completed/profile-c
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
   ],
   providers: [AuthService, TrainingService, FoodService, UIService, ProfileService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogDeleteProfileComponent]
 })
 export class AppModule { }

@@ -53,12 +53,13 @@
       </ul>
     </mat-chip-list>
     <div>
-        <button mat-raised-button color="warn" (click)="profileService.deleteUser(userData)">Delete user</button>
+        <button *ngIf="userData" mat-raised-button color="warn" (click)="deleteUser(userData)">Delete user</button>
         <button class="nextButton"
           mat-raised-button
           color="primary"
           (click)="tabSelect()">
-          Update User <mat-icon>double_arrow</mat-icon>
+          <mat-icon>reply</mat-icon>
+           Update User
         </button>
       </div>
   </mat-card>

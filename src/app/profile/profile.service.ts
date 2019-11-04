@@ -124,8 +124,8 @@ private profileServiceSubs: Subscription[] = [];
 
   deleteUser(user: User) {
     this.db.collection('users').doc(user.userId).delete();
-    this.router.navigate(['/login']);
-    this.uiService.showSnackbar('User ' + user.name + ' was successfully deleted', null, 3000);
+    this.router.navigate(['/']);
+    this.uiService.showSnackbar(user.name + ' is now gone!', null, 3000);
   }
 
   cancelSubscriptions() {

@@ -23,7 +23,8 @@ import { MatButtonModule,
           MatStepperModule,
           MatRadioModule,
           MatChipsModule,
-          MatSliderModule
+          MatSliderModule,
+          MatBadgeModule
 } from '@angular/material';
 
 
@@ -53,7 +54,8 @@ import { MatButtonModule,
     MatStepperModule,
     MatRadioModule,
     MatChipsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatBadgeModule
   ],
   exports: [
     MatButtonModule,
@@ -79,7 +81,8 @@ import { MatButtonModule,
     MatStepperModule,
     MatRadioModule,
     MatChipsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatBadgeModule
   ]
 })
 export class MaterialModule {}
