@@ -4,7 +4,7 @@ export interface FoodItem {
   serving: number;
   caloriesIn: number;
   protein?: number;
-  carbs?: number;
+  carb?: number;
   fat?: number;
   date: Date;
   dateStr: string;

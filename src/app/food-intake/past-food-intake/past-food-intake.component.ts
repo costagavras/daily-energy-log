@@ -13,7 +13,7 @@ import { UIService } from 'src/app/shared/ui.service';
 })
 export class PastFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  displayedColumns = ['date', 'name', 'serving', 'calories', 'protein', 'carbs', 'fat', 'actions'];
+  displayedColumns = ['date', 'name', 'serving', 'calories', 'protein', 'carb', 'fat', 'actions'];
   displayedColumnsGroup = ['Date', 'Name'];
   useDatePipe: boolean;
   dataSource = new MatTableDataSource<FoodItem>();

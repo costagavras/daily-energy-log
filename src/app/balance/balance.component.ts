@@ -115,7 +115,6 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
   async transformData() {
     await Promise.all([this.getUserInfo(), this.getUserStampInfo(), this.getExercises(), this.getFoodItems()]);
 
-    // const userRMR = this.userData.bmr * this.userData.activityLevel;
     const arCombinedData = Array().concat(this.objExercises, this.objFoodItems, this.userStampData);
 
     // accept array and key (property)
@@ -135,7 +134,7 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     const groupedByDate = groupByProperty(arCombinedData, 'dateStr');
-    console.log(groupedByDate);
+    // console.log(groupedByDate);
 
     const summaryByDay = Object.keys(groupedByDate).map((key => {
       const calsIn = groupedByDate[key].filter(keys => keys.caloriesIn > 0).reduce((total, obj) => obj.caloriesIn + total, 0);
@@ -163,7 +162,7 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     }));
 
-    console.log(summaryByDay);
+    // console.log(summaryByDay);
     this.dataSource.data = summaryByDay;
     this.initialData = summaryByDay;
     this.totalCaloriesIn = this.dataSource.data.map(item => item.caloriesIn).reduce((acc, value) => acc + value, 0);

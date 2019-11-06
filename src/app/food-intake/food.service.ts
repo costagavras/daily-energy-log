@@ -247,7 +247,7 @@ export class FoodService {
       serving: size,
       caloriesIn: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.caloriesIn),
       protein: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.protein),
-      carbs: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.carbs),
+      carb: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.carb),
       fat: Math.round(size / this.chosenFoodItem.serving * this.chosenFoodItem.fat),
       // dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
       dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),

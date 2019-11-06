@@ -30,6 +30,7 @@ dataLoaded = false;
         userProfileData => {
       this.userData = userProfileData;
       this.dataLoaded = true;
+      console.log(this.userData);
     }));
   }
 
@@ -41,7 +42,7 @@ dataLoaded = false;
     });
    this.profileSubs.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.profileService.deleteUser(userToDelete);
+        this.profileService.deleteProfile(userToDelete);
       }
     }));
   }

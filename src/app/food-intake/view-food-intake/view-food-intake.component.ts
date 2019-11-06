@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./view-food-intake.component.css']
 })
 export class ViewFoodIntakeComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns = ['date', 'name', 'serving', 'calories', 'protein', 'carbs', 'fat', 'actions'];
+  displayedColumns = ['date', 'name', 'serving', 'calories', 'protein', 'carb', 'fat', 'actions'];
   dataSource = new MatTableDataSource<FoodItem>();
   private paginator: MatPaginator;
   private sort: MatSort;

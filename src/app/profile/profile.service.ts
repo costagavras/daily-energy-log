@@ -19,6 +19,7 @@ userProfile: User;
 fbUser;
 
 private profileServiceSubs: Subscription[] = [];
+private userExistsSub: Subscription;
 
   constructor(private db: AngularFirestore,
               private router: Router,
@@ -53,24 +54,23 @@ private profileServiceSubs: Subscription[] = [];
     return firebase.auth().currentUser;
   }
 
-  // getUserData2() {
-  //   this.fbUser = firebase.auth().currentUser;
-  //   const userRef = this.db.collection('users').doc(this.fbUser.uid);
-  //   userRef.get().toPromise()
-  //     .then(doc => {
-  //       if (!doc.exists) {
-  //         console.log('No such document!');
-  //         this.userProfile = null;
-  //       } else {
-  //         this.userProfile = doc.data();
-  //         this.userProfileData.next(doc.data());
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log('Error getting document', err);
-  //     });
-  //   return this.userProfile;
-  // }
+  getUserData2() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        const userRef = this.db.collection('users').doc(user.uid);
+        userRef.get().toPromise()
+          .then(doc => {
+            if (doc.exists) {
+              this.userProfile = doc.data();
+            }
+          })
+          .catch(err => {
+            console.log('Error getting document', err);
+          });
+        }
+      });
+    return this.userProfile;
+  }
 
   getActivitiesList() {
     this.profileServiceSubs.push(
@@ -110,22 +110,86 @@ private profileServiceSubs: Subscription[] = [];
   }
 
   addOrUpdateUser(userData: User) {
-    this.profileServiceSubs.push(this.db.collection('users').doc(userData.userId).snapshotChanges() // check if doc exists
+    this.userExistsSub = this.db.collection('users').doc(userData.userId).snapshotChanges()
       .subscribe(doc => {
         if (doc.payload.exists) {
           this.db.collection('users').doc(userData.userId).update(userData);
           this.uiService.showSnackbar(userData.name + ' successfully updated', null, 3000);
+          this.userExistsSub.unsubscribe();
         } else {
           this.db.collection('users').doc(userData.userId).set(userData);
           this.uiService.showSnackbar(userData.name + ' was successfully created', null, 3000);
+          this.userExistsSub.unsubscribe();
         }
-    }));
+    });
   }
 
-  deleteUser(user: User) {
-    this.db.collection('users').doc(user.userId).delete();
-    this.router.navigate(['/']);
-    this.uiService.showSnackbar(user.name + ' is now gone!', null, 3000);
+  deleteProfile(user: User) {
+    const collectionExRef = this.db.collection('users').doc(user.userId).collection('finishedExercises').ref;
+    this.deleteCollection(this.db, collectionExRef, 100);
+
+    const collectionFoodRef = this.db.collection('users').doc(user.userId).collection('finishedFoodItems').ref;
+    this.deleteCollection(this.db, collectionFoodRef, 100);
+
+    const collectionStampRef = this.db.collection('users').doc(user.userId).collection('userStamp').ref;
+    this.deleteCollection(this.db, collectionStampRef, 100);
+
+    this.db.collection('users').doc(user.userId).delete()
+          .then(() => {
+            this.router.navigate(['/']);
+            this.uiService.showSnackbar(user.name + ' is now gone!', null, 3000);
+          }).catch(error => {
+            console.log(error);
+          });
+  }
+
+  deleteUserAccount() {
+    this.fbUser = firebase.auth().currentUser;
+    this.fbUser.delete()
+      .then(() => {
+        this.uiService.showSnackbar('This account is now gone too!', null, 3000);
+    }).catch(error => {
+        console.log(error);
+    });
+  }
+
+  deleteCollection(db, collectionRef, batchSize) {
+    const query = collectionRef.limit(batchSize);
+
+    return new Promise((resolve, reject) => {
+        this.deleteQueryBatch(db, query, batchSize, resolve, reject);
+    });
+  }
+
+  deleteQueryBatch(db, query, batchSize, resolve, reject) {
+    query.get()
+        .then((snapshot) => {
+            // When there are no documents left, we are done
+            if (snapshot.size === 0) {
+                return 0;
+            }
+
+            // Delete documents in a batch
+            const batch = firebase.firestore().batch();
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+
+            return batch.commit().then(() => {
+                return snapshot.size;
+            });
+        }).then((numDeleted) => {
+        if (numDeleted === 0) {
+            resolve();
+            return;
+        }
+
+        // Replacing Recurse on the next process tick, to avoid exploding the stack.
+        setTimeout(() => {
+            this.deleteQueryBatch(db, query, batchSize, resolve, reject);
+        }, 0);
+    })
+        .catch(reject);
   }
 
   cancelSubscriptions() {
