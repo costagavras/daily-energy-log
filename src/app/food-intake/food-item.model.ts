@@ -6,6 +6,7 @@ export interface FoodItem {
   protein?: number;
   carb?: number;
   fat?: number;
+  category?: string;
   date: Date;
   dateStr: string;
 }

@@ -1,0 +1,67 @@
+<section class="new-food-item" fxLayout fxLayoutAlign="center">
+    <form #f="ngForm">
+      <mat-card fxFlex.xs="100%" fxFlex="500px">
+        <mat-card-title fxLayoutAlign="center">Add food to database</mat-card-title>
+        <mat-card-content>
+
+          <mat-form-field class="food-name">
+            <mat-label>Name</mat-label>
+            <input matInput ngModel type="text" name="nameFoodItem" [required]="nameFoodItemInput.touched" #nameFoodItemInput="ngModel">
+            <mat-error *ngIf="nameFoodItemInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="food-category" appearance="fill">
+            <mat-label>Choose food category</mat-label>
+            <mat-select ngModel name="foodCategories" [required]="foodCategoriesInput.touched" #foodCategoriesInput="ngModel">
+              <mat-option *ngFor="let cat_item of foodCategories" [value]="cat_item">
+                {{ cat_item }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="foodCategoriesInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="measurement" appearance="fill">
+            <mat-label>Serving, gr</mat-label>
+            <input matInput ngModel type="number" name="serving" [required]="servingInput.touched" [min]="minValue" #servingInput="ngModel">
+            <mat-error *ngIf="servingInput.hasError('required')">Field must not be empty.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="food-composition" appearance="fill">
+            <mat-label>Fat, gr</mat-label>
+            <input matInput ngModel type="number" name="fat" [min]="minValue" #fatInput="ngModel">
+          </mat-form-field>
+
+          <mat-form-field class="food-composition" appearance="fill">
+            <mat-label>Carbohydrate, gr</mat-label>
+            <input matInput ngModel type="number" name="carb" [min]="minValue" #fatInput="ngModel">
+          </mat-form-field>
+
+          <mat-form-field class="food-composition" appearance="fill">
+            <mat-label>Protein, gr</mat-label>
+            <input matInput ngModel type="number" name="prot" [min]="minValue" #fatInput="ngModel">
+          </mat-form-field>
+
+          <div>
+            <mat-form-field class="calories" appearance="fill">
+              <mat-label>Calories</mat-label>
+              <input matInput ngModel type="number" name="calories" [required]="caloriesInput.touched" [min]="minValue" #caloriesInput="ngModel">
+              <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-card class="mat-calories" appearance="fill">
+              <mat-card-subtitle>Check calories</mat-card-subtitle>
+              <mat-card-content>
+                <h4>{{ f.value.fat * 9 + f.value.carb * 4 + f.value.prot * 4}}</h4>
+              </mat-card-content>
+            </mat-card>
+          </div>
+<!--
+          <mat-action-row>
+              <button type="Submit" (click)="foodService.saveFoodItem(today, f.value.nameFoodItem, f.value.foodCategories, f.value.serving)" mat-raised-button color="primary"
+              [disabled]="foodNameBeveragesInput.invalid || foodNameBeveragesInput.untouched || servingBeveragesInput.untouched || servingBeveragesInput.invalid">Save!</button>
+          </mat-action-row> -->
+
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </section>
