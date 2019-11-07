@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   profileFinished = true;
   private homeSubs: Subscription[] = [];
 
-  constructor(private profileService: ProfileService) { }
+  constructor(public profileService: ProfileService) { }
 
   ngOnInit() {
     const prFinished = this.profileService.getUserData2();

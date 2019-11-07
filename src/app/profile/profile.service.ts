@@ -145,12 +145,15 @@ private userExistsSub: Subscription;
 
   deleteUserAccount() {
     this.fbUser = firebase.auth().currentUser;
-    this.fbUser.delete()
+    if (this.fbUser) {
+      this.fbUser.delete()
       .then(() => {
         this.uiService.showSnackbar('This account is now gone too!', null, 3000);
+        // this.router.navigate(['/signup']);
     }).catch(error => {
-        console.log(error);
+      console.log(error);
     });
+    }
   }
 
   deleteCollection(db, collectionRef, batchSize) {

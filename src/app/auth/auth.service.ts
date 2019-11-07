@@ -37,7 +37,7 @@ export class AuthService {
           this.profileService.cancelSubscriptions();
           // false bc boolean payload (false = unregistered user), listened to in #header and #navigation to show contextual menu
           this.authChange.next(false);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/signup']);
           this.isAuthenticated = false;
         }
       });

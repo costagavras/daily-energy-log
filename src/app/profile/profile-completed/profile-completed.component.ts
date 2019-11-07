@@ -30,7 +30,6 @@ dataLoaded = false;
         userProfileData => {
       this.userData = userProfileData;
       this.dataLoaded = true;
-      console.log(this.userData);
     }));
   }
 

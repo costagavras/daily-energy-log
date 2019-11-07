@@ -12,7 +12,15 @@
         <mat-panel-title><h4>You are logged but your profile needs completing</h4></mat-panel-title>
         <mat-card-actions>
           <a mat-raised-button
-          routerLink="/profile">Review profile <mat-icon>double_arrow</mat-icon></a>
+          routerLink="/profile">Review User profile <mat-icon>double_arrow</mat-icon></a>
+          <br>
+          <button mat-raised-button
+            class="deleteUserBtn"
+            color="warn"
+            style="display: block; margin: 20px auto 0;"
+            (click)="profileService.deleteUserAccount()">
+            Delete User Login
+          </button>
         </mat-card-actions>
       </mat-card-content>
     </mat-card>
