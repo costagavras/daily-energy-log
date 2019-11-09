@@ -14,6 +14,13 @@ import { MatAutocompleteSelectedEvent } from '@angular/material';
 export class AddFoodComponent implements OnInit, OnDestroy {
 
   minValue = 0;
+  catItem: string;
+  serving: number;
+  fat: number;
+  carb: number;
+  protein: number;
+  calories: number;
+  totalCalories: number;
   today = new Date();
   foodCategories = ['Beverages', 'Dairy', 'Desserts', 'Dishes', 'Fats', 'Fish', 'Fruits', 'Grains',
                     'Meat', 'Vegetables', 'Other'];
@@ -54,6 +61,9 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   }
 
   displayFn(foodItem?: FoodItem): string | undefined {
+    if (!foodItem) {
+      return '';
+    }
     return foodItem ? foodItem.name : undefined;
   }
 
@@ -61,14 +71,19 @@ export class AddFoodComponent implements OnInit, OnDestroy {
     if (name != null) {
     const filterValue = name.toLowerCase();
     return this.foodItems.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
-    // return this.foodItems.filter(option => option.name.toLowerCase().includes(filterValue));
     }
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
     console.log(event.option.value);
+    this.catItem = event.option.value.category;
+    this.serving = event.option.value.serving;
+    this.fat = event.option.value.fat;
+    this.carb = event.option.value.carb;
+    this.protein = event.option.value.protein;
+    this.calories = event.option.value.caloriesIn;
+    this.totalCalories = this.fat * 4 + (this.carb + this.protein) * 4;
   }
-
 
   ngOnDestroy() {
     if (this.addFoodSubs) {

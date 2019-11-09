@@ -34,9 +34,9 @@
 
           <mat-form-field class="food-category" appearance="fill">
             <mat-label>Choose food category</mat-label>
-            <mat-select ngModel name="foodCategory" [required]="foodCategoryInput.touched" #foodCategoryInput="ngModel">
-              <mat-option *ngFor="let cat_item of foodCategories" [value]="cat_item">
-                {{ cat_item }}
+            <mat-select ngModel [(ngModel)]="catItem" name="foodCategory" [required]="foodCategoryInput.touched" #foodCategoryInput="ngModel">
+              <mat-option *ngFor="let catItem of foodCategories" [value]="catItem">
+                {{ catItem }}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="foodCategoryInput.hasError('required')">Field must not be empty.</mat-error>
@@ -44,47 +44,48 @@
 
           <mat-form-field class="measurement" appearance="fill">
             <mat-label>Serving, gr</mat-label>
-            <input matInput ngModel type="number" name="serving" [required]="servingInput.touched" [min]="minValue" #servingInput="ngModel">
+            <input matInput ngModel type="number" name="serving" [value]="serving" [required]="servingInput.touched" [min]="minValue" #servingInput="ngModel">
             <mat-error *ngIf="servingInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Fat, gr</mat-label>
-            <input matInput ngModel type="number" name="fat" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel type="number" name="fat" [value]="fat" [min]="minValue" #fatInput="ngModel">
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Carbohydrate, gr</mat-label>
-            <input matInput ngModel type="number" name="carbohydrate" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel type="number" name="carbohydrate" [value]="carb" [min]="minValue" #fatInput="ngModel">
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Protein, gr</mat-label>
-            <input matInput ngModel type="number" name="protein" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel type="number" name="protein" [value]="protein" [min]="minValue" #fatInput="ngModel">
           </mat-form-field>
 
           <div>
             <mat-form-field class="calories" appearance="fill">
               <mat-label>Calories</mat-label>
-              <input matInput ngModel type="number" name="calories" [required]="caloriesInput.touched" [min]="minValue" #caloriesInput="ngModel">
+              <input matInput ngModel type="number" name="calories" [value]="calories" [required]="caloriesInput.touched" [min]="minValue" #caloriesInput="ngModel">
               <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
 
             <mat-card class="mat-calories" appearance="fill">
               <mat-card-subtitle>Check calories</mat-card-subtitle>
               <mat-card-content>
-                <h4>{{ f.value.fat * 9 + f.value.carbohydrate * 4 + f.value.protein * 4}}</h4>
+                <h4>{{ f.value.fat * 9 + (f.value.carbohydrate + f.value.protein) * 4 }}</h4>
+                <!-- <h4>{{ totalCalories ? totalCalories : f.value.fat * 9 + (f.value.carbohydrate + f.value.protein) * 4  }}</h4> -->
               </mat-card-content>
             </mat-card>
           </div>
 
           <mat-action-row>
               <button *ngIf="!toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="nameFoodItemInput?.untouched || foodCategoryInput.untouched || servingInput.untouched || caloriesInput.invalid">Add!</button>
+              [disabled]="nameFoodItemInput?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Add!</button>
               <button *ngIf="toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="filterControl?.untouched || foodCategoryInput.untouched || servingInput.untouched || caloriesInput.invalid">Delete!</button>
+              [disabled]="filterControl?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Delete!</button>
               <button *ngIf="toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="filterControl?.untouched || foodCategoryInput.untouched || servingInput.untouched || caloriesInput.invalid">Save!</button>
+              [disabled]="filterControl?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Save!</button>
           </mat-action-row>
 
           </mat-card-content>
