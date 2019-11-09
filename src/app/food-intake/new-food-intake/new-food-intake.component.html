@@ -27,7 +27,7 @@
               <mat-form-field class="food-item" appearance="fill">
                 <mat-label>Choose food item</mat-label>
                 <mat-select ngModel name="foodNameBeverages" [required]="foodNameBeveragesInput.touched" #foodNameBeveragesInput="ngModel">
-                  <mat-option *ngFor="let food_item of foodItemsBeverages" [value]="food_item.id">
+                  <mat-option *ngFor="let food_item of foodItemsBeverages" [value]="food_item.name">
                     {{ food_item.name }}
                   </mat-option>
                 </mat-select>
@@ -63,7 +63,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameDairy" [required]="foodNameDairyInput.touched" #foodNameDairyInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsDairy" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsDairy" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -99,7 +99,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameDesserts" [required]="foodNameDessertsInput.touched" #foodNameDessertsInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsDesserts" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsDesserts" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -135,7 +135,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameDishes" [required]="foodNameDishesInput.touched" #foodNameDishesInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsDishes" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsDishes" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -171,7 +171,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameFats" [required]="foodNameFatsInput.touched" #foodNameFatsInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsFats" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsFats" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -207,7 +207,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameFish" [required]="foodNameFishInput.touched" #foodNameFishInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsFish" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsFish" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -243,7 +243,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameFruits" [required]="foodNameFruitsInput.touched" #foodNameFruitsInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsFruits" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsFruits" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -279,7 +279,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameGrains" [required]="foodNameGrainsInput.touched" #foodNameGrainsInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsGrains" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsGrains" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -315,7 +315,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameMeat" [required]="foodNameMeatInput.touched" #foodNameMeatInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsMeat" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsMeat" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -351,7 +351,7 @@
             <mat-form-field class="food-item" appearance="fill">
               <mat-label>Choose food item</mat-label>
               <mat-select ngModel name="foodNameVegetables" [required]="foodNameVegetablesInput.touched" #foodNameVegetablesInput="ngModel">
-                <mat-option *ngFor="let food_item of foodItemsVegetables" [value]="food_item.id">
+                <mat-option *ngFor="let food_item of foodItemsVegetables" [value]="food_item.name">
                   {{ food_item.name }}
                 </mat-option>
               </mat-select>
@@ -366,6 +366,42 @@
             <mat-action-row>
                 <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameVegetables, f.value.servingVegetables, 'vegetables')" mat-raised-button color="primary"
                 [disabled]="foodNameVegetablesInput.invalid || foodNameVegetablesInput.untouched || servingVegetablesInput.untouched || servingVegetablesInput.invalid">Save!</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+         <!-- 10th panel - Other -->
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Other
+            </mat-panel-title>
+            <mat-panel-description>
+              Input food item and serving size in grams
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+            <mat-form-field class="food-item" appearance="fill">
+              <mat-label>Choose food item</mat-label>
+              <mat-select ngModel name="foodNameOther" [required]="foodNameOtherInput.touched" #foodNameOtherInput="ngModel">
+                <mat-option *ngFor="let food_item of foodItemsOther" [value]="food_item.name">
+                  {{ food_item.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="foodNameOtherInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="measurement" appearance="fill">
+              <mat-label>Serving, gr</mat-label>
+              <input matInput type="number" name="servingOther" [required]="servingOtherInput.touched" [min]="minValue" ngModel #servingOtherInput="ngModel">
+              <mat-error *ngIf="servingOtherInput.hasError('required')">Field must not be empty.</mat-error>
+            </mat-form-field>
+            <mat-action-row>
+                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, f.value.foodNameOther, f.value.servingOther, 'other')" mat-raised-button color="primary"
+                [disabled]="foodNameOtherInput.invalid || foodNameOtherInput.untouched || servingOtherInput.untouched || servingOtherInput.invalid">Save!</button>
             </mat-action-row>
         </mat-expansion-panel>
 

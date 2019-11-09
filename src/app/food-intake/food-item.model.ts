@@ -1,5 +1,5 @@
 export interface FoodItem {
-  id: string;
+  id?: string;
   name: string;
   serving: number;
   caloriesIn: number;
@@ -7,6 +7,6 @@ export interface FoodItem {
   carb?: number;
   fat?: number;
   category?: string;
-  date: Date;
-  dateStr: string;
+  date?: Date;
+  dateStr?: string;
 }

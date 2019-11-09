@@ -22,6 +22,8 @@ export class FoodService {
   foodItemsGrainsChanged = new Subject<FoodItem[]>();
   foodItemsMeatChanged = new Subject<FoodItem[]>();
   foodItemsVegetablesChanged = new Subject<FoodItem[]>();
+  foodItemsOtherChanged = new Subject<FoodItem[]>();
+  customFoodItemsChanged = new Subject<FoodItem[]>();
 
   finishedFoodItemsChanged = new Subject<FoodItem[]>();
 
@@ -51,26 +53,26 @@ export class FoodService {
 
   fetchAvailableFoodItemsBeverages() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsBeverages', ref => ref.orderBy('name', 'asc')).snapshotChanges()
-      .pipe(map(docArray => {
-        return docArray.map(doc => {
-          return {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data()
-          } as FoodItem;
-        });
-      }))
-      .subscribe((foodItems: FoodItem[]) => {
-        this.availableFoodItemsStorage['beverages'] = foodItems;
-        this.foodItemsBeveragesChanged.next([...this.availableFoodItemsStorage['beverages']]);
-      }, error => {
-        this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
-      }));
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Beverages')).snapshotChanges()
+        .pipe(map(docArray => {
+          return docArray.map(doc => {
+            return {
+              id: doc.payload.doc.id,
+              ...doc.payload.doc.data()
+            } as FoodItem;
+          });
+        }))
+        .subscribe((foodItems: FoodItem[]) => {
+          this.availableFoodItemsStorage['beverages'] = foodItems;
+          this.foodItemsBeveragesChanged.next([...this.availableFoodItemsStorage['beverages']]);
+        }, error => {
+          this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+    }));
   }
 
   fetchAvailableFoodItemsDairy() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsDairy', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Dairy')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -89,7 +91,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsDesserts() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsDesserts', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Desserts')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -108,7 +110,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsDishes() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsDishes', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Dishes')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -127,7 +129,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsFats() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsFats', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fats')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -146,7 +148,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsFish() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsFish', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fish')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -165,7 +167,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsFruits() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsFruits', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fruits')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -184,7 +186,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsGrains() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsGrains', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Grains')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -203,7 +205,7 @@ export class FoodService {
 
   fetchAvailableFoodItemsMeat() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsMeat', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Meat')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -222,7 +224,8 @@ export class FoodService {
 
   fetchAvailableFoodItemsVegetables() {
     this.foodServiceSubs.push(
-      this.db.collection<FoodItem>('availableFoodItemsVegetables', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      // this.db.collection<FoodItem>('availableFoodItemsVegetables', ref => ref.orderBy('name', 'asc')).snapshotChanges()
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Vegetables')).snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -239,8 +242,45 @@ export class FoodService {
       }));
   }
 
-  async saveFoodItem(foodDate: Date, selectedId: string, size: number, param: string) {
-    this.chosenFoodItem = this.availableFoodItemsStorage[param].find(ex => ex.id === selectedId);
+  fetchAvailableFoodItemsOther() {
+    this.foodServiceSubs.push(
+      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Other')).snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          return {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          } as FoodItem;
+        });
+      }))
+      .subscribe((foodItems: FoodItem[]) => {
+        this.availableFoodItemsStorage['other'] = foodItems;
+        this.foodItemsOtherChanged.next([...this.availableFoodItemsStorage['other']]);
+      }, error => {
+        this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+      }));
+  }
+
+  fetchCustomFoodItems() {
+    this.foodServiceSubs.push(
+      this.db.collectionGroup<FoodItem>('userFoodItems').snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          return {
+            id: doc.payload.doc.id,
+            ...doc.payload.doc.data()
+          } as FoodItem;
+        });
+      }))
+      .subscribe((foodItems: FoodItem[]) => {
+        this.customFoodItemsChanged.next(foodItems);
+      }, error => {
+        this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+      }));
+  }
+
+  async saveFoodItem(foodDate: Date, name: string, size: number, param: string) {
+    this.chosenFoodItem = this.availableFoodItemsStorage[param].find(ex => ex.name === name);
     await this.getUserInfo();
     this.addDataToDatabase({
       ...this.chosenFoodItem,
@@ -263,20 +303,47 @@ export class FoodService {
     });
   }
 
+  saveCustomFood(foodItem: FoodItem) {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(foodItem.name).set(foodItem)
+    // this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').add(foodItem)
+    .then(() => {
+      this.uiService.showSnackbar(foodItem.name + ' was added to the database', null, 3000);
+      // this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(docRef.id).update({
+      //   id: docRef.id
+      // });
+    });
+  }
+
   fetchCompletedFoodItems() {
     this.uiService.loadingStateChanged.next(true);
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
 
     this.foodServiceSubs.push(
       this.db.collection<FoodItem>('users/' + userFirebaseId + '/finishedFoodItems', ref => ref.orderBy('date', 'desc')).valueChanges()
-    .subscribe((foodItem: FoodItem[]) => {
-      this.uiService.loadingStateChanged.next(false);
-      this.finishedFoodItemsChanged.next(foodItem);
-    }, error => {
-      this.uiService.loadingStateChanged.next(false);
-      this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
-    }));
+      .subscribe((foodItem: FoodItem[]) => {
+        this.uiService.loadingStateChanged.next(false);
+        this.finishedFoodItemsChanged.next(foodItem);
+      }, error => {
+        this.uiService.loadingStateChanged.next(false);
+        this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+      })
+    );
   }
+
+  // fetchCustomFoodItems() {
+  //   this.uiService.loadingStateChanged.next(true);
+  //   this.foodServiceSubs.push(
+  //     this.db.collectionGroup<FoodItem>('userFoodItems').valueChanges()
+  //       .subscribe((foodItem: FoodItem[]) => {
+  //         this.uiService.loadingStateChanged.next(false);
+  //         this.customFoodItemsChanged.next(foodItem);
+  //   }, error => {
+  //     this.uiService.loadingStateChanged.next(false);
+  //     this.uiService.showSnackbar('Fetching food items failed, please try again later', null, 3000);
+  //   })
+  //   );
+  // }
 
   filterDate(event: MatDatepickerInputEvent<Date>) {
     this.dateFilter.next(event.value);

@@ -43,3 +43,10 @@
 .mat-calories > .mat-card-content {
   margin-bottom: 2px;
 }
+
+.emphasis {
+  font: bold;
+  font-size: 16px;
+  color: black;
+  text-decoration-line: underline;
+}

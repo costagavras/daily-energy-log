@@ -45,6 +45,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   foodItemsGrains: FoodItem[];
   foodItemsMeat: FoodItem[];
   foodItemsVegetables: FoodItem[];
+  foodItemsOther: FoodItem[];
   private fbAvailableFoodItemsSubs: Subscription[] = [];
 
   panelOpenState = false;
@@ -113,6 +114,12 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
         foodItems => (this.foodItemsVegetables = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsVegetables();
+
+    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsOtherChanged
+      .subscribe(
+        foodItems => (this.foodItemsOther = foodItems)
+      ));
+    this.foodService.fetchAvailableFoodItemsOther();
 
   }
 
