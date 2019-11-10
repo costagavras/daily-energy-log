@@ -62,6 +62,7 @@ private userExistsSub: Subscription;
           .then(doc => {
             if (doc.exists) {
               this.userProfile = doc.data();
+              this.userProfileData.next(this.userProfile);
             }
           })
           .catch(err => {

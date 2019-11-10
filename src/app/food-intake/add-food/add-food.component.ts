@@ -3,7 +3,7 @@ import { NgForm, FormControl } from '@angular/forms';
 import { FoodService } from '../food.service';
 import { Subscription, Observable } from 'rxjs';
 import { FoodItem } from '../food-item.model';
-import { startWith, map } from 'rxjs/operators';
+import { startWith, map, filter } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
@@ -15,6 +15,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
 
   minValue = 0;
   catItem: string;
+  name: string;
+  filter: string;
   serving: number;
   fat: number;
   carb: number;
@@ -29,35 +31,41 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   filteredFoodItems: Observable<FoodItem[]>;
   filterControl = new FormControl();
 
-  constructor(private foodService: FoodService) { }
+  constructor(public foodService: FoodService) { }
 
   @Output() optionSelected: EventEmitter<MatAutocompleteSelectedEvent>;
+
   ngOnInit() {
     this.foodService.fetchCustomFoodItems();
     this.addFoodSubs.push(this.foodService.customFoodItemsChanged
       .subscribe(foodItems => {
         this.foodItems = foodItems;
+        this.filteredFoodItems = this.filterControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => value !== null ? typeof value === 'string' ? value : value.name : ''),
+          map(name => name ? this._filter(name) : this.foodItems.slice())
+        );
       }));
 
-    this.filteredFoodItems = this.filterControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => typeof value === 'string' ? value : value.name),
-      map(name => name ? this._filter(name) : this.foodItems.slice())
-    );
   }
 
-  onSave(form: NgForm) {
-    console.log(form);
-    this.foodService.saveCustomFood({
-      name: form.value.name,
-      serving: form.value.serving,
-      caloriesIn: form.value.calories,
-      fat: form.value.fat,
-      carb: form.value.carbohydrate,
-      protein: form.value.protein,
-      category: form.value.foodCategory
-    });
+  onSave(form: NgForm, filterValue: any, action: string) {
+    if (action === 'delete') {
+      this.foodService.saveCustomFood(filterValue, 'delete');
+      form.resetForm();
+      this.filterControl.reset();
+    } else {
+      this.foodService.saveCustomFood({
+        name: typeof filterValue === 'string' ? filterValue : filterValue.name,
+        serving: form.value.serving,
+        caloriesIn: form.value.calories,
+        fat: form.value.fat,
+        carb: form.value.carbohydrate,
+        protein: form.value.protein,
+        category: form.value.foodCategory
+      }, action === 'update' ? this.foodService.oldAddedFoodName || this.name : null);
+    }
   }
 
   displayFn(foodItem?: FoodItem): string | undefined {
@@ -75,7 +83,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
-    console.log(event.option.value);
+    this.name = event.option.value.name,
     this.catItem = event.option.value.category;
     this.serving = event.option.value.serving;
     this.fat = event.option.value.fat;

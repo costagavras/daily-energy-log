@@ -2,25 +2,26 @@
     <form #f="ngForm">
       <mat-card fxFlex.xs="100%" fxFlex="500px">
         <mat-card-title fxLayoutAlign="center">Food Database</mat-card-title>
-        <div fxLayoutAlign="center">
+        <!-- <div fxLayoutAlign="center">
           <mat-card-subtitle [ngClass]="{'emphasis' : !toggle.checked}" fxFlexAlign="end">Add food to database</mat-card-subtitle>
           <mat-slide-toggle
             fxFlexAlign="baseline" style="padding: 0px 30px 10px;"
             #toggle>
           </mat-slide-toggle>
           <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Edit/Delete food</mat-card-subtitle>
-        </div>
+        </div> -->
         <mat-card-content>
 
-          <mat-form-field class="food-name" *ngIf="!toggle.checked">
+          <!-- <mat-form-field class="food-name" *ngIf="!toggle.checked">
             <mat-label>New name</mat-label>
             <input matInput ngModel type="text" name="name" [required]="nameFoodItemInput.touched" #nameFoodItemInput="ngModel">
             <mat-error *ngIf="nameFoodItemInput.hasError('required')">Field must not be empty.</mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
 
-          <mat-form-field class="food-name" *ngIf="toggle.checked">
+          <!-- <mat-form-field class="food-name" *ngIf="toggle.checked"> -->
+          <mat-form-field class="food-name">
             <mat-label>Pick food name</mat-label>
-            <input matInput type="text" name="filter"
+            <input #filter matInput type="text" name="filter"
             [required]="filterControl.touched"
             [formControl]="filterControl"
             [matAutocomplete]="auto">
@@ -34,7 +35,7 @@
 
           <mat-form-field class="food-category" appearance="fill">
             <mat-label>Choose food category</mat-label>
-            <mat-select ngModel [(ngModel)]="catItem" name="foodCategory" [required]="foodCategoryInput.touched" #foodCategoryInput="ngModel">
+            <mat-select ngModel [(ngModel)]="catItem" name="foodCategory" required #foodCategoryInput="ngModel">
               <mat-option *ngFor="let catItem of foodCategories" [value]="catItem">
                 {{ catItem }}
               </mat-option>
@@ -44,48 +45,51 @@
 
           <mat-form-field class="measurement" appearance="fill">
             <mat-label>Serving, gr</mat-label>
-            <input matInput ngModel type="number" name="serving" [value]="serving" [required]="servingInput.touched" [min]="minValue" #servingInput="ngModel">
+            <input matInput ngModel [(ngModel)]="serving" type="number" name="serving" [value]="serving" required [min]="minValue" #servingInput="ngModel">
             <mat-error *ngIf="servingInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Fat, gr</mat-label>
-            <input matInput ngModel type="number" name="fat" [value]="fat" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel [(ngModel)]="fat" type="number" name="fat" [value]="fat" [min]="minValue" required  #fatInput="ngModel">
+            <mat-error *ngIf="fatInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Carbohydrate, gr</mat-label>
-            <input matInput ngModel type="number" name="carbohydrate" [value]="carb" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel [(ngModel)]="carb" type="number" name="carbohydrate" [value]="carb" [min]="minValue" required #carbInput="ngModel">
+            <mat-error *ngIf="carbInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
 
           <mat-form-field class="food-composition" appearance="fill">
             <mat-label>Protein, gr</mat-label>
-            <input matInput ngModel type="number" name="protein" [value]="protein" [min]="minValue" #fatInput="ngModel">
+            <input matInput ngModel [(ngModel)]="protein" type="number" name="protein" [value]="protein" [min]="minValue" required #proteinInput="ngModel">
+            <mat-error *ngIf="proteinInput.hasError('required')">Field must not be empty.</mat-error>
           </mat-form-field>
 
           <div>
             <mat-form-field class="calories" appearance="fill">
               <mat-label>Calories</mat-label>
-              <input matInput ngModel type="number" name="calories" [value]="calories" [required]="caloriesInput.touched" [min]="minValue" #caloriesInput="ngModel">
+              <input matInput ngModel [(ngModel)]="calories" type="number" name="calories" [value]="calories" required [min]="minValue" #caloriesInput="ngModel">
               <mat-error *ngIf="caloriesInput.hasError('required')">Field must not be empty.</mat-error>
             </mat-form-field>
 
             <mat-card class="mat-calories" appearance="fill">
               <mat-card-subtitle>Check calories</mat-card-subtitle>
               <mat-card-content>
-                <h4>{{ f.value.fat * 9 + (f.value.carbohydrate + f.value.protein) * 4 }}</h4>
+                <h4>{{ (f.value.fat * 9 + (f.value.carbohydrate + f.value.protein) * 4) || "0" }}</h4>
                 <!-- <h4>{{ totalCalories ? totalCalories : f.value.fat * 9 + (f.value.carbohydrate + f.value.protein) * 4  }}</h4> -->
               </mat-card-content>
             </mat-card>
           </div>
 
-          <mat-action-row>
-              <button *ngIf="!toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="nameFoodItemInput?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Add!</button>
-              <button *ngIf="toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="filterControl?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Delete!</button>
-              <button *ngIf="toggle.checked" type="Submit" (click)="onSave(f)" mat-raised-button color="primary"
-              [disabled]="filterControl?.invalid || foodCategoryInput.invalid || servingInput.invalid || caloriesInput.invalid">Save!</button>
+          <mat-action-row style="justify-content: space-around;">
+            <button type="Submit" (click)="onSave(f, filterControl.value, 'delete')" mat-raised-button color="warn"
+            [disabled]="filterControl.invalid || filterControl.value === null || f.invalid">Delete</button>
+            <button type="Submit" (click)="onSave(f, filterControl.value, 'update')" mat-raised-button color="accent"
+            [disabled]="filterControl.invalid || filterControl.value === null || f.invalid">Update</button>
+            <button type="Submit" (click)="onSave(f, filterControl.value, 'add')" mat-raised-button color="primary"
+            [disabled]="filterControl.invalid || filterControl.value === null || f.invalid">Add</button>
           </mat-action-row>
 
           </mat-card-content>

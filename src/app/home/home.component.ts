@@ -16,19 +16,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(public profileService: ProfileService) { }
 
   ngOnInit() {
-    const prFinished = this.profileService.getUserData2();
-    if (typeof prFinished !== 'undefined' && typeof prFinished.activityLevel !== 'undefined') {
-      this.profileFinished = true;
-    } else {
-      this.profileFinished = false;
-    }
-  // if (typeof prFinished === 'undefined') {
-  //   this.profileFinished = false;
-  // } else if (typeof prFinished.activityLevel === 'undefined') {
-  //   this.profileFinished = false;
-  // } else {
-  //   this.profileFinished = true;
-  // }
+    // const prFinished = this.profileService.getUserData2();
+    this.profileService.userProfileData
+      .subscribe(user => {
+        const prFinished = user;
+        if (typeof prFinished !== 'undefined' && typeof prFinished.activityLevel !== 'undefined') {
+          this.profileFinished = true;
+        } else {
+          this.profileFinished = false;
+        }
+    });
   }
 
   ngOnDestroy() {

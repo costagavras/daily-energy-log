@@ -30,6 +30,7 @@ export class FoodService {
   dateFilter = new Subject<Date>();
 
   userData: User;
+  oldAddedFoodName: string;
 
   private availableFoodItemsStorage = {} as any;
 
@@ -303,19 +304,39 @@ export class FoodService {
     });
   }
 
-  saveCustomFood(foodItem: FoodItem) {
+  saveCustomFood(foodItem: FoodItem, oldName?: string) {
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
-    this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(foodItem.name).set(foodItem)
-    // this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').add(foodItem)
-    .then(() => {
-      this.uiService.showSnackbar(foodItem.name + ' was added to the database', null, 3000);
-      // this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(docRef.id).update({
-      //   id: docRef.id
-      // });
-    });
+    // case Delete
+    if (oldName && oldName === 'delete') {
+      return this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(foodItem.name).delete()
+      .then(() => {
+        this.uiService.showSnackbar(foodItem.name + ' was successfully deleted', null, 3000);
+        });
+    }
+
+    // case Update
+    if (oldName && oldName !== 'delete') {
+      return this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(oldName).delete()
+        .then(() => {
+          this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(foodItem.name).set(foodItem)
+            .then(() => {
+              this.uiService.showSnackbar(foodItem.name + ' was updated in the database', null, 3000);
+              this.oldAddedFoodName = foodItem.name;
+            });
+        });
+    }
+
+    // case Add
+    if (!oldName) {
+      return this.db.collection('users').doc(userFirebaseId).collection('userFoodItems').doc(foodItem.name).set(foodItem)
+      .then(() => {
+        this.uiService.showSnackbar(foodItem.name + ' was added to the database', null, 3000);
+      });
+    }
+
   }
 
-  fetchCompletedFoodItems() {
+fetchCompletedFoodItems() {
     this.uiService.loadingStateChanged.next(true);
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
 
@@ -345,7 +366,7 @@ export class FoodService {
   //   );
   // }
 
-  filterDate(event: MatDatepickerInputEvent<Date>) {
+filterDate(event: MatDatepickerInputEvent<Date>) {
     this.dateFilter.next(event.value);
   }
 
