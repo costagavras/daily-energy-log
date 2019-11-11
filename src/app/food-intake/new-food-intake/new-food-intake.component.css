@@ -2,6 +2,11 @@
   padding: 10px;
 }
 
+.food-name {
+  width: 90%;
+  display: block;
+}
+
 .food-item {
   display: block;
 }
@@ -22,6 +27,18 @@ mat-expansion-panel-header {
   height: 60px;
 }
 
-mat-expansion-panel-body {
+:host ::ng-deep .mat-expansion-panel-body {
   padding: 0 24px;
+}
+
+.emphasis {
+  font: bold;
+  font-size: 16px;
+  color: black;
+  text-decoration-line: underline;
+}
+
+.usda_citation {
+  font-size: 9px;
+  margin: 0;
 }

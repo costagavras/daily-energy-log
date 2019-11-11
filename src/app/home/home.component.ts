@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // const prFinished = this.profileService.getUserData2();
-    this.profileService.userProfileData
+    this.homeSubs.push(this.profileService.userProfileData
       .subscribe(user => {
         const prFinished = user;
         if (typeof prFinished !== 'undefined' && typeof prFinished.activityLevel !== 'undefined') {
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else {
           this.profileFinished = false;
         }
-    });
+    }));
   }
 
   ngOnDestroy() {

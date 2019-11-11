@@ -8,10 +8,26 @@
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-card-title fxLayoutAlign="center">Food intake</mat-card-title>
+      <div fxLayoutAlign="center">
+        <mat-card-subtitle [ngClass]="{'emphasis' : !toggle.checked}" fxFlexAlign="end">Add from USDA database</mat-card-subtitle>
+        <mat-slide-toggle
+          fxFlexAlign="baseline" style="padding: 0px 30px 10px;"
+          #toggle>
+        </mat-slide-toggle>
+        <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Add from personal database</mat-card-subtitle>
+      </div>
       <mat-card-content fxLayoutAlign="center">
 
-      <mat-accordion>
+      <div *ngIf="!toggle.checked">
+        <mat-form-field class="food-name">
+          <mat-label>Search for keywords...</mat-label>
+          <input matInput ngModel type="text" name="name" [required]="nameFoodItemInput.touched" #nameFoodItemInput="ngModel">
+          <mat-error *ngIf="nameFoodItemInput.hasError('required')">Field must not be empty.</mat-error>
+        </mat-form-field>
+        <p class="usda_citation">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</p>
+      </div>
+
+      <mat-accordion *ngIf="toggle.checked">
 
         <!-- 1st panel - Beverages -->
           <mat-expansion-panel>

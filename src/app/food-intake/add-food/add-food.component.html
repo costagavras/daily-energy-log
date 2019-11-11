@@ -2,23 +2,9 @@
     <form #f="ngForm">
       <mat-card fxFlex.xs="100%" fxFlex="500px">
         <mat-card-title fxLayoutAlign="center">Food Database</mat-card-title>
-        <!-- <div fxLayoutAlign="center">
-          <mat-card-subtitle [ngClass]="{'emphasis' : !toggle.checked}" fxFlexAlign="end">Add food to database</mat-card-subtitle>
-          <mat-slide-toggle
-            fxFlexAlign="baseline" style="padding: 0px 30px 10px;"
-            #toggle>
-          </mat-slide-toggle>
-          <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Edit/Delete food</mat-card-subtitle>
-        </div> -->
+
         <mat-card-content>
 
-          <!-- <mat-form-field class="food-name" *ngIf="!toggle.checked">
-            <mat-label>New name</mat-label>
-            <input matInput ngModel type="text" name="name" [required]="nameFoodItemInput.touched" #nameFoodItemInput="ngModel">
-            <mat-error *ngIf="nameFoodItemInput.hasError('required')">Field must not be empty.</mat-error>
-          </mat-form-field> -->
-
-          <!-- <mat-form-field class="food-name" *ngIf="toggle.checked"> -->
           <mat-form-field class="food-name">
             <mat-label>Pick food name</mat-label>
             <input #filter matInput type="text" name="filter"
