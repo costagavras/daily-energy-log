@@ -106,3 +106,15 @@ mat-card-content {
   background-color: mintcream
 }
 
+:host ::ng-deep .usda_foodItemData {
+  justify-content: space-evenly;
+  padding-bottom: 15px;
+  display: flex;
+}
+
+:host ::ng-deep .usda_foodItemButtons {
+  justify-content: space-between;
+  padding: 20px 0 10px;
+  display: flex;
+}
+

@@ -24,7 +24,10 @@
           <input matInput ngModel type="text" name="nameSearch" [required]="nameSearch.touched" #nameSearch="ngModel">
           <mat-error *ngIf="nameSearch.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
-        <button class="usda_button" mat-raised-button color="primary" [disabled]="nameSearch.invalid || nameSearch.untouched" (click)="onSearch(f.value.nameSearch, branded, requireAllWords)"><mat-icon>search</mat-icon>Search...</button>
+        <button class="usda_button" mat-raised-button color="primary"
+          [disabled]="nameSearch.invalid || nameSearch.untouched"
+          (click)="onSearch(f.value.nameSearch, branded, requireAllWords)"><mat-icon>search</mat-icon>Search...
+        </button>
         <div class="usda_checkboxes">
           <mat-checkbox class="usda_checkbox" name="branded" [(ngModel)]="branded">Include branded items</mat-checkbox>
           <mat-checkbox class="usda_checkbox" name="requireAllWords" [(ngModel)]="requireAllWords">Require all words</mat-checkbox>
@@ -36,14 +39,14 @@
               <mat-label>Portion size, gr</mat-label>
               <input matInput ngModel type="number" name="servingUSDA" #servingUSDA="ngModel">
             </mat-form-field>
-            <mat-chip-list  class="foodItemData">
+            <mat-chip-list  class="usda_foodItemData">
               <mat-chip>Calories: {{ (usdaPickedFoodItem.caloriesIn / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
               <mat-chip>Protein: {{ (usdaPickedFoodItem.protein / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
               <mat-chip>Fat: {{ (usdaPickedFoodItem.fat / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
               <mat-chip>Carb: {{ (usdaPickedFoodItem.carb / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
             </mat-chip-list>
-            <mat-action-row style="justify-content: space-around; display: flex; padding-top: 20px;">
-                <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
+            <mat-action-row class="usda_foodItemButtons">
+              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
                 [disabled]="servingUSDA.untouched" color="accent">Save item</button>
               <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
               [disabled]="servingUSDA.untouched" color="primary">Save food</button>
@@ -55,12 +58,23 @@
         <mat-spinner style="margin: 0 auto" *ngIf="isLoadingFoodItems"></mat-spinner>
         <mat-list role="list" dense class="usda_results" *ngIf="!isLoadingFoodItems">
           <p class="usda_citation">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</p>
-          <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ f.value.nameSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
-          <mat-list-item role="listitem" *ngFor="let foodItem of usdaFoodItems; let i = index">
-            <mat-radio-button (click)="onPick(foodItem.fdcId)">
-                {{ i + 1 + '. ' + foodItem.description }}
-            </mat-radio-button>
-          </mat-list-item>
+          <div *ngIf="usdaSearchResults">
+            <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ f.value.nameSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
+            <h3 matSubheader class="usda_subheader">Showing page &nbsp;
+            <mat-form-field style="width: 10%;">
+              <select ngModel matNativeControl (change)="onSearch(f.value.nameSearch, branded, requireAllWords, $event.target.value)" [(ngModel)]="defaultPage" name="page" #page>n>
+                <option *ngFor="let page of [].constructor(totalPages); let i = index" [value]="i + 1">
+                  {{ i + 1 }}
+                </option>
+              </select>
+            </mat-form-field>
+            &nbsp; of &nbsp; {{ totalPages}}.</h3>
+            <mat-list-item role="listitem" *ngFor="let foodItem of usdaFoodItems; let i = index">
+              <mat-radio-button (click)="onPick(foodItem.fdcId)">
+                  {{ i + 1 + '. ' + foodItem.description }}
+              </mat-radio-button>
+            </mat-list-item>
+          </div>
         </mat-list>
 
 

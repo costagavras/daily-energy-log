@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { FoodService } from '../food.service';
 import { FoodItem } from '../food-item.model';
 import { Subscription } from 'rxjs';
 
-import { MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
+import { MAT_DATE_FORMATS, DateAdapter, MatSelectChange} from '@angular/material';
 import { AppDateAdapter } from 'src/app/shared/date-adapter';
 import { HttpClient } from '@angular/common/http';
 import { usdaKey } from 'src/environments/environment.prod';
@@ -36,6 +36,9 @@ export const APP_DATE_FORMATS = {
 })
 
 export class NewFoodIntakeComponent implements OnInit, OnDestroy {
+
+  // @Output() selectionChange: EventEmitter<MatSelectChange>;
+
   maxDate: Date;
   minValue = 0;
   today = new Date();
@@ -69,6 +72,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   usdaFoodItemDetail = [] as any;
   isLoadingFoodItems = false;
   isLoadingFoodItem = false;
+  usdaSearchResults = false;
+  defaultPage = 1;
 
   constructor(public foodService: FoodService,
               private http: HttpClient) { }
@@ -164,7 +169,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSearch(searchString: string, branded, allWords) {
+  onSearch(searchString: string, branded, allWords, page) {
     this.isLoadingFoodItems = true;
     axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
         {
@@ -175,7 +180,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
             'Branded': branded
           },
           requireAllWords: allWords,
-          pageNumber: 1
+          pageNumber: typeof page === 'undefined' ? 1 : page
         }
       )
       .then(response => {
@@ -184,10 +189,15 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
         this.currentPage = response.data.currentPage;
         this.totalPages = response.data.totalPages;
         this.isLoadingFoodItems = false;
+        this.usdaSearchResults = true;
       })
       .catch(err => {
         console.log(err, err.response);
       });
+  }
+
+  onSelectionChanged(event) {
+    console.log(event.target.value);
   }
 
   ngOnDestroy() {
