@@ -42,6 +42,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   branded = false;
   requireAllWords = false;
   totalHits: number;
+  currentPage: number;
+  totalPages: number;
   foodItemsBeverages: FoodItem[];
   foodItemsDairy: FoodItem[];
   foodItemsDesserts: FoodItem[];
@@ -65,6 +67,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   usdaFoodItemDetailPaneOpen = false;
   usdaFoodItemDescription: string;
   usdaFoodItemDetail = [] as any;
+  isLoadingFoodItems = false;
+  isLoadingFoodItem = false;
 
   constructor(public foodService: FoodService,
               private http: HttpClient) { }
@@ -142,9 +146,10 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
   // axios request
   onPick(foodDetailID: number) {
+    this.usdaFoodItemDetailPaneOpen = false;
+    this.isLoadingFoodItem = true;
     this.usdaPickedFoodItem = {} as FoodItem;
     axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
-      this.usdaFoodItemDetailPaneOpen = true;
       this.usdaFoodItemDetail = response.data.foodNutrients;
       this.usdaPickedFoodItem = {
         name: response.data.description,
@@ -154,10 +159,13 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
         fat: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1004)[0].amount,
         carb: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1005)[0].amount
       };
+      this.usdaFoodItemDetailPaneOpen = true;
+      this.isLoadingFoodItem = false;
     });
   }
 
   onSearch(searchString: string, branded, allWords) {
+    this.isLoadingFoodItems = true;
     axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
         {
           generalSearchInput: searchString,
@@ -173,6 +181,9 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
       .then(response => {
         this.usdaFoodItems = response.data.foods;
         this.totalHits = response.data.totalHits;
+        this.currentPage = response.data.currentPage;
+        this.totalPages = response.data.totalPages;
+        this.isLoadingFoodItems = false;
       })
       .catch(err => {
         console.log(err, err.response);

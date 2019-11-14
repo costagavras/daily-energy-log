@@ -51,7 +51,7 @@ mat-card-content {
 
 .usda_citation {
   font-size: 9px;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .usda_results {
@@ -74,6 +74,10 @@ mat-card-content {
   padding-bottom: 10px;
 }
 
+.usda_header {
+  text-align: center;
+}
+
 :host ::ng-deep h3 .usda_subheader {
   font-size: 14px;
   padding: 4px 16px;
@@ -86,11 +90,16 @@ mat-card-content {
 
 .usda_portionSize {
   width: 30%;
-  padding-left: 30px;
+  /* padding-left: 30px; */
+  text-align: center;
+  height: 40px;
+  margin: 0 auto;
+  display: block;
 }
 
 :host ::ng-deep .mat-form-field-infix {
-  padding: 5px;
+  padding: 7px;
+  border: 1px;
 }
 
 .usdaFoodItemPane {
