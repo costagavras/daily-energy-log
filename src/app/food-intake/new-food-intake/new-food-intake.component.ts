@@ -4,8 +4,11 @@ import { FoodService } from '../food.service';
 import { FoodItem } from '../food-item.model';
 import { Subscription } from 'rxjs';
 
-import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
+import { MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import { AppDateAdapter } from 'src/app/shared/date-adapter';
+import { HttpClient } from '@angular/common/http';
+import { usdaKey } from 'src/environments/environment.prod';
+import axios from 'axios';
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -19,6 +22,7 @@ export const APP_DATE_FORMATS = {
       monthYearA11yLabel: { year: 'numeric', month: 'long' },
   }
 };
+
 
 @Component({
   selector: 'app-new-food-intake',
@@ -35,6 +39,9 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   maxDate: Date;
   minValue = 0;
   today = new Date();
+  branded = false;
+  requireAllWords = false;
+  totalHits: number;
   foodItemsBeverages: FoodItem[];
   foodItemsDairy: FoodItem[];
   foodItemsDesserts: FoodItem[];
@@ -47,10 +54,20 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   foodItemsVegetables: FoodItem[];
   foodItemsOther: FoodItem[];
   private fbAvailableFoodItemsSubs: Subscription[] = [];
+  proxyURL = 'https://cors-anywhere.herokuapp.com/';
+  usdaFoodSearchURL = 'https://api.nal.usda.gov/fdc/v1/search?api_key=';
+  usdaFoodDetailsURL1 = 'https://api.nal.usda.gov/fdc/v1/';
+  usdaFoodDetailsURL2 = '?api_key=';
 
   panelOpenState = false;
+  usdaFoodItems = [] as any;
+  usdaPickedFoodItem: FoodItem;
+  usdaFoodItemDetailPaneOpen = false;
+  usdaFoodItemDescription: string;
+  usdaFoodItemDetail = [] as any;
 
-  constructor(public foodService: FoodService) { }
+  constructor(public foodService: FoodService,
+              private http: HttpClient) { }
 
   ngOnInit() {
     this.maxDate = new Date();
@@ -123,6 +140,45 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
   }
 
+  // axios request
+  onPick(foodDetailID: number) {
+    this.usdaPickedFoodItem = {} as FoodItem;
+    axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
+      this.usdaFoodItemDetailPaneOpen = true;
+      this.usdaFoodItemDetail = response.data.foodNutrients;
+      this.usdaPickedFoodItem = {
+        name: response.data.description,
+        serving: 100,
+        caloriesIn: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1008)[0].amount,
+        protein: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1003)[0].amount,
+        fat: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1004)[0].amount,
+        carb: this.usdaFoodItemDetail.filter(item => item.nutrient.id === 1005)[0].amount
+      };
+    });
+  }
+
+  onSearch(searchString: string, branded, allWords) {
+    axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
+        {
+          generalSearchInput: searchString,
+          includeDataTypes: {
+            'Survey (FNDDS)': true,
+            'Foundation': true,
+            'Branded': branded
+          },
+          requireAllWords: allWords,
+          pageNumber: 1
+        }
+      )
+      .then(response => {
+        this.usdaFoodItems = response.data.foods;
+        this.totalHits = response.data.totalHits;
+      })
+      .catch(err => {
+        console.log(err, err.response);
+      });
+  }
+
   ngOnDestroy() {
     if (this.fbAvailableFoodItemsSubs) {
       this.fbAvailableFoodItemsSubs.forEach(sub => sub.unsubscribe());
@@ -130,4 +186,89 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   }
 
 }
+
+    // classic XML request
+
+    // sendHttpRequest = (method, url, data) => {
+    //   const promise = new Promise((resolve, reject) => {
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open(method, url);
+    //     xhr.responseType = 'json';
+    //     if (data) {
+    //       xhr.setRequestHeader('Content-Type', 'application/json');
+    //     }
+    //     xhr.onload = () => {;
+    //       if (xhr.status >= 400) {
+    //         reject(xhr.response);
+    //       } else {
+    //         resolve(xhr.response);
+    //       }
+    //     };
+    //     xhr.onerror = () => {
+    //       reject('Something went wrong!');
+    //     };
+    //     xhr.send(JSON.stringify(data));
+    //   });
+    //   return promise;
+    // }
+
+    // onSearch(searchString: string) {
+    //   this.sendHttpRequest('POST', 'https://api.nal.usda.gov/fdc/v1/search?api_key=' + usdaKey,
+    //   {
+    //     generalSearchInput: searchString,
+    //     includeDataTypes: {
+    //       'Survey (FNDDS)': true,
+    //       'Foundation': true,
+    //       'Branded': true
+    //     },
+    //     requireAllWords: true,
+    //     pageNumber: 1
+    //   })
+    //   .then(responseData => {
+    //     console.log(responseData);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // }
+
+    // fetch request
+
+    // sendHttpRequest = (methodRequest, url, data) => {
+    //   return fetch(url, {
+    //     method: methodRequest, // default is GET
+    //     body: JSON.stringify(data),
+    //     headers: data ? { 'Content-Type': 'application/json' } : {}
+    //   }).then(response => {
+    //     if (response.status >= 400) {
+    //       // !response.ok
+    //       return response.json().then(errResData => {
+    //         const error = new Error('Something went wrong!');
+    //         error.message = errResData;
+    //         throw error;
+    //       });
+    //     }
+    //     return response.json();
+    //   });
+    // }
+
+    // onSearch(searchString: string) {
+    //   this.sendHttpRequest('POST', 'https://api.nal.usda.gov/fdc/v1/search?api_key=' + usdaKey,
+    //   {
+    //     generalSearchInput: searchString,
+    //     includeDataTypes: {
+    //       'Survey (FNDDS)': true,
+    //       'Foundation': true,
+    //       'Branded': true
+    //     },
+    //     requireAllWords: true,
+    //     pageNumber: 1
+    //   })
+    //   .then(responseData => {
+    //     console.log(responseData);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // }
 

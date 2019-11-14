@@ -43,6 +43,7 @@ import { AnthropometryComponent } from './profile/anthropometry/anthropometry.co
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
 import { ProfileCompletedComponent } from './profile/profile-completed/profile-completed.component';
 import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog-delete-profile.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog
     AngularFireModule.initializeApp(environment.firebase), /// imports firebase/app needed for everything
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    HttpClientModule
   ],
   providers: [AuthService, TrainingService, FoodService, UIService, ProfileService],
   bootstrap: [AppComponent],

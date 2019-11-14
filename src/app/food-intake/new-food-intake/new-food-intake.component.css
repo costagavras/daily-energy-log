@@ -3,8 +3,8 @@
 }
 
 .food-name {
-  width: 90%;
-  display: block;
+  width: 70%;
+  display: inline-block;
 }
 
 .food-item {
@@ -31,6 +31,17 @@ mat-expansion-panel-header {
   padding: 0 24px;
 }
 
+/* :host ::ng-deep .mat-card-content {
+  display: block;
+} */
+
+mat-card-content {
+  display: block;
+  padding: 0 10px;
+  /* display: flex;
+  justify-content: center; */
+}
+
 .emphasis {
   font: bold;
   font-size: 16px;
@@ -42,3 +53,47 @@ mat-expansion-panel-header {
   font-size: 9px;
   margin: 0;
 }
+
+.usda_results {
+  background-color: whitesmoke;
+  margin-top: 10px;
+  flex-grow: 1;
+  overflow: auto;
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.usda_button {
+  margin-left: 10px;
+}
+
+.usda_checkboxes {
+  justify-content: space-around;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+:host ::ng-deep h3 .usda_subheader {
+  font-size: 14px;
+  padding: 4px 16px;
+  height: 20px;
+}
+
+:host ::ng-deep .usda_subheader > span {
+  font-weight: bolder;
+}
+
+.usda_portionSize {
+  width: 30%;
+  padding-left: 30px;
+}
+
+:host ::ng-deep .mat-form-field-infix {
+  padding: 5px;
+}
+
+.usdaFoodItemPane {
+  background-color: mintcream
+}
+

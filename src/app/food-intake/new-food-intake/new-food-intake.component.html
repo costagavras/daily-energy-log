@@ -16,15 +16,54 @@
         </mat-slide-toggle>
         <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Add from personal database</mat-card-subtitle>
       </div>
-      <mat-card-content fxLayoutAlign="center">
+      <mat-card-content>
 
       <div *ngIf="!toggle.checked">
         <mat-form-field class="food-name">
           <mat-label>Search for keywords...</mat-label>
-          <input matInput ngModel type="text" name="name" [required]="nameFoodItemInput.touched" #nameFoodItemInput="ngModel">
-          <mat-error *ngIf="nameFoodItemInput.hasError('required')">Field must not be empty.</mat-error>
+          <input matInput ngModel type="text" name="nameSearch" [required]="nameSearch.touched" #nameSearch="ngModel">
+          <mat-error *ngIf="nameSearch.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
+        <button class="usda_button" mat-raised-button color="primary" [disabled]="nameSearch.invalid || nameSearch.untouched" (click)="onSearch(f.value.nameSearch, branded, requireAllWords)"><mat-icon>search</mat-icon>Search...</button>
+        <div class="usda_checkboxes">
+          <mat-checkbox class="usda_checkbox" name="branded" [(ngModel)]="branded">Include branded items</mat-checkbox>
+          <mat-checkbox class="usda_checkbox" name="requireAllWords" [(ngModel)]="requireAllWords">Require all words</mat-checkbox>
+        </div>
         <p class="usda_citation">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</p>
+        <mat-card *ngIf="usdaFoodItemDetailPaneOpen" class="usdaFoodItemPane">
+          <mat-card-content>
+            <mat-card-subtitle style="display: inline-block">{{ usdaPickedFoodItem.name }}</mat-card-subtitle>
+            <mat-form-field appearance="outline" class="usda_portionSize">
+              <mat-label>Portion size, gr</mat-label>
+              <input matInput ngModel type="number" name="servingUSDA" #servingUSDA="ngModel">
+            </mat-form-field>
+            <mat-chip-list  class="foodItemData">
+              <mat-chip>Calories: {{ (usdaPickedFoodItem.caloriesIn / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Protein: {{ (usdaPickedFoodItem.protein / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Fat: {{ (usdaPickedFoodItem.fat / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Carb: {{ (usdaPickedFoodItem.carb / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
+            </mat-chip-list>
+            <mat-action-row style="justify-content: space-around; display: flex; padding-top: 20px;">
+              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
+              [disabled]="servingUSDA.untouched" color="accent">Save item</button>
+              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
+              [disabled]="servingUSDA.untouched" color="primary">Save food</button>
+            </mat-action-row>
+          </mat-card-content>
+        </mat-card>
+
+
+        <mat-list role="list" dense class="usda_results">
+          <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ f.value.nameSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
+          <mat-list-item role="listitem" *ngFor="let foodItem of usdaFoodItems; let i = index">
+            <mat-radio-button (click)="onPick(foodItem.fdcId)">
+                {{ i + 1 + '. ' + foodItem.description }}
+            </mat-radio-button>
+          </mat-list-item>
+        </mat-list>
+
+
+
       </div>
 
       <mat-accordion *ngIf="toggle.checked">
