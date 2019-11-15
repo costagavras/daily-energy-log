@@ -1,7 +1,7 @@
-<h2 fxLayoutAlign="center">Past Exercises Log</h2>
+<h2 fxLayoutAlign="center">Energy Log</h2>
 <mat-list *ngIf="!isLoading" fxLayoutAlign="center">
-  <mat-list-item fxFlex="40%">
-    <mat-select placeholder="Choose column to group by"
+  <mat-list-item>
+    <mat-select placeholder="Group column by..."
       [(ngModel)]="groupingColumn" name="item"
       (ngModelChange)="buildDataSource()">
       <mat-option [value]="null">Undo grouping</mat-option>
@@ -17,103 +17,103 @@
 </div>
 
 <div fxLayoutAlign="center center" *ngIf="!isGrouperRun">
-  <mat-form-field *ngIf="!isLoading" fxFlex="40%">
+  <mat-form-field *ngIf="!isLoading">
     <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 </div>
 
-  <mat-table *ngIf="!isLoading" mat-table [dataSource]="dataSource" matSort [matSortDisabled]="isGrouperRun">
+<mat-table *ngIf="!isLoading" mat-table [dataSource]="dataSource" matSort [matSortDisabled]="isGrouperRun">
 
-    <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.date | date: 'EEE, d MMM, y' }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.date | date: 'EEE, d MMM, y' }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="food">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Energy+</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.caloriesIn | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>
+      {{ totalCaloriesIn | number }}
+    </mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="total">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Total Energy -</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.totalEnergy | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>
+      {{ totalDayEnergyExpenditure | number }}
+    </mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="exercise">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Exercise</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.caloriesExercise | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>
+      {{ totalCaloriesExercise | number }}
+    </mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="balance">
+    <mat-header-cell *matHeaderCellDef>Balance</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.balance | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>
+      {{ totalCaloriesBalance | number }}
+    </mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+
+  <!-- Group header cells-->
+  <ng-container matColumnDef="groupReducer">
+      <mat-cell mat-cell *matCellDef="let group">
+        <div fxFill fxLayoutAlign="center center">
+          <mat-icon *ngIf="!group.reduced">unfold_less</mat-icon>
+          <mat-icon *ngIf="group.reduced">unfold_more</mat-icon>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="groupHeader">
+      <mat-cell mat-cell *matCellDef="let group">
+        <strong *ngIf="columnName === 'week'">Week: {{group.groupName}}</strong>
+        <strong *ngIf="columnName === 'month'">Month: {{group.groupName}}</strong>
+        <strong *ngIf="columnName === 'year'">Year: {{group.groupName}}</strong>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="totalCaloriesGroupIn">
+      <mat-cell mat-cell *matCellDef="let group">
+        <strong>Energy+: {{group.totalCaloriesGrpIn}}</strong>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="totalCaloriesGroupTDEE">
+      <mat-cell mat-cell *matCellDef="let group">
+        <strong>Total Energy-: {{group.totalCaloriesGrpTDEE}}</strong>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="totalCaloriesGroupEx">
+      <mat-cell mat-cell *matCellDef="let group">
+        <strong>Exercise: {{group.totalCaloriesGrpEx}}</strong>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="totalCaloriesGroupBal">
+      <mat-cell mat-cell *matCellDef="let group">
+        <strong>Balance: {{group.totalCaloriesGrpBal}}</strong>
+      </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="food">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Energy+</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.caloriesIn | number }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>
-        {{ totalCaloriesIn | number }}
-      </mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="total">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Total Energy -</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.totalEnergy | number }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>
-        {{ totalDayEnergyExpenditure | number }}
-      </mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="exercise">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Exercise</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.caloriesExercise | number }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>
-        {{ totalCaloriesExercise | number }}
-      </mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="balance">
-      <mat-header-cell *matHeaderCellDef>Balance</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element.balance | number }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>
-        {{ totalCaloriesBalance | number }}
-      </mat-footer-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <!-- Group line -->
+    <mat-row mat-row  class="clickable"
+        *matRowDef="let row; columns: ['groupReducer','groupHeader', 'totalCaloriesGroupIn', 'totalCaloriesGroupTDEE', 'totalCaloriesGroupEx', 'totalCaloriesGroupBal']; when: isGroup" (click)="reduceGroup(row)" >
+    </mat-row>
 
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+</mat-table>
 
-    <!-- Group header cells-->
-    <ng-container matColumnDef="groupReducer">
-        <mat-cell mat-cell *matCellDef="let group">
-          <div fxFill fxLayoutAlign="center center">
-            <mat-icon *ngIf="!group.reduced">unfold_less</mat-icon>
-            <mat-icon *ngIf="group.reduced">unfold_more</mat-icon>
-          </div>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="groupHeader">
-        <mat-cell mat-cell *matCellDef="let group">
-          <strong *ngIf="columnName === 'week'">Week: {{group.groupName}}</strong>
-          <strong *ngIf="columnName === 'month'">Month: {{group.groupName}}</strong>
-          <strong *ngIf="columnName === 'year'">Year: {{group.groupName}}</strong>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="totalCaloriesGroupIn">
-        <mat-cell mat-cell *matCellDef="let group">
-          <strong>Energy+: {{group.totalCaloriesGrpIn}}</strong>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="totalCaloriesGroupTDEE">
-        <mat-cell mat-cell *matCellDef="let group">
-          <strong>Total Energy-: {{group.totalCaloriesGrpTDEE}}</strong>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="totalCaloriesGroupEx">
-        <mat-cell mat-cell *matCellDef="let group">
-          <strong>Exercise: {{group.totalCaloriesGrpEx}}</strong>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="totalCaloriesGroupBal">
-        <mat-cell mat-cell *matCellDef="let group">
-          <strong>Balance: {{group.totalCaloriesGrpBal}}</strong>
-        </mat-cell>
-      </ng-container>
-
-        <!-- Group line -->
-      <mat-row mat-row  class="clickable"
-          *matRowDef="let row; columns: ['groupReducer','groupHeader', 'totalCaloriesGroupIn', 'totalCaloriesGroupTDEE', 'totalCaloriesGroupEx', 'totalCaloriesGroupBal']; when: isGroup" (click)="reduceGroup(row)" >
-      </mat-row>
-
-
-  </mat-table>
-
-  <div *ngIf="!isGrouperRun">
-    <mat-paginator *ngIf="!isLoading" [pageSize]="10" [pageSizeOptions]="[5,10,20]"></mat-paginator>
-  </div>
+<div *ngIf="!isGrouperRun">
+  <mat-paginator *ngIf="!isLoading" [pageSize]="10" [pageSizeOptions]="[5,10,20]"></mat-paginator>
+</div>
 

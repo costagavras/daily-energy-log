@@ -11,3 +11,28 @@ mat-footer-row, mat-header-cell {
 .clickable, mat-list-item {
   background-color: rgba(211, 211, 211, 0.349);
 }
+
+/* grouper in the Final Log */
+:host ::ng-deep .mat-list-item {
+  max-width: 25%;
+}
+
+@media all and (max-width: 599px) {
+
+  :host ::ng-deep .mat-list-item {
+    max-width: 60%;
+  }
+
+  :host ::ng-deep .mat-header-cell:first-of-type, :host ::ng-deep .mat-cell:first-of-type {
+    padding-left: 2px;
+  }
+
+  :host ::ng-deep .mat-header-cell:last-of-type,  :host ::ng-deep .mat-cell:last-of-type {
+    padding-right: 2px;
+  }
+
+  :host ::ng-deep .mat-header-cell, :host ::ng-deep .mat-cell {
+    font-size: 11px;
+  }
+
+}

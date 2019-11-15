@@ -8,10 +8,10 @@
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <div fxLayoutAlign="center">
+      <div class="toggle_options" fxLayoutAlign="center">
         <mat-card-subtitle [ngClass]="{'emphasis' : !toggle.checked}" fxFlexAlign="end">Add from USDA database</mat-card-subtitle>
-        <mat-slide-toggle
-          fxFlexAlign="baseline" style="padding: 0px 30px 10px;"
+        <mat-slide-toggle id="toggle"
+          fxFlexAlign="baseline"
           #toggle>
         </mat-slide-toggle>
         <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Add from personal database</mat-card-subtitle>
@@ -21,7 +21,7 @@
       <div *ngIf="!toggle.checked">
         <mat-form-field class="food-name">
           <mat-label>Search for keywords...</mat-label>
-          <input matInput ngModel type="text" name="nameSearch" [required]="nameSearch.touched" #nameSearch="ngModel">
+          <input matInput ngModel type="text" class="nameSearch" name="nameSearch" [required]="nameSearch.touched" #nameSearch="ngModel">
           <mat-error *ngIf="nameSearch.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
         <button class="usda_button" mat-raised-button color="primary"
@@ -58,7 +58,7 @@
         <mat-spinner style="margin: 0 auto" *ngIf="isLoadingFoodItems"></mat-spinner>
         <mat-list role="list" dense class="usda_results" *ngIf="!isLoadingFoodItems">
           <p class="usda_citation">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</p>
-          <div *ngIf="usdaSearchResults">
+          <div class="usda_search_results" *ngIf="usdaSearchResults">
             <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ usdaSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
             <h3 matSubheader class="usda_subheader">Showing page &nbsp;
             <mat-form-field style="width: 10%;">

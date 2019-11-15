@@ -2,3 +2,17 @@
   display: block;
   margin: 30px auto 0;
 }
+
+:host ::ng-deep .mat-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:host ::ng-deep .profile_ul {
+  padding: 0;
+}
+
+:host ::ng-deep .mat-card-content > .mat-chip {
+  margin: 4px 0 4px 50px;
+}

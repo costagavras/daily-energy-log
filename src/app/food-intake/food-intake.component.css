@@ -6,8 +6,32 @@
   background-color: white;
 }
 
-@media (max-width: 599px) {
+  /* grouper in the Food Intake Log */
+:host ::ng-deep .mat-list-item {
+  max-width: 25%;
+}
+
+@media all and (max-width: 599px) {
   :host ::ng-deep .mat-tab-header {
     top: 56px;
   }
+
+  :host ::ng-deep .mat-list-item {
+    max-width: 60%;
+  }
+
+  :host ::ng-deep .mat-header-cell:first-of-type, :host ::ng-deep .mat-cell:first-of-type {
+    padding-left: 2px;
+  }
+
+  :host ::ng-deep .mat-header-cell:last-of-type,  :host ::ng-deep .mat-cell:last-of-type {
+    padding-right: 2px;
+  }
+
+  :host ::ng-deep .mat-header-cell, :host ::ng-deep .mat-cell {
+    font-size: 11px;
+  }
+
 }
+
+

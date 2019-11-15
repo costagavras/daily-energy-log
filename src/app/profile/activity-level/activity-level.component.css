@@ -24,3 +24,7 @@
   margin: 30px auto 0;
 }
 
+:host ::ng-deep .mat-list-item-content {
+  justify-content: space-between;
+}
+
