@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
@@ -43,7 +44,7 @@ import { AnthropometryComponent } from './profile/anthropometry/anthropometry.co
 import { ActivityLevelComponent } from './profile/activity-level/activity-level.component';
 import { ProfileCompletedComponent } from './profile/profile-completed/profile-completed.component';
 import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog-delete-profile.component';
-import { HttpClientModule } from '@angular/common/http';
+import { DialogAddCategoryComponent } from './food-intake/new-food-intake/dialog-add-category.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { HttpClientModule } from '@angular/common/http';
     ActivityLevelComponent,
     ProfileCompletedComponent,
     DialogDeleteProfileComponent,
-    AddFoodComponent
+    AddFoodComponent,
+    DialogAddCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [AuthService, TrainingService, FoodService, UIService, ProfileService],
   bootstrap: [AppComponent],
-  entryComponents: [DialogDeleteProfileComponent]
+  entryComponents: [DialogDeleteProfileComponent, DialogAddCategoryComponent]
 })
 export class AppModule { }

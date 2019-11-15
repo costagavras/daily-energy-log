@@ -1,13 +1,17 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { FoodService } from '../food.service';
 import { FoodItem } from '../food-item.model';
 import { Subscription } from 'rxjs';
 
-import { MAT_DATE_FORMATS, DateAdapter, MatSelectChange} from '@angular/material';
+import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import { AppDateAdapter } from 'src/app/shared/date-adapter';
 import { HttpClient } from '@angular/common/http';
 import { usdaKey } from 'src/environments/environment.prod';
+
+import { MatDialog } from '@angular/material';
+import { DialogAddCategoryComponent } from '../new-food-intake/dialog-add-category.component';
+
 import axios from 'axios';
 
 export const APP_DATE_FORMATS = {
@@ -47,6 +51,19 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   totalHits: number;
   currentPage: number;
   totalPages: number;
+  defaultPage = 1;
+
+  panelOpenState = false;
+  usdaFoodItems = [] as any;
+  usdaPickedFoodItem: FoodItem;
+  usdaFoodItemDetailPaneOpen = false;
+  usdaFoodItemDescription: string;
+  usdaFoodItemDetail = [] as any;
+  isLoadingFoodItems = false;
+  isLoadingFoodItem = false;
+  usdaSearchResults = false;
+  usdaSearch: string;
+
   foodItemsBeverages: FoodItem[];
   foodItemsDairy: FoodItem[];
   foodItemsDesserts: FoodItem[];
@@ -58,90 +75,83 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   foodItemsMeat: FoodItem[];
   foodItemsVegetables: FoodItem[];
   foodItemsOther: FoodItem[];
-  private fbAvailableFoodItemsSubs: Subscription[] = [];
+  private newFoodIntakeSubs: Subscription[] = [];
+
   proxyURL = 'https://cors-anywhere.herokuapp.com/';
   usdaFoodSearchURL = 'https://api.nal.usda.gov/fdc/v1/search?api_key=';
   usdaFoodDetailsURL1 = 'https://api.nal.usda.gov/fdc/v1/';
   usdaFoodDetailsURL2 = '?api_key=';
 
-  panelOpenState = false;
-  usdaFoodItems = [] as any;
-  usdaPickedFoodItem: FoodItem;
-  usdaFoodItemDetailPaneOpen = false;
-  usdaFoodItemDescription: string;
-  usdaFoodItemDetail = [] as any;
-  isLoadingFoodItems = false;
-  isLoadingFoodItem = false;
-  usdaSearchResults = false;
-  defaultPage = 1;
+  foodCategories = ['Beverages', 'Dairy', 'Desserts', 'Dishes', 'Fats', 'Fish', 'Fruits', 'Grains',
+  'Meat', 'Vegetables', 'Other'];
 
   constructor(public foodService: FoodService,
-              private http: HttpClient) { }
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     this.maxDate = new Date();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsBeveragesChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsBeveragesChanged
       .subscribe(
         foodItems => (this.foodItemsBeverages = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsBeverages();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsDairyChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsDairyChanged
       .subscribe(
         foodItems => (this.foodItemsDairy = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDairy();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsDessertsChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsDessertsChanged
       .subscribe(
         foodItems => (this.foodItemsDesserts = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDesserts();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsDishesChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsDishesChanged
       .subscribe(
         foodItems => (this.foodItemsDishes = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDishes();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsFatsChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsFatsChanged
       .subscribe(
         foodItems => (this.foodItemsFats = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFats();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsFishChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsFishChanged
       .subscribe(
         foodItems => (this.foodItemsFish = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFish();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsFruitsChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsFruitsChanged
       .subscribe(
         foodItems => (this.foodItemsFruits = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFruits();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsGrainsChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsGrainsChanged
       .subscribe(
         foodItems => (this.foodItemsGrains = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsGrains();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsMeatChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsMeatChanged
       .subscribe(
         foodItems => (this.foodItemsMeat = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsMeat();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsVegetablesChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsVegetablesChanged
       .subscribe(
         foodItems => (this.foodItemsVegetables = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsVegetables();
 
-    this.fbAvailableFoodItemsSubs.push(this.foodService.foodItemsOtherChanged
+    this.newFoodIntakeSubs.push(this.foodService.foodItemsOtherChanged
       .subscribe(
         foodItems => (this.foodItemsOther = foodItems)
       ));
@@ -171,6 +181,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
   onSearch(searchString: string, branded, allWords, page) {
     this.isLoadingFoodItems = true;
+    this.usdaSearch = searchString;
     axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
         {
           generalSearchInput: searchString,
@@ -196,13 +207,23 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
       });
   }
 
-  onSelectionChanged(event) {
-    console.log(event.target.value);
-  }
+  saveCustomFood(usdaPickedFoodItem: FoodItem) {
+    const dialogRef = this.dialog.open(DialogAddCategoryComponent, {
+       data: {
+         foodCategories: this.foodCategories
+       }
+     });
+    this.newFoodIntakeSubs.push(dialogRef.afterClosed().subscribe(pickedCategory => {
+       if (pickedCategory) {
+         usdaPickedFoodItem.category = pickedCategory;
+         this.foodService.saveCustomFood(usdaPickedFoodItem);
+       }
+     }));
+   }
 
   ngOnDestroy() {
-    if (this.fbAvailableFoodItemsSubs) {
-      this.fbAvailableFoodItemsSubs.forEach(sub => sub.unsubscribe());
+    if (this.newFoodIntakeSubs) {
+      this.newFoodIntakeSubs.forEach(sub => sub.unsubscribe());
     }
   }
 

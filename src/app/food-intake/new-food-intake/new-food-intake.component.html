@@ -46,10 +46,10 @@
               <mat-chip>Carb: {{ (usdaPickedFoodItem.carb / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
             </mat-chip-list>
             <mat-action-row class="usda_foodItemButtons">
-              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
-                [disabled]="servingUSDA.untouched" color="accent">Save item</button>
-              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'other')" mat-raised-button color="primary"
-              [disabled]="servingUSDA.untouched" color="primary">Save food</button>
+              <button type="Submit" (click)="saveCustomFood(usdaPickedFoodItem)"
+                mat-raised-button color="primary" color="accent">Save item to database</button>
+              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'usda', usdaPickedFoodItem)"
+                mat-raised-button color="primary" [disabled]="servingUSDA.untouched" color="primary">Save food</button>
             </mat-action-row>
           </mat-card-content>
         </mat-card>
@@ -59,7 +59,7 @@
         <mat-list role="list" dense class="usda_results" *ngIf="!isLoadingFoodItems">
           <p class="usda_citation">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</p>
           <div *ngIf="usdaSearchResults">
-            <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ f.value.nameSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
+            <h3 matSubheader class="usda_subheader">Search results for:<span>&nbsp;{{ usdaSearch || '.....' }}</span>. Found:<span>&nbsp;{{ totalHits || '.....' }}&nbsp;</span>items</h3>
             <h3 matSubheader class="usda_subheader">Showing page &nbsp;
             <mat-form-field style="width: 10%;">
               <select ngModel matNativeControl (change)="onSearch(f.value.nameSearch, branded, requireAllWords, $event.target.value)" [(ngModel)]="defaultPage" name="page" #page>n>

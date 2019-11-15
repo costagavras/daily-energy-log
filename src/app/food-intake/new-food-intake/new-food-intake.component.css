@@ -78,7 +78,7 @@ mat-card-content {
   text-align: center;
 }
 
-:host ::ng-deep h3 .usda_subheader {
+:host ::ng-deep .usda_subheader {
   font-size: 14px;
   padding: 4px 16px;
   height: 20px;

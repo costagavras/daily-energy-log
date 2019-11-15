@@ -280,8 +280,12 @@ export class FoodService {
       }));
   }
 
-  async saveFoodItem(foodDate: Date, name: string, size: number, param: string) {
-    this.chosenFoodItem = this.availableFoodItemsStorage[param].find(ex => ex.name === name);
+  async saveFoodItem(foodDate: Date, name: string, size: number, param: string, usdaFoodItem: FoodItem) {
+    if (param !== 'usda') {
+      this.chosenFoodItem = this.availableFoodItemsStorage[param].find(ex => ex.name === name);
+    } else {
+      this.chosenFoodItem = usdaFoodItem;
+    }
     await this.getUserInfo();
     this.addDataToDatabase({
       ...this.chosenFoodItem,
@@ -293,7 +297,8 @@ export class FoodService {
       // dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10).split('-').reverse().join('.'),
       dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
       date: new Date(foodDate.setHours(12, 0, 0, 0))
-    }, {
+    },
+    {
       date: new Date(foodDate.setHours(12, 0, 0, 0)),
       dateStr: new Date(foodDate.setHours(12, 0, 0, 0)).toISOString().substring(0, 10),
       age: this.userData.age,
