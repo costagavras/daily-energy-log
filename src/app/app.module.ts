@@ -45,6 +45,7 @@ import { ActivityLevelComponent } from './profile/activity-level/activity-level.
 import { ProfileCompletedComponent } from './profile/profile-completed/profile-completed.component';
 import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog-delete-profile.component';
 import { DialogAddCategoryComponent } from './food-intake/new-food-intake/dialog-add-category.component';
+import { DialogAgreeTermsComponent } from './auth/signup/dialog-agree-terms.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { DialogAddCategoryComponent } from './food-intake/new-food-intake/dialog
     ProfileCompletedComponent,
     DialogDeleteProfileComponent,
     AddFoodComponent,
-    DialogAddCategoryComponent
+    DialogAddCategoryComponent,
+    DialogAgreeTermsComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +89,6 @@ import { DialogAddCategoryComponent } from './food-intake/new-food-intake/dialog
   ],
   providers: [AuthService, TrainingService, FoodService, UIService, ProfileService],
   bootstrap: [AppComponent],
-  entryComponents: [DialogDeleteProfileComponent, DialogAddCategoryComponent]
+  entryComponents: [DialogDeleteProfileComponent, DialogAddCategoryComponent, DialogAgreeTermsComponent]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
 .welcome {
   text-align: center;
+  height: calc(100vh - 120px);
 }
 
 .profile-link {
@@ -11,6 +12,24 @@
 }
 
 .mat-icon {
+  vertical-align: middle;
+}
+
+.mat-card-actions > .deleteUserBtn {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.contact_info {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.contact_info > p {
+  font-size: 13px;
+}
+
+mat-icon {
   vertical-align: middle;
 }
 

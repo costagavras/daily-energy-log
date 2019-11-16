@@ -1,4 +1,4 @@
-<div class="welcome" fxLayout="column" fxLayoutAlign="center center">
+<div class="welcome" fxLayout="column" fxLayoutAlign="start center">
   <section>
     <h1>Daily Energy Log</h1>
     <h3>will help you to</h3>
@@ -7,28 +7,21 @@
     <p>- Keep track of your exercise routine.</p>
   </section>
   <!-- <div [ngClass]="{'hidden': gotActivityLevel}"> -->
-    <mat-card class="profile-link" *ngIf="!profileFinished">
-      <mat-card-content>
-        <mat-panel-title><h4>You are logged but your profile needs completing</h4></mat-panel-title>
-        <mat-card-actions>
-          <a mat-raised-button
-          routerLink="/profile">Review User profile <mat-icon>double_arrow</mat-icon></a>
-          <br>
-          <button mat-raised-button
-            class="deleteUserBtn"
-            color="warn"
-            style="display: block; margin: 20px auto 0;"
-            (click)="profileService.deleteUserAccount()">
-            Delete User Login
-          </button>
-        </mat-card-actions>
-      </mat-card-content>
-    </mat-card>
-    <!-- </div> -->
-    <hr>
-    <hr>
-    <br>
-    <h3>Contact:</h3>
-    <p><mat-icon>email</mat-icon> cgavras@yahoo.ca</p>
-    <p><mat-icon>account_box</mat-icon> linkedin.com/in/constantinefleshtor</p>
-  </div>
+  <mat-card class="profile-link" *ngIf="!profileFinished">
+    <mat-card-content>
+      <mat-panel-title><h4>You are logged but your profile needs completing</h4></mat-panel-title>
+      <mat-card-actions>
+        <a mat-raised-button
+        routerLink="/profile">Review User profile <mat-icon>double_arrow</mat-icon></a>
+        <br>
+        <button mat-raised-button class="deleteUserBtn" color="warn" (click)="profileService.deleteUserAccount()">
+          Delete User Login
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="contact_info">
+  <p><mat-icon>email</mat-icon>&nbsp;&nbsp;cgavras@yahoo.ca</p>
+  <p><mat-icon>account_box</mat-icon>&nbsp;&nbsp;<a href="linkedin.com/in/constantinefleshtor" target="_blank">LinkedIn</a></p>
+</div>

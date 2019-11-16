@@ -1,3 +1,20 @@
 mat-form-field {
   width: 300px;
 }
+
+section {
+  height: calc(100vh - 120px);
+}
+
+.contact_info {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.contact_info > p {
+  font-size: 13px;
+}
+
+mat-icon {
+  vertical-align: middle;
+}

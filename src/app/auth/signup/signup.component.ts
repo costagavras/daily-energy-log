@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { UIService } from 'src/app/shared/ui.service';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { DialogAgreeTermsComponent } from './dialog-agree-terms.component';
 
 @Component({
   selector: 'app-signup',
@@ -12,16 +14,18 @@ import { Subscription } from 'rxjs';
 })
 export class SignupComponent implements OnInit, OnDestroy {
   isLoading = false;
-  private loadingSubs: Subscription;
+  checked = false;
+  private signupSubs: Subscription[] = [];
 
   constructor(private authService: AuthService,
-              private uiService: UIService) { }
+              private uiService: UIService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loadingSubs = this.uiService.loadingStateChanged
+    this.signupSubs.push(this.uiService.loadingStateChanged
     .subscribe(isLoading => {
       this.isLoading = isLoading;
-    });
+    }));
   }
 
   onSubmit(form: NgForm) {
@@ -31,9 +35,15 @@ export class SignupComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.loadingSubs) {
-      this.loadingSubs.unsubscribe();
+  openTerms() {
+  if (!this.checked) {
+    this.dialog.open(DialogAgreeTermsComponent);
+    }
+  }
+
+   ngOnDestroy() {
+    if (this.signupSubs) {
+      this.signupSubs.forEach(sub => sub.unsubscribe());
     }
   }
 }

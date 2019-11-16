@@ -31,9 +31,15 @@
         ngModel
         name="agree"
         required
+        (click)="openTerms()"
+        [(ngModel)]="checked"
         color="primary">
       Agree to Terms and Conditions.</mat-checkbox>
       <button *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="f.invalid">Submit</button>
       <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </section>
+    <div class="contact_info">
+      <p><mat-icon>email</mat-icon>&nbsp;&nbsp;cgavras@yahoo.ca</p>
+      <p><mat-icon>account_box</mat-icon>&nbsp;&nbsp;<a href="linkedin.com/in/constantinefleshtor" target="_blank">LinkedIn</a></p>
+    </div>
