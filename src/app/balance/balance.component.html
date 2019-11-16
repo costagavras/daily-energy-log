@@ -22,7 +22,7 @@
   </mat-form-field>
 </div>
 
-<mat-table *ngIf="!isLoading" mat-table [dataSource]="dataSource" matSort [matSortDisabled]="isGrouperRun">
+<mat-table *ngIf="!isLoading" mat-table [dataSource]="dataSource" matSort [matSortDisabled]="true">
 
   <ng-container matColumnDef="date">
     <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
@@ -79,9 +79,9 @@
     </ng-container>
     <ng-container matColumnDef="groupHeader">
       <mat-cell mat-cell *matCellDef="let group">
-        <strong *ngIf="columnName === 'week'">Week: {{group.groupName}}</strong>
-        <strong *ngIf="columnName === 'month'">Month: {{group.groupName}}</strong>
-        <strong *ngIf="columnName === 'year'">Year: {{group.groupName}}</strong>
+        <strong *ngIf="columnName === 'week'">Week: {{ group.groupName }}</strong>
+        <strong *ngIf="columnName === 'month'">Month: {{ group.groupName + 1 }}</strong>
+        <strong *ngIf="columnName === 'year'">Year: {{ group.groupName }}</strong>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="totalCaloriesGroupIn">
