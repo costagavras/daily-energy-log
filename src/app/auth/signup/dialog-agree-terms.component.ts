@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
   selector: 'app-dialog-agree-terms',
   template: `<h2 mat-dialog-title fxLayoutAlign="center" style="margin: 0">Hi user!</h2>
             <mat-dialog-content fxLayoutAlign="center">
-              <p>Gotta put some legalese here but didn't come up with any yet. So use with caution and discretion :)</p>
+              <p>Couldn't come up with anything to put here so use with caution :) Please, let me know of any bugs at cgavras@yahoo.ca</p>
             </mat-dialog-content>
             <mat-dialog-actions fxLayoutAlign="center">
               <button mat-raised-button style="background: gainsboro;" [mat-dialog-close]="true">Ok</button>

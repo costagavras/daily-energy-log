@@ -3,7 +3,7 @@ import { NgForm, FormControl } from '@angular/forms';
 import { FoodService } from '../food.service';
 import { Subscription, Observable } from 'rxjs';
 import { FoodItem } from '../food-item.model';
-import { startWith, map, filter } from 'rxjs/operators';
+import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({

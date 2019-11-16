@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import { AppDateAdapter } from 'src/app/shared/date-adapter';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { usdaKey } from 'src/environments/environment.prod';
 
 import { MatDialog } from '@angular/material';
@@ -40,8 +40,6 @@ export const APP_DATE_FORMATS = {
 })
 
 export class NewFoodIntakeComponent implements OnInit, OnDestroy {
-
-  // @Output() selectionChange: EventEmitter<MatSelectChange>;
 
   maxDate: Date;
   minValue = 0;
@@ -164,7 +162,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
     this.usdaFoodItemDetailPaneOpen = false;
     this.isLoadingFoodItem = true;
     this.usdaPickedFoodItem = {} as FoodItem;
-    axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
+    // axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
+    axios.get(this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
       this.usdaFoodItemDetail = response.data.foodNutrients;
       this.usdaPickedFoodItem = {
         name: response.data.description,
@@ -182,7 +181,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   onSearch(searchString: string, branded, allWords, page) {
     this.isLoadingFoodItems = true;
     this.usdaSearch = searchString;
-    axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
+    // axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
+    axios.post(this.usdaFoodSearchURL + usdaKey,
         {
           generalSearchInput: searchString,
           includeDataTypes: {
