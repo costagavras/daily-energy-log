@@ -53,8 +53,11 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsBeverages() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Beverages')).snapshotChanges()
+      // this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Beverages'))
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Beverages'))
+      .snapshotChanges()
         .pipe(map(docArray => {
           return docArray.map(doc => {
             return {
@@ -72,8 +75,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDairy() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Dairy')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Dairy'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -91,8 +96,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDesserts() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Desserts')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Desserts'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -110,8 +117,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsDishes() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Dishes')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Dishes'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -129,8 +138,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFats() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fats')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Fats'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -148,8 +159,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFish() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fish')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Fish'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -167,8 +180,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsFruits() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Fruits')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Fruits'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -186,8 +201,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsGrains() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Grains')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Grains'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -205,8 +222,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsMeat() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Meat')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Meat'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -224,9 +243,11 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsVegetables() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
       // this.db.collection<FoodItem>('availableFoodItemsVegetables', ref => ref.orderBy('name', 'asc')).snapshotChanges()
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Vegetables')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Vegetables'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -244,8 +265,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsOther() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Other')).snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Other'))
+      .snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
@@ -263,8 +286,9 @@ export class FoodService {
   }
 
   fetchCustomFoodItems() {
+    const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.foodServiceSubs.push(
-      this.db.collectionGroup<FoodItem>('userFoodItems').snapshotChanges()
+      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems').snapshotChanges()
       .pipe(map(docArray => {
         return docArray.map(doc => {
           return {
