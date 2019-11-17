@@ -33,3 +33,17 @@ mat-icon {
   vertical-align: middle;
 }
 
+.homepage_icon {
+  width: 20px;
+  vertical-align: sub;
+  padding-right: 5px;
+}
+
+.ic4 {
+  vertical-align: baseline;
+}
+
+.app_built {
+  padding-top: 20px;
+  line-height: 1.5em;
+}

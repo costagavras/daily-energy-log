@@ -31,6 +31,8 @@ export class FoodService {
 
   userData: User;
   oldAddedFoodName: string;
+  userFoodItemsCollection: string;
+  userFirebaseId: string;
 
   private availableFoodItemsStorage = {} as any;
 
@@ -53,10 +55,10 @@ export class FoodService {
   }
 
   fetchAvailableFoodItemsBeverages() {
-    const userFirebaseId = this.profileService.getFirebaseUser().uid;
+    const userFoodItemsCollection = 'users/' + this.profileService.getFirebaseUser().uid + '/userFoodItems';
     this.foodServiceSubs.push(
       // this.db.collectionGroup<FoodItem>('userFoodItems', ref => ref.where('category', '==', 'Beverages'))
-      this.db.collection<FoodItem>('users/' + userFirebaseId + '/userFoodItems', ref => ref.where('category', '==', 'Beverages'))
+      this.db.collection<FoodItem>(userFoodItemsCollection, ref => ref.where('category', '==', 'Beverages'))
       .snapshotChanges()
         .pipe(map(docArray => {
           return docArray.map(doc => {
