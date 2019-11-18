@@ -14,17 +14,26 @@
   padding: 0px;
 }
 
-.activityButton {
-  display: block;
-  margin: 0 auto;
-}
-
-.nextButton {
-  display: block;
-  margin: 30px auto 0;
-}
-
 :host ::ng-deep .mat-list-item-content {
   justify-content: space-between;
 }
 
+.titles {
+  position: fixed;
+  width: 100%;
+  padding-top: 10px;
+  top: 112px;
+  background-color: white;
+  z-index: 2;
+}
+
+.al_buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media (max-width: 599px) {
+  .titles {
+    top: 104px;
+  }
+}

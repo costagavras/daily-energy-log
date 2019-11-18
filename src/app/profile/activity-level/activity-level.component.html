@@ -1,11 +1,13 @@
 <mat-card class="activityLevel" fxLayoutAlign="center center" fxFlex.xs="100%">
-  <form #f="ngForm" (ngSubmit)="onSave(f)">
+  <div class="titles">
     <mat-card-title fxLayoutAlign="center">List of daily activities</mat-card-title>
     <mat-card-subtitle fxLayoutAlign="center">
       <mat-chip-list>
         <mat-chip color="warn">{{24 - total}}</mat-chip><strong> hours left to allocate</strong>
       </mat-chip-list>
     </mat-card-subtitle>
+  </div>
+  <form #f="ngForm" (ngSubmit)="onSave(f)" style="padding: 70px 0 50px;">
     <mat-card-content fxLayoutAlign="center">
       <mat-list>
         <mat-list-item *ngFor="let listActivity of listActivities | keyvalue; let i = index">
@@ -26,15 +28,15 @@
         </mat-list-item>
       </mat-list>
     </mat-card-content>
-    <button class="activityButton" mat-raised-button color="accent" type="submit" [disabled]="!f.valid || checkMinMax(f) || total !== 24"
-      matBadge="{{24-total}}" matBadgeColor="warn">Save</button>
-    <div>
+    <div class="al_buttons">
+      <button class="activityButton" mat-raised-button color="accent" type="submit" [disabled]="!f.valid || checkMinMax(f) || total !== 24"
+        matBadge="{{24-total}}" matBadgeColor="warn">Save</button>
       <button class="nextButton"
         mat-raised-button
         color="primary"
         (click)="tabSelect()"
         *ngIf="loadLinkToProfileCompleted">
-        Review Profile <mat-icon>double_arrow</mat-icon>
+        Profile <mat-icon>double_arrow</mat-icon>
       </button>
     </div>
   </form>

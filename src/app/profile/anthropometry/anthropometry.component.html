@@ -76,17 +76,15 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Submit</ng-template>
-      <div>
+      <div class="al_buttons">
         <button mat-raised-button (click)="stepper.reset()">Reset</button>
         <button mat-raised-button color="accent" matStepperNext type="submit" (click)="onSave()">Save</button>
-      </div>
-      <div>
         <button class="nextButton"
           mat-raised-button
           color="primary"
           (click)="tabSelect()"
           *ngIf="loadLinkToActivityLevel">
-          Review Activity Level <mat-icon>double_arrow</mat-icon>
+          Activity Level <mat-icon>double_arrow</mat-icon>
         </button>
       </div>
     </mat-step>

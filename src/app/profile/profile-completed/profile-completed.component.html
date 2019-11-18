@@ -44,14 +44,14 @@
         </li>
       </ul>
     </mat-chip-list>
-    <div>
-        <button *ngIf="userData" mat-raised-button color="warn" (click)="deleteUser(userData)">Delete user</button>
-        <button class="nextButton"
-          mat-raised-button
-          color="primary"
-          (click)="tabSelect()">
-          <mat-icon>reply</mat-icon>
-           Update User
-        </button>
-      </div>
+    <div class="al_buttons">
+      <button *ngIf="userData" mat-raised-button color="warn" (click)="deleteUser(userData)">Delete user</button>
+      <button class="nextButton"
+        mat-raised-button
+        color="primary"
+        (click)="tabSelect()">
+        <mat-icon>reply</mat-icon>
+          Update User
+      </button>
+    </div>
   </mat-card>
