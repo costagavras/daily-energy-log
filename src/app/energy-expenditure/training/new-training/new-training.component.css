@@ -22,6 +22,17 @@ mat-expansion-panel-header {
   height: 60px;
 }
 
+:host ::ng-deep .mat-slider-thumb-label-text {
+  font-size: 8px;
+  text-align: center;
+  white-space: pre-line;
+  font-family: 'Lato', sans-serif;
+}
+
+:host ::ng-deep .mat-expansion-panel-content {
+  font: inherit;
+}
+
 .slider {
   display: flex;
   align-content: center;

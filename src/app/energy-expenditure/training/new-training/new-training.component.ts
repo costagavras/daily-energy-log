@@ -82,6 +82,11 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.trainingService.fetchAvailableExercisesCal();
   }
 
+  formatLabel(value: number) {
+    const returnString = value + 'kg ' + Math.round(value / 0.454) + 'lb';
+    return returnString;
+  }
+
   ngOnDestroy() {
     if (this.fbAvailableExercisesSubs) {
       this.fbAvailableExercisesSubs.forEach(sub => sub.unsubscribe());
