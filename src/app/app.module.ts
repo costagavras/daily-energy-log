@@ -46,6 +46,7 @@ import { ProfileCompletedComponent } from './profile/profile-completed/profile-c
 import { DialogDeleteProfileComponent } from './profile/profile-completed/dialog-delete-profile.component';
 import { DialogAddCategoryComponent } from './food-intake/new-food-intake/dialog-add-category.component';
 import { DialogAgreeTermsComponent } from './auth/signup/dialog-agree-terms.component';
+import { AppSettingsComponent } from './profile/app-settings/app-settings.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { DialogAgreeTermsComponent } from './auth/signup/dialog-agree-terms.comp
     DialogDeleteProfileComponent,
     AddFoodComponent,
     DialogAddCategoryComponent,
-    DialogAgreeTermsComponent
+    DialogAgreeTermsComponent,
+    AppSettingsComponent
   ],
   imports: [
     BrowserModule,

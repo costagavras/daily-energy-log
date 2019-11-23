@@ -31,15 +31,6 @@ mat-expansion-panel-header {
   padding: 0 24px;
 }
 
-/* :host ::ng-deep .mat-card-content {
-  display: block;
-} */
-/*
-mat-card-content {
-  display: block;
-  padding: 0 10px;
-} */
-
 .emphasis {
   font: bold;
   font-size: 16px;
@@ -74,6 +65,7 @@ mat-card-content {
 
 .usda_header {
   text-align: center;
+  margin-top: 5px;
 }
 
 :host ::ng-deep .usda_subheader {
@@ -100,8 +92,12 @@ mat-card-content {
   border: 1px;
 }
 
+:host ::ng-deep .mat-form-field-outline {
+  background: white;
+}
+
 .usdaFoodItemPane {
-  background-color: mintcream
+  background-color: powderblue
 }
 
 :host ::ng-deep .usda_foodItemData {
@@ -118,6 +114,28 @@ mat-card-content {
 
 #toggle {
   padding: 0 30px 10px;
+}
+
+.usda_servingLb {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.metric_imperial_btn_toggle {
+  width: 80px;
+  height: 30px;
+}
+
+.btn_toggle_mt_imp {
+  width: 50%;
+}
+
+:host ::ng-deep .mat-button-toggle-label-content {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: normal !important;
+  padding: 0 10px !important;
 }
 
 @media all and (max-width: 599px) {

@@ -1,15 +1,18 @@
 <mat-tab-group #tabGroup>
+  <mat-tab label="User Settings">
+    <app-app-settings (tabSelected)="tabGroup.selectedIndex=1"></app-app-settings>
+  </mat-tab>
   <mat-tab label="User Data">
-    <app-anthropometry (tabSelected)="tabGroup.selectedIndex=1"></app-anthropometry>
+    <app-anthropometry (tabSelected)="tabGroup.selectedIndex=2"></app-anthropometry>
   </mat-tab>
   <mat-tab #tab label="Activity Level">
     <ng-template matTabContent>
-      <app-activity-level (tabSelected)="tabGroup.selectedIndex=2"></app-activity-level>
+      <app-activity-level (tabSelected)="tabGroup.selectedIndex=3"></app-activity-level>
     </ng-template>
   </mat-tab>
   <mat-tab #tab label="Profile Revew">
     <ng-template matTabContent>
-      <app-profile-completed (tabSelected)="tabGroup.selectedIndex=0"></app-profile-completed>
+      <app-profile-completed (tabSelected)="tabGroup.selectedIndex=1"></app-profile-completed>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

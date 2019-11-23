@@ -14,7 +14,7 @@
           fxFlexAlign="baseline"
           #toggle>
         </mat-slide-toggle>
-        <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Add from personal database</mat-card-subtitle>
+        <mat-card-subtitle [ngClass]="{'emphasis' : toggle.checked}" fxFlexAlign="end">Add from app database</mat-card-subtitle>
       </div>
       <mat-card-content>
 
@@ -25,7 +25,7 @@
           <mat-error *ngIf="nameSearch.hasError('required')">Field must not be empty.</mat-error>
         </mat-form-field>
         <button class="usda_button" mat-raised-button color="primary"
-          [disabled]="nameSearch.invalid || nameSearch.untouched"
+          [disabled]="nameSearch.value === ''"
           (click)="onSearch(f.value.nameSearch, branded, requireAllWords)"><mat-icon>search</mat-icon>Search...
         </button>
         <div class="usda_checkboxes">
@@ -34,12 +34,17 @@
         </div>
         <mat-card *ngIf="usdaFoodItemDetailPaneOpen" class="usdaFoodItemPane">
           <mat-card-content>
+          <mat-button-toggle-group name="unit" #toggleMtImpgroup="matButtonToggleGroup" class="metric_imperial_btn_toggle">
+            <mat-button-toggle class="btn_toggle_mt_imp" value="metric" checked>gr</mat-button-toggle>
+            <mat-button-toggle class="btn_toggle_mt_imp" value="imperial">oz</mat-button-toggle>
+          </mat-button-toggle-group>
             <h3 class="usda_header">{{ usdaPickedFoodItem.name }}</h3>
+          <div *ngIf="toggleMtImpgroup.value === 'metric'">
             <mat-form-field appearance="outline" class="usda_portionSize">
               <mat-label>Portion size, gr</mat-label>
-              <input matInput ngModel type="number" name="servingUSDA" #servingUSDA="ngModel">
+              <input matInput ngModel type="number" name="servingUSDA" #servingUSDA="ngModel" class="usda_servingGr">
             </mat-form-field>
-            <mat-chip-list  class="usda_foodItemData">
+            <mat-chip-list class="usda_foodItemData">
               <mat-chip>Calories: {{ (usdaPickedFoodItem.caloriesIn / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
               <mat-chip>Protein: {{ (usdaPickedFoodItem.protein / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
               <mat-chip>Fat: {{ (usdaPickedFoodItem.fat / 100 * f.value.servingUSDA) | number: '1.0-0' }}</mat-chip>
@@ -47,12 +52,37 @@
             </mat-chip-list>
             <mat-action-row class="usda_foodItemButtons">
               <button type="Submit" (click)="saveCustomFood(usdaPickedFoodItem)"
-                mat-raised-button color="primary" color="accent">Save item to database</button>
+                matTooltip="Save this food item to your personal available food items database"
+                mat-raised-button color="primary" color="accent">Save item to app database</button>
               <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA, 'usda', usdaPickedFoodItem)"
+                matTooltip="Save eaten food item"
                 mat-raised-button color="primary" [disabled]="servingUSDA.untouched" color="primary">Save food</button>
             </mat-action-row>
+          </div>
+          <div *ngIf="toggleMtImpgroup.value === 'imperial'">
+            <mat-form-field appearance="outline" class="usda_portionSize">
+              <mat-label>Portion size, oz</mat-label>
+              <input matInput ngModel type="number" name="servingUSDA" #servingUSDA="ngModel" class="usda_servingGr">
+            </mat-form-field>
+            <mat-chip-list class="usda_foodItemData">
+              <mat-chip>Calories: {{ (usdaPickedFoodItem.caloriesIn / 100 * f.value.servingUSDA * 28.3495) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Protein: {{ (usdaPickedFoodItem.protein / 100 * f.value.servingUSDA * 28.3495) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Fat: {{ (usdaPickedFoodItem.fat / 100 * f.value.servingUSDA * 28.3495) | number: '1.0-0' }}</mat-chip>
+              <mat-chip>Carb: {{ (usdaPickedFoodItem.carb / 100 * f.value.servingUSDA * 28.3495) | number: '1.0-0' }}</mat-chip>
+            </mat-chip-list>
+            <mat-action-row class="usda_foodItemButtons">
+              <button type="Submit" (click)="saveCustomFood(usdaPickedFoodItem)"
+                matTooltip="Save this food item to your personal available food items database"
+                mat-raised-button color="primary" color="accent">Save item to app database</button>
+              <button type="Submit" (click)="foodService.saveFoodItem(f.value.date, usdaPickedFoodItem.name, f.value.servingUSDA * 28.3495, 'usda', usdaPickedFoodItem)"
+                matTooltip="Save eaten food item"
+                mat-raised-button color="primary" [disabled]="servingUSDA.untouched" color="primary">Save food</button>
+            </mat-action-row>
+          </div>
           </mat-card-content>
         </mat-card>
+
+
 
         <mat-spinner style="margin: 0 auto" *ngIf="isLoadingFoodItem"></mat-spinner>
         <mat-spinner style="margin: 0 auto" *ngIf="isLoadingFoodItems"></mat-spinner>

@@ -9,6 +9,7 @@ export interface User {
   bmi?: number;
   bmr?: number;
   activityLevel?: number; // BMR * activity level (extra ex+walking)
+  units?: string;
 }
 
 export interface UserStamp {
