@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material';
 import { DialogAddCategoryComponent } from '../new-food-intake/dialog-add-category.component';
 
 import axios from 'axios';
+import { ProfileService } from 'src/app/profile/profile.service';
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -60,6 +61,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   isLoadingFoodItems = false;
   isLoadingFoodItem = false;
   usdaSearchResults = false;
+  units: string;
   usdaSearch: string;
 
   foodItemsBeverages: FoodItem[];
@@ -84,10 +86,21 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   'Meat', 'Vegetables', 'Other'];
 
   constructor(public foodService: FoodService,
+              private profileService: ProfileService,
               private dialog: MatDialog) { }
 
   ngOnInit() {
     this.maxDate = new Date();
+
+    this.profileService.getUserData();
+
+    this.newFoodIntakeSubs.push(this.profileService.userProfileData
+      .subscribe(
+        user => {
+          this.units = user.units;
+          console.log(this.units);
+        }
+      ));
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsBeveragesChanged
       .subscribe(

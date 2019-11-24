@@ -7,7 +7,7 @@
     <mat-card-title fxLayoutAlign="center">Units</mat-card-title>
   </div>
   <mat-card-content fxLayoutAlign="center" fxLayout="column">
-    <form [formGroup]="unitsFormGroup">
+    <form [formGroup]="unitsFormGroup" class="form_units">
       <mat-radio-group matInput  formControlName="units" required aria-label="Select an option">
         <mat-radio-button value="metric">Metric</mat-radio-button>
         <mat-radio-button value="imperial">Imperial</mat-radio-button>

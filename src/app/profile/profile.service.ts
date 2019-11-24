@@ -14,9 +14,11 @@ export class ProfileService {
 openActivityLevel = new Subject<boolean>();
 userProfileData = new Subject<User>();
 activitiesList = new Subject<any>();
+unitsUserSelected = new Subject<string>();
 userStampsCollection = new Subject<UserStamp[]>();
 userProfile: User;
 fbUser;
+units: string;
 
 private profileServiceSubs: Subscription[] = [];
 private userExistsSub: Subscription;
@@ -24,6 +26,10 @@ private userExistsSub: Subscription;
   constructor(private db: AngularFirestore,
               private router: Router,
               private uiService: UIService) {}
+
+  unitsSelected(units) {
+    this.unitsUserSelected.next(units); // event emitter measurement units selected by user
+  }
 
   getUserData() {
     this.fbUser = firebase.auth().currentUser;
@@ -115,7 +121,7 @@ private userExistsSub: Subscription;
       .subscribe(doc => {
         if (doc.payload.exists) {
           this.db.collection('users').doc(userData.userId).update(userData);
-          this.uiService.showSnackbar(userData.name + ' successfully updated', null, 3000);
+          this.uiService.showSnackbar(doc.payload.data()['name'] + ' successfully updated', null, 3000);
           this.userExistsSub.unsubscribe();
         } else {
           this.db.collection('users').doc(userData.userId).set(userData);

@@ -35,8 +35,8 @@
         <mat-card *ngIf="usdaFoodItemDetailPaneOpen" class="usdaFoodItemPane">
           <mat-card-content>
           <mat-button-toggle-group name="unit" #toggleMtImpgroup="matButtonToggleGroup" class="metric_imperial_btn_toggle">
-            <mat-button-toggle class="btn_toggle_mt_imp" value="metric" checked>gr</mat-button-toggle>
-            <mat-button-toggle class="btn_toggle_mt_imp" value="imperial">oz</mat-button-toggle>
+            <mat-button-toggle class="btn_toggle_mt_imp" value="metric" [checked]="units === 'metric'">gr</mat-button-toggle>
+            <mat-button-toggle class="btn_toggle_mt_imp" value="imperial" [checked]="units === 'imperial'">oz</mat-button-toggle>
           </mat-button-toggle-group>
             <h3 class="usda_header">{{ usdaPickedFoodItem.name }}</h3>
           <div *ngIf="toggleMtImpgroup.value === 'metric'">

@@ -1,13 +1,9 @@
-<!-- <div fxLayoutAlign="center center">
-  <h3>Manage your user profile</h3>
-</div> -->
-
 <div fxLayoutAlign="center center" fxLayout="column">
   <mat-vertical-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
+      <mat-form-field class="input_box">
         <input matInput placeholder="Name" formControlName="name" required >
         <mat-hint *ngIf="!name.touched || !name.dirty">Please enter a name.</mat-hint>
         <mat-error *ngIf="name.hasError('required')">Field must not be empty.</mat-error>
@@ -33,7 +29,7 @@
   <mat-step [stepControl]="ageFormGroup">
     <form [formGroup]="ageFormGroup">
       <ng-template matStepLabel>Fill out your age</ng-template>
-      <mat-form-field>
+      <mat-form-field class="input_box">
         <input matInput type="number" [min]="minAgeValue" placeholder="Age" formControlName="age" required>
         <mat-hint *ngIf="!age.touched || !age.dirty">Please enter your age.</mat-hint>
         <mat-error *ngIf="age.hasError('required')">Field must not be empty.</mat-error>
@@ -48,10 +44,20 @@
   <mat-step [stepControl]="heightFormGroup">
     <form [formGroup]="heightFormGroup">
       <ng-template matStepLabel>Fill out your height</ng-template>
-      <mat-form-field>
-        <input matInput type="number" [min]="minHeightValue" placeholder="Height, cm" formControlName="height" required>
-        <mat-hint *ngIf="!height.touched || !height.dirty">Please enter your height.</mat-hint>
-        <mat-error *ngIf="height.hasError('required')">Field must not be empty.</mat-error>
+      <mat-form-field *ngIf="units === 'metric'" class="input_box">
+        <input matInput type="number" [min]="minHeightValue" placeholder="Height, cm" formControlName="heightCm" required>
+        <mat-hint *ngIf="!heightCm?.touched || !heightCm?.dirty">Please enter your height.</mat-hint>
+        <mat-error *ngIf="heightCm?.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="units === 'imperial'" class="input_box">
+        <input matInput type="number" [min]="minHeightValue" placeholder="Height, ft" formControlName="heightFt" required>
+        <mat-hint *ngIf="!heightFt?.touched || !heightFt?.dirty">Please enter your height.</mat-hint>
+        <mat-error *ngIf="heightFt?.hasError('required')">Field must not be empty.</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="units === 'imperial'">
+        <input matInput type="number" [min]="minHeightValue" placeholder="Height, in" formControlName="heightIn" required>
+        <mat-hint *ngIf="!heightIn?.touched || !heightIn?.dirty">Please enter your height.</mat-hint>
+        <mat-error *ngIf="heightIn?.hasError('required')">Field must not be empty.</mat-error>
       </mat-form-field>
       <div>
         <button mat-raised-button matStepperPrevious>Back</button>
@@ -62,11 +68,17 @@
   <mat-step [stepControl]="weightFormGroup">
     <form [formGroup]="weightFormGroup">
       <ng-template matStepLabel>Fill out your weight</ng-template>
-      <mat-form-field>
-        <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weight" required>
-        <mat-hint *ngIf="!weight.touched || !weight.dirty">Please enter your weight.</mat-hint>
-        <mat-error *ngIf="weight.hasError('required')">Field must not be empty.</mat-error>
-        <mat-error *ngIf="weight.hasError('min') || weight.hasError('max')">Weight limit not respected!</mat-error>
+      <mat-form-field *ngIf="units === 'metric'" class="input_box">
+        <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weightKg" required>
+        <mat-hint *ngIf="!weightKg.touched || !weightKg.dirty">Please enter your weight.</mat-hint>
+        <mat-error *ngIf="weightKg.hasError('required')">Field must not be empty.</mat-error>
+        <mat-error *ngIf="weightKg.hasError('min') || weightKg.hasError('max')">Weight limit not respected!</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="units === 'imperial'" class="input_box">
+        <input matInput type="number" [min]="minWeightValue" placeholder="Weight, lb" formControlName="weightLb" required>
+        <mat-hint *ngIf="!weightLb.touched || !weightLb.dirty">Please enter your weight.</mat-hint>
+        <mat-error *ngIf="weightLb.hasError('required')">Field must not be empty.</mat-error>
+        <mat-error *ngIf="weightLb.hasError('min') || weightLb.hasError('max')">Weight limit not respected!</mat-error>
       </mat-form-field>
       <div>
         <button mat-raised-button matStepperPrevious>Back</button>

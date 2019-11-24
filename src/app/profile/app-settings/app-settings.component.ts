@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ProfileService } from '../profile.service';
 
 @Component({
@@ -38,6 +38,8 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
 
   tabSelect() {
     this.tabSelected.emit();
+    this.profileService.unitsSelected(this.unitsFormGroup.value.units);
+
   }
 
   ngOnDestroy() {
