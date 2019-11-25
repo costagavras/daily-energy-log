@@ -42,6 +42,7 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
       .subscribe(
         units => {
           this.units = units;
+          console.log(this.units);
         }
       ));
 

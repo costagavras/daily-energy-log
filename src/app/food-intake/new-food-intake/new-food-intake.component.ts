@@ -98,7 +98,6 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
       .subscribe(
         user => {
           this.units = user.units;
-          console.log(this.units);
         }
       ));
 
