@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { FoodService } from '../food.service';
 import { FoodItem } from '../food-item.model';
@@ -42,6 +42,8 @@ export const APP_DATE_FORMATS = {
 
 export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
+  @Input() expanded: any;
+
   maxDate: Date;
   minValue = 0;
   today = new Date();
@@ -82,8 +84,11 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   usdaFoodDetailsURL1 = 'https://api.nal.usda.gov/fdc/v1/';
   usdaFoodDetailsURL2 = '?api_key=';
 
-  foodCategories = ['Beverages', 'Dairy', 'Desserts', 'Dishes', 'Fats', 'Fish', 'Fruits', 'Grains',
-  'Meat', 'Vegetables', 'Other'];
+  categoryTitle = 'Input food item and serving size (gr/oz)';
+  foodCategories = ['beverages', 'dairy', 'desserts', 'dishes', 'fats', 'fish', 'fruits', 'grains',
+  'meat', 'vegetables', 'other'];
+  foodCategoriesObject = {} as any;
+
 
   constructor(public foodService: FoodService,
               private profileService: ProfileService,
@@ -96,74 +101,73 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
     this.newFoodIntakeSubs.push(this.profileService.userProfileData
       .subscribe(
-        user => {
-          this.units = user.units;
-        }
+        user => (this.units = user.units)
       ));
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsBeveragesChanged
       .subscribe(
-        foodItems => (this.foodItemsBeverages = foodItems)
-      ));
+        foodItems => (this.foodCategoriesObject.beverages = foodItems)
+        ));
+
     this.foodService.fetchAvailableFoodItemsBeverages();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsDairyChanged
       .subscribe(
-        foodItems => (this.foodItemsDairy = foodItems)
+        foodItems => (this.foodCategoriesObject.dairy = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDairy();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsDessertsChanged
       .subscribe(
-        foodItems => (this.foodItemsDesserts = foodItems)
+        foodItems => (this.foodCategoriesObject.desserts = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDesserts();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsDishesChanged
       .subscribe(
-        foodItems => (this.foodItemsDishes = foodItems)
+        foodItems => (this.foodCategoriesObject.dishes = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsDishes();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsFatsChanged
       .subscribe(
-        foodItems => (this.foodItemsFats = foodItems)
+        foodItems => (this.foodCategoriesObject.fats = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFats();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsFishChanged
       .subscribe(
-        foodItems => (this.foodItemsFish = foodItems)
+        foodItems => (this.foodCategoriesObject.fish = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFish();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsFruitsChanged
       .subscribe(
-        foodItems => (this.foodItemsFruits = foodItems)
+        foodItems => (this.foodCategoriesObject.fruits = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsFruits();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsGrainsChanged
       .subscribe(
-        foodItems => (this.foodItemsGrains = foodItems)
+        foodItems => (this.foodCategoriesObject.grains = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsGrains();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsMeatChanged
       .subscribe(
-        foodItems => (this.foodItemsMeat = foodItems)
+        foodItems => (this.foodCategoriesObject.meat = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsMeat();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsVegetablesChanged
       .subscribe(
-        foodItems => (this.foodItemsVegetables = foodItems)
+        foodItems => (this.foodCategoriesObject.vegetables = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsVegetables();
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsOtherChanged
       .subscribe(
-        foodItems => (this.foodItemsOther = foodItems)
+        foodItems => (this.foodCategoriesObject.other = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsOther();
 

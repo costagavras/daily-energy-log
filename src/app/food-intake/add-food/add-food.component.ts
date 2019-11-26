@@ -16,8 +16,8 @@ export class AddFoodComponent implements OnInit, OnDestroy {
   minValue = 0;
   name: string;
   today = new Date();
-  foodCategories = ['Beverages', 'Dairy', 'Desserts', 'Dishes', 'Fats', 'Fish', 'Fruits', 'Grains',
-                    'Meat', 'Vegetables', 'Other'];
+  foodCategories = ['beverages', 'dairy', 'desserts', 'dishes', 'fats', 'fish', 'fruits', 'grains',
+                    'meat', 'vegetables', 'other'];
   private addFoodSubs: Subscription[] = [];
   foodItems: FoodItem[];
   filteredFoodItems: Observable<FoodItem[]>;
