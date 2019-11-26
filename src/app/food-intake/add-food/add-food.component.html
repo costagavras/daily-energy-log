@@ -24,7 +24,7 @@
             <mat-label>Food category</mat-label>
             <mat-select ngModel name="foodCategory" required #foodCategoryInput="ngModel">
               <mat-option *ngFor="let catItem of foodCategories" [value]="catItem">
-                {{ catItem }}
+                {{ catItem.toUpperCase() }}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="foodCategoryInput.hasError('required')">Field must not be empty.</mat-error>

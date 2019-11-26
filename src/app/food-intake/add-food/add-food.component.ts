@@ -56,7 +56,7 @@ export class AddFoodComponent implements OnInit, OnDestroy {
         fat: form.value.fat,
         carb: form.value.carbohydrate,
         protein: form.value.protein,
-        category: form.value.foodCategory
+        category: form.value.foodCategory.toLowerCase(),
       }, action === 'update' ? this.foodService.oldAddedFoodName || this.name : null);
     }
   }
