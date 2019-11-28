@@ -13,3 +13,7 @@ html, body {
 body {
   margin: 0;
 }
+
+.mat-raised-button[disabled], button[disabled] {
+  cursor: not-allowed !important;
+}
