@@ -169,7 +169,7 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
 
     this.newFoodIntakeSubs.push(this.foodService.foodItemsOtherChanged
       .subscribe(
-        foodItems => (this.foodCategoriesObject. = foodItems)
+        foodItems => (this.foodCategoriesObject.other = foodItems)
       ));
     this.foodService.fetchAvailableFoodItemsOther();
 
