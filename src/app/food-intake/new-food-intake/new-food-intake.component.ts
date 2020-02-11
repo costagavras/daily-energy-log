@@ -5,15 +5,15 @@ import { FoodItem } from '../food-item.model';
 import { Subscription } from 'rxjs';
 
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
-import { AppDateAdapter } from 'src/app/shared/date-adapter';
+import { AppDateAdapter } from '../../shared/date-adapter';
 // import { HttpClient } from '@angular/common/http';
-import { usdaKey } from 'src/environments/environment.prod';
+import { usdaKey } from '../../../environments/environment.prod';
 
 import { MatDialog } from '@angular/material';
 import { DialogAddCategoryComponent } from '../new-food-intake/dialog-add-category.component';
 
 import axios from 'axios';
-import { ProfileService } from 'src/app/profile/profile.service';
+import { ProfileService } from '../../profile/profile.service';
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -178,8 +178,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
     this.usdaFoodItemDetailPaneOpen = false;
     this.isLoadingFoodItem = true;
     this.usdaPickedFoodItem = {} as FoodItem;
-    axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
-    // axios.get(this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
+    // axios.get(this.proxyURL + this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
+    axios.get(this.usdaFoodDetailsURL1 + foodDetailID + this.usdaFoodDetailsURL2 + usdaKey).then(response => {
       this.usdaFoodItemDetail = response.data.foodNutrients;
       this.usdaPickedFoodItem = {
         name: response.data.description,
@@ -197,8 +197,8 @@ export class NewFoodIntakeComponent implements OnInit, OnDestroy {
   onSearch(searchString: string, branded, allWords, page) {
     this.isLoadingFoodItems = true;
     this.usdaSearch = searchString;
-    axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
-    // axios.post(this.usdaFoodSearchURL + usdaKey,
+    // axios.post(this.proxyURL + this.usdaFoodSearchURL + usdaKey,
+    axios.post(this.usdaFoodSearchURL + usdaKey,
         {
           generalSearchInput: searchString,
           includeDataTypes: {

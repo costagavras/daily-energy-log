@@ -29,7 +29,6 @@ export class ActivityLevelComponent implements OnInit, OnDestroy {
   minValue = 0;
   maxValue = 24;
   total: any = 0;
-  negativeError: boolean;
   loadLinkToProfileCompleted = false;
   private fbActivitiesListSub: Subscription;
   errorMatcher = new InputErrorStateMatcher();

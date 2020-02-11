@@ -86,7 +86,7 @@
               &nbsp; of &nbsp; {{ totalPages}}.</h3>
               <mat-list-item role="listitem" *ngFor="let foodItem of usdaFoodItems; let i = index">
                 <mat-radio-button (click)="onPick(foodItem.fdcId)">
-                    {{ i + 1 + '. ' + foodItem.description }}
+                    {{ (currentPage * 50) - 50 + i + 1 + '. ' + foodItem.description }}
                 </mat-radio-button>
               </mat-list-item>
             </div>
@@ -124,7 +124,7 @@
                     <mat-button-toggle class="btn_toggle_mt_imp" value="imperial" [checked]="units === 'imperial'">oz</mat-button-toggle>
                   </mat-button-toggle-group>
                   <button type="Submit"
-                  (click)="foodService.saveFoodItem(f.value.date, foodName.value, toggleMtImpGroupDB.value === 'metric' ? serving.value : serving.value * 28.3495 , category)"
+                  (click)="foodService.saveFoodItem(f.value.date, foodName.value, toggleMtImpGroupDB.value === 'metric' ? serving.value : serving.value * 28.3495, category)"
                   mat-raised-button color="primary"
                   [disabled]="foodName.invalid || foodName.untouched || serving.untouched || serving.invalid">Save!</button>
                 </mat-action-row>

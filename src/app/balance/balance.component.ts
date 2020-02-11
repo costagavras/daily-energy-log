@@ -20,8 +20,6 @@ import { User, UserStamp } from '../auth/user.model';
 export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['date', 'food', 'total', 'exercise', 'balance'];
   displayedColumnsGroup = ['Week', 'Month', 'Year'];
-  dataSourceExercises = new MatTableDataSource<Exercise>();
-  dataSourceFoodItems = new MatTableDataSource<FoodItem>();
   dataSource = new MatTableDataSource<any>();
   objExercises: Exercise[] = [];
   objFoodItems: FoodItem[] = [];

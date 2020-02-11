@@ -42,7 +42,6 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
       .subscribe(
         units => {
           this.units = units;
-          console.log(this.units);
         }
       ));
 
@@ -74,7 +73,7 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
     });
     this.heightFormGroup = new FormGroup ({
       heightCm: new FormControl('', {validators: [Validators.required, Validators.min(90), Validators.max(290)]}),
-      heightFt: new FormControl('', {validators: [Validators.required, Validators.min(4), Validators.max(7)]}),
+      heightFt: new FormControl('', {validators: [Validators.required, Validators.min(3), Validators.max(7)]}),
       heightIn: new FormControl('', {validators: [Validators.required, Validators.min(0), Validators.max(11)]})
     });
     this.weightFormGroup = new FormGroup ({
