@@ -1,14 +1,26 @@
-<!-- <div fxLayoutAlign="center center">
-  <h3>Manage your user profile</h3>
-</div> -->
-
 <mat-card class="activityLevel" fxLayoutAlign="center center" fxLayout="column" fxFlex.xs="100%">
-  <div class="titles">
-    <mat-card-title fxLayoutAlign="center">Units</mat-card-title>
-  </div>
+  <!-- <div class="titles">
+    <mat-card-title fxLayoutAlign="center">Introduction & User Units</mat-card-title>
+  </div> -->
   <mat-card-content fxLayoutAlign="center" fxLayout="column">
-    <form [formGroup]="unitsFormGroup" class="form_units">
-      <mat-radio-group matInput  formControlName="units" required aria-label="Select an option" (change)="unitChange($event)">
+    <section class="intro_profile">
+      <ul>
+        <li>
+          <p>The app gathers your anthropometric data (age, gender, height, weight) to calculate your <span>Basal Metabolic Rate (BMR)</span> using Mifflin - St. Jeor equation</p>
+        </li>
+        <li>
+          <p>The next step is to determine your average <span>activity level</span> over 24 hours</p>
+        </li>
+        <li>
+          <p>Your BMR times your activity level plus daily exercises return an estimate of your <span>total daily energy expenditure (TDEE)</span></p>
+        </li>
+        <li>
+          <p>Let's start by choosing <span>the measurement units</span> down below:</p>
+        </li>
+      </ul>
+    </section>
+    <form [formGroup]="unitsFormGroup" fxLayoutAlign="center" class="form_units">
+      <mat-radio-group matInput formControlName="units" required aria-label="Select an option" (change)="unitChange($event)">
         <mat-radio-button value="metric">Metric</mat-radio-button>
         <mat-radio-button value="imperial">Imperial</mat-radio-button>
       </mat-radio-group>

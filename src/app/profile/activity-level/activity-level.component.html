@@ -1,13 +1,13 @@
 <mat-card class="activityLevel" fxLayoutAlign="center center" fxFlex.xs="100%">
   <div class="titles">
-    <mat-card-title fxLayoutAlign="center">Daily activities</mat-card-title>
+    <!-- <mat-card-title fxLayoutAlign="center">Daily activities</mat-card-title> -->
     <mat-card-subtitle fxLayoutAlign="center">
       <mat-chip-list>
-        <mat-chip color="warn">{{24 - total}}</mat-chip><strong> hours left to allocate</strong>
+        <span class="header">Allocate <mat-chip color="warn">{{24 - total}}</mat-chip> hours to daily activities</span>
       </mat-chip-list>
     </mat-card-subtitle>
   </div>
-  <form #f="ngForm" (ngSubmit)="onSave(f)" style="padding: 70px 0 50px;">
+  <form #f="ngForm" (ngSubmit)="onSave(f)" style="padding: 50px 0;">
     <mat-card-content fxLayoutAlign="center">
       <mat-list>
         <mat-list-item *ngFor="let listActivity of listActivities | keyvalue; let i = index">

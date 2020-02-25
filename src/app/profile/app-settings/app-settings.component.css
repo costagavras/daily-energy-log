@@ -7,12 +7,32 @@ button {
   margin: 5px 10px;
 }
 
+ul {
+  padding-right: 10px;
+}
+
+.nextButton {
+  width: fit-content;
+  align-self: center;
+}
+
 .activityLevel {
   padding: 10px;
 }
 
-.titles, .form_units {
+.form_units {
   margin-bottom: 20px;
+}
+
+.intro_profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+span {
+  font-weight: bold;
+  /* color: #009688; */
 }
 
 @media (max-width: 599px) {
