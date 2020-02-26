@@ -1,8 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ProfileService } from '../profile.service';
-import { Subscription } from 'rxjs';
-import { User } from 'src/app/auth/user.model';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
+import { Subscription } from 'rxjs';
+
+import { ProfileService } from '../profile.service';
+import { User } from 'src/app/auth/user.model';
 import { DialogDeleteProfileComponent } from '../profile-completed/dialog-delete-profile.component';
 
 @Component({
@@ -19,7 +21,8 @@ userData: User;
 dataLoaded = false;
 
   constructor(public profileService: ProfileService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private router: Router) { }
 
   ngOnInit() {
     this.fbUser = this.profileService.getFirebaseUser();

@@ -10,22 +10,24 @@ import { User } from '../auth/user.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  profileFinished = true;
+  profileFinished = true; // logic with false will hide the window after a split second, bad user experience;
   private homeSubs: Subscription[] = [];
 
   constructor(public profileService: ProfileService) { }
 
   ngOnInit() {
-    // const prFinished = this.profileService.getUserData2();
     this.homeSubs.push(this.profileService.userProfileData
-      .subscribe(user => {
-        const prFinished = user;
-        if (typeof prFinished !== 'undefined' && typeof prFinished.activityLevel !== 'undefined') {
-          this.profileFinished = true;
-        } else {
+      .subscribe((user: User) => {
+        if (!(typeof user !== 'undefined' && typeof user.activityLevel !== 'undefined')) {
           this.profileFinished = false;
         }
     }));
+
+    // triggering the event emitter in the service to get new UserData to which to subscribe to
+    // once async firebaseUser is retrieved on subsequent (not first) runs of ngOnInit (returning to homepage);
+    if (this.profileService.getFirebaseUser()) {
+      this.profileService.getUserData();
+    }
   }
 
   ngOnDestroy() {

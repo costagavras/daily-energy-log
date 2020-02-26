@@ -4,9 +4,10 @@ import { User, UserStamp } from '.././auth/user.model';
 import * as firebase from 'firebase/app';
 
 
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, BehaviorSubject } from 'rxjs';
 import { UIService } from '../shared/ui.service';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ProfileService {
@@ -22,6 +23,9 @@ units: string;
 
 private profileServiceSubs: Subscription[] = [];
 private userExistsSub: Subscription;
+
+// tslint:disable-next-line: variable-name
+private _user = new BehaviorSubject<User>(null);
 
   constructor(private db: AngularFirestore,
               private router: Router,
@@ -58,6 +62,18 @@ private userExistsSub: Subscription;
 
   getFirebaseUser() {
     return firebase.auth().currentUser;
+  }
+
+  get user() {
+    return this._user.asObservable().pipe(
+      map((user: User) => {
+        if (user) {
+          return user;
+        } else {
+          return null;
+        }
+      })
+    );
   }
 
   getUserData2() {
@@ -138,13 +154,16 @@ private userExistsSub: Subscription;
     const collectionFoodRef = this.db.collection('users').doc(user.userId).collection('finishedFoodItems').ref;
     this.deleteCollection(this.db, collectionFoodRef, 100);
 
+    const collectionUserFoodRef = this.db.collection('users').doc(user.userId).collection('userFoodItems').ref;
+    this.deleteCollection(this.db, collectionUserFoodRef, 100);
+
     const collectionStampRef = this.db.collection('users').doc(user.userId).collection('userStamp').ref;
     this.deleteCollection(this.db, collectionStampRef, 100);
 
     this.db.collection('users').doc(user.userId).delete()
           .then(() => {
-            this.router.navigate(['/']);
             this.uiService.showSnackbar(user.name + ' is now gone!', null, 3000);
+            this.router.navigate(['/']);
           }).catch(error => {
             console.log(error);
           });

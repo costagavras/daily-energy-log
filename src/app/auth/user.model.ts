@@ -8,7 +8,7 @@ export interface User {
   height?: number;
   bmi?: number;
   bmr?: number;
-  activityLevel?: number; // BMR * activity level (extra ex+walking)
+  activityLevel?: number; // BMR * activity level (without ex+walking)
   units?: string;
 }
 
