@@ -48,18 +48,20 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
     this.anthropometrySubs.push(this.profileService.userProfileData
       .subscribe(
         userProfileData => {
-          this.nameFormGroup.patchValue({name: typeof userProfileData.name !== 'undefined' ? userProfileData.name : null });
-          this.genderFormGroup.patchValue({gender: typeof userProfileData.gender !== 'undefined' ? userProfileData.gender : null });
-          this.ageFormGroup.patchValue({age: typeof userProfileData.age !== 'undefined' ? userProfileData.age : null });
-          this.heightFormGroup.patchValue({heightCm: typeof userProfileData.height !== 'undefined' ? userProfileData.height : null });
-          this.heightFormGroup.patchValue({
-            heightFt: typeof userProfileData.height !== 'undefined' ? Math.floor(userProfileData.height / 30.4) : null });
-          this.heightFormGroup.patchValue({
-            // tslint:disable-next-line: max-line-length
-            heightIn: typeof userProfileData.height !== 'undefined' ? Math.round((userProfileData.height - Math.floor(userProfileData.height / 30.4) * 30.4) / 2.54) : null });
-          this.weightFormGroup.patchValue({weightKg: typeof userProfileData.weight !== 'undefined' ? userProfileData.weight : null });
-          this.weightFormGroup.patchValue({
-            weightLb: typeof userProfileData.weight !== 'undefined' ? Math.round(userProfileData.weight / 0.454) : null });
+          if (userProfileData) {
+            this.nameFormGroup.patchValue({name: typeof userProfileData.name !== 'undefined' ? userProfileData.name : null });
+            this.genderFormGroup.patchValue({gender: typeof userProfileData.gender !== 'undefined' ? userProfileData.gender : null });
+            this.ageFormGroup.patchValue({age: typeof userProfileData.age !== 'undefined' ? userProfileData.age : null });
+            this.heightFormGroup.patchValue({heightCm: typeof userProfileData.height !== 'undefined' ? userProfileData.height : null });
+            this.heightFormGroup.patchValue({
+              heightFt: typeof userProfileData.height !== 'undefined' ? Math.floor(userProfileData.height / 30.4) : null });
+            this.heightFormGroup.patchValue({
+              // tslint:disable-next-line: max-line-length
+              heightIn: typeof userProfileData.height !== 'undefined' ? Math.round((userProfileData.height - Math.floor(userProfileData.height / 30.4) * 30.4) / 2.54) : null });
+            this.weightFormGroup.patchValue({weightKg: typeof userProfileData.weight !== 'undefined' ? userProfileData.weight : null });
+            this.weightFormGroup.patchValue({
+              weightLb: typeof userProfileData.weight !== 'undefined' ? Math.round(userProfileData.weight / 0.454) : null });
+          }
         }));
 
     this.nameFormGroup = new FormGroup ({

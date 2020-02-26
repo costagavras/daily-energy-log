@@ -27,12 +27,14 @@ import { NewFoodIntakeComponent } from './food-intake/new-food-intake/new-food-i
 import { ViewFoodIntakeComponent } from './food-intake/view-food-intake/view-food-intake.component';
 import { PastFoodIntakeComponent } from './food-intake/past-food-intake/past-food-intake.component';
 import { AddFoodComponent } from './food-intake/add-food/add-food.component';
+import { FoodGuideComponent } from './food-intake/food-guide/food-guide.component';
 
 import { EnergyExpenditureComponent } from './energy-expenditure/energy-expenditure.component';
 import { TrainingComponent } from './energy-expenditure/training/training.component';
 import { NewTrainingComponent } from './energy-expenditure/training/new-training/new-training.component';
 import { ViewTrainingComponent } from './energy-expenditure/training/view-training/view-training.component';
 import { PastTrainingComponent } from './energy-expenditure/training/past-training/past-training.component';
+import { TrainingGuideComponent } from './energy-expenditure/training/training-guide/training-guide.component';
 
 import { HomeComponent } from './home/home.component';
 import { BalanceComponent } from './balance/balance.component';
@@ -74,7 +76,9 @@ import { AppSettingsComponent } from './profile/app-settings/app-settings.compon
     AddFoodComponent,
     DialogAddCategoryComponent,
     DialogAgreeTermsComponent,
-    AppSettingsComponent
+    AppSettingsComponent,
+    FoodGuideComponent,
+    TrainingGuideComponent
   ],
   imports: [
     BrowserModule,

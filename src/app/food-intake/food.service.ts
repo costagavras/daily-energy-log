@@ -414,7 +414,7 @@ filterDate(event: MatDatepickerInputEvent<Date>) {
   }
 
   // called from the template
-  private deleteDataFromDatabase(foodItem: FoodItem) {
+  deleteDataFromDatabase(foodItem: FoodItem) {
     const userFirebaseId = this.profileService.getFirebaseUser().uid;
     this.db.collection('users').doc(userFirebaseId).collection('finishedFoodItems').doc(foodItem.id).delete();
     this.uiService.showSnackbar(foodItem.name + ' was successfully deleted', null, 3000);

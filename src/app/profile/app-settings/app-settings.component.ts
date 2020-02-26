@@ -32,9 +32,11 @@ export class AppSettingsComponent implements OnInit, OnDestroy {
     this.appSettingSubs.push(this.profileService.userProfileData
       .subscribe(
         userProfileData => {
-          this.unitsFormGroup.patchValue({units: typeof userProfileData.units !== 'undefined' ? userProfileData.units : 'metric' });
-          this.profileService.unitsSelected(this.unitsFormGroup.value.units); // sends to UserData current state with no buttons touched
-          typeof userProfileData !== 'undefined' ? this.userCreated = true : this.userCreated = false;
+          if (userProfileData) {
+            this.unitsFormGroup.patchValue({units: typeof userProfileData.units !== 'undefined' ? userProfileData.units : 'metric' });
+            this.profileService.unitsSelected(this.unitsFormGroup.value.units); // sends to UserData current state with no buttons touched
+            typeof userProfileData !== 'undefined' ? this.userCreated = true : this.userCreated = false;
+          }
         }));
 
     this.unitsFormGroup = new FormGroup ({
