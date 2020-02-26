@@ -137,6 +137,7 @@ private _user = new BehaviorSubject<User>(null);
       .subscribe(doc => {
         if (doc.payload.exists) {
           this.db.collection('users').doc(userData.userId).update(userData);
+          // tslint:disable-next-line: no-string-literal
           this.uiService.showSnackbar(doc.payload.data()['name'] + ' successfully updated', null, 3000);
           this.userExistsSub.unsubscribe();
         } else {

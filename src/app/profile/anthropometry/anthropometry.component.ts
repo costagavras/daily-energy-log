@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 
 import { Subscription } from 'rxjs';
+import { MatStepper } from '@angular/material';
 
 @Component({
   selector: 'app-anthropometry',
@@ -11,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class AnthropometryComponent implements OnInit, OnDestroy {
   @Output() tabSelected = new EventEmitter<void>();
+  // @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   minAgeValue = 10;
   minHeightValue = 100;
@@ -20,8 +22,10 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
   nameFormGroup: FormGroup;
   genderFormGroup: FormGroup;
   ageFormGroup: FormGroup;
-  weightFormGroup: FormGroup;
-  heightFormGroup: FormGroup;
+  weightFormGroupMetric: FormGroup;
+  weightFormGroupImperial: FormGroup;
+  heightFormGroupMetric: FormGroup;
+  heightFormGroupImperial: FormGroup;
   loadLinkToActivityLevel = false;
   fbUser;
   units: string;
@@ -52,14 +56,16 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
             this.nameFormGroup.patchValue({name: typeof userProfileData.name !== 'undefined' ? userProfileData.name : null });
             this.genderFormGroup.patchValue({gender: typeof userProfileData.gender !== 'undefined' ? userProfileData.gender : null });
             this.ageFormGroup.patchValue({age: typeof userProfileData.age !== 'undefined' ? userProfileData.age : null });
-            this.heightFormGroup.patchValue({heightCm: typeof userProfileData.height !== 'undefined' ? userProfileData.height : null });
-            this.heightFormGroup.patchValue({
+            // tslint:disable-next-line: max-line-length
+            this.heightFormGroupMetric.patchValue({heightCm: typeof userProfileData.height !== 'undefined' ? userProfileData.height : null });
+            this.heightFormGroupImperial.patchValue({
               heightFt: typeof userProfileData.height !== 'undefined' ? Math.floor(userProfileData.height / 30.4) : null });
-            this.heightFormGroup.patchValue({
+            this.heightFormGroupImperial.patchValue({
               // tslint:disable-next-line: max-line-length
               heightIn: typeof userProfileData.height !== 'undefined' ? Math.round((userProfileData.height - Math.floor(userProfileData.height / 30.4) * 30.4) / 2.54) : null });
-            this.weightFormGroup.patchValue({weightKg: typeof userProfileData.weight !== 'undefined' ? userProfileData.weight : null });
-            this.weightFormGroup.patchValue({
+            // tslint:disable-next-line: max-line-length
+            this.weightFormGroupMetric.patchValue({weightKg: typeof userProfileData.weight !== 'undefined' ? userProfileData.weight : null });
+            this.weightFormGroupImperial.patchValue({
               weightLb: typeof userProfileData.weight !== 'undefined' ? Math.round(userProfileData.weight / 0.454) : null });
           }
         }));
@@ -73,26 +79,37 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
     this.ageFormGroup = new FormGroup ({
       age: new FormControl('', {validators: [Validators.required, Validators.min(10), Validators.max(130)]})
     });
-    this.heightFormGroup = new FormGroup ({
+    this.heightFormGroupMetric = new FormGroup ({
       heightCm: new FormControl('', {validators: [Validators.required, Validators.min(90), Validators.max(290)]}),
+    });
+    this.heightFormGroupImperial = new FormGroup ({
       heightFt: new FormControl('', {validators: [Validators.required, Validators.min(3), Validators.max(7)]}),
       heightIn: new FormControl('', {validators: [Validators.required, Validators.min(0), Validators.max(11)]})
     });
-    this.weightFormGroup = new FormGroup ({
+    this.weightFormGroupMetric = new FormGroup ({
       weightKg: new FormControl('', {validators: [Validators.required, Validators.min(20), Validators.max(320)]}),
+    });
+    this.weightFormGroupImperial = new FormGroup ({
       weightLb: new FormControl('', {validators: [Validators.required, Validators.min(50), Validators.max(750)]})
     });
+
+    // this.heightFormGroup.statusChanges.subscribe(
+    //   status => {
+    //     console.log(status);
+    //     if (status === 'VALID') {
+    //     }
+    //   });
 
   }
 
   get name() { return this.nameFormGroup.get('name'); }
   get gender() { return this.genderFormGroup.get('gender'); }
   get age() { return this.ageFormGroup.get('age'); }
-  get weightKg() { return this.weightFormGroup.get('weightKg'); }
-  get weightLb() { return this.weightFormGroup.get('weightLb'); }
-  get heightCm() { return this.heightFormGroup.get('heightCm'); }
-  get heightFt() { return this.heightFormGroup.get('heightFt'); }
-  get heightIn() { return this.heightFormGroup.get('heightIn'); }
+  get weightKg() { return this.weightFormGroupMetric.get('weightKg'); }
+  get heightCm() { return this.heightFormGroupMetric.get('heightCm'); }
+  get weightLb() { return this.weightFormGroupImperial.get('weightLb'); }
+  get heightFt() { return this.heightFormGroupImperial.get('heightFt'); }
+  get heightIn() { return this.heightFormGroupImperial.get('heightIn'); }
 
   calculate_BMI_BMR() {
     this.calculateHeightWeight();
@@ -120,11 +137,11 @@ export class AnthropometryComponent implements OnInit, OnDestroy {
 
   calculateHeightWeight() {
     if (this.units === 'metric') {
-      this.height = this.heightFormGroup.value.heightCm;
-      this.weight = this.weightFormGroup.value.weightKg;
+      this.height = this.heightFormGroupMetric.value.heightCm;
+      this.weight = this.weightFormGroupMetric.value.weightKg;
     } else  {
-      this.height = Math.round(this.heightFormGroup.value.heightFt * 30.4 + this.heightFormGroup.value.heightIn * 2.54);
-      this.weight = Math.round(this.weightFormGroup.value.weightLb * 0.454);
+      this.height = Math.round(this.heightFormGroupImperial.value.heightFt * 30.4 + this.heightFormGroupImperial.value.heightIn * 2.54);
+      this.weight = Math.round(this.weightFormGroupImperial.value.weightLb * 0.454);
     }
   }
 

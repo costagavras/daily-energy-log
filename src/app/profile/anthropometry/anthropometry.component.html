@@ -41,20 +41,29 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="heightFormGroup">
-    <form [formGroup]="heightFormGroup">
+  <mat-step [stepControl]="heightFormGroupMetric" *ngIf="units === 'metric'">
+    <form [formGroup]="heightFormGroupMetric">
       <ng-template matStepLabel>Fill out your height</ng-template>
-      <mat-form-field *ngIf="units === 'metric'" class="input_box">
+      <mat-form-field class="input_box">
         <input matInput type="number" [min]="minHeightValue" placeholder="Height, cm" formControlName="heightCm" required>
         <mat-hint *ngIf="!heightCm?.touched || !heightCm?.dirty">Please enter your height.</mat-hint>
         <mat-error *ngIf="heightCm?.hasError('required')">Field must not be empty.</mat-error>
       </mat-form-field>
-      <mat-form-field *ngIf="units === 'imperial'" class="input_box">
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="heightFormGroupImperial" *ngIf="units === 'imperial'">
+    <form [formGroup]="heightFormGroupImperial">
+      <ng-template matStepLabel>Fill out your height</ng-template>
+      <mat-form-field  class="input_box">
         <input matInput type="number" [min]="minHeightValue" placeholder="Height, ft" formControlName="heightFt" required>
         <mat-hint *ngIf="!heightFt?.touched || !heightFt?.dirty">Please enter your height.</mat-hint>
         <mat-error *ngIf="heightFt?.hasError('required')">Field must not be empty.</mat-error>
       </mat-form-field>
-      <mat-form-field *ngIf="units === 'imperial'">
+      <mat-form-field>
         <input matInput type="number" [min]="minHeightValue" placeholder="Height, in" formControlName="heightIn" required>
         <mat-hint *ngIf="!heightIn?.touched || !heightIn?.dirty">Please enter your height.</mat-hint>
         <mat-error *ngIf="heightIn?.hasError('required')">Field must not be empty.</mat-error>
@@ -65,16 +74,25 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="weightFormGroup">
-    <form [formGroup]="weightFormGroup">
+  <mat-step [stepControl]="weightFormGroupMetric" *ngIf="units === 'metric'">
+    <form [formGroup]="weightFormGroupMetric">
       <ng-template matStepLabel>Fill out your weight</ng-template>
-      <mat-form-field *ngIf="units === 'metric'" class="input_box">
+      <mat-form-field class="input_box">
         <input matInput type="number" [min]="minWeightValue" placeholder="Weight, kg" formControlName="weightKg" required>
         <mat-hint *ngIf="!weightKg.touched || !weightKg.dirty">Please enter your weight.</mat-hint>
         <mat-error *ngIf="weightKg.hasError('required')">Field must not be empty.</mat-error>
         <mat-error *ngIf="weightKg.hasError('min') || weightKg.hasError('max')">Weight limit not respected!</mat-error>
       </mat-form-field>
-      <mat-form-field *ngIf="units === 'imperial'" class="input_box">
+      <div>
+        <button mat-raised-button matStepperPrevious>Back</button>
+        <button mat-raised-button matStepperNext (click)="calculate_BMI_BMR()">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="weightFormGroupImperial"  *ngIf="units === 'imperial'">
+    <form [formGroup]="weightFormGroupImperial">
+      <ng-template matStepLabel>Fill out your weight</ng-template>
+      <mat-form-field class="input_box">
         <input matInput type="number" [min]="minWeightValue" placeholder="Weight, lb" formControlName="weightLb" required>
         <mat-hint *ngIf="!weightLb.touched || !weightLb.dirty">Please enter your weight.</mat-hint>
         <mat-error *ngIf="weightLb.hasError('required')">Field must not be empty.</mat-error>
@@ -84,8 +102,8 @@
         <button mat-raised-button matStepperPrevious>Back</button>
         <button mat-raised-button matStepperNext (click)="calculate_BMI_BMR()">Next</button>
       </div>
-      </form>
-    </mat-step>
+    </form>
+  </mat-step>
     <mat-step>
       <ng-template matStepLabel>Submit</ng-template>
       <div class="al_buttons">
