@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
-import { Exercise } from '../energy-expenditure/training/exercise.model';
+import { Exercise } from '../training/exercise.model';
 import { FoodItem } from '../food-intake/food-item.model';
 
-import { TrainingService } from '../energy-expenditure/training/training.service';
+import { TrainingService } from '../training/training.service';
 import { UIService } from '.././shared/ui.service';
 import { FoodService } from '../food-intake/food.service';
 import { ProfileService } from '../profile/profile.service';

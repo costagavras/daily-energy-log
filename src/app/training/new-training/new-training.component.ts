@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { TrainingService } from '../training.service';
-import { ProfileService } from '../../../profile/profile.service';
+import { ProfileService } from '../../profile/profile.service';
 
 import { Exercise } from '../exercise.model';
 
 import { Subscription } from 'rxjs';
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
-import { AppDateAdapter } from '../../../shared/date-adapter';
+import { AppDateAdapter } from '../../shared/date-adapter';
 
 export const APP_DATE_FORMATS = {
     parse: {

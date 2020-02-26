@@ -163,7 +163,7 @@ private _user = new BehaviorSubject<User>(null);
 
     this.db.collection('users').doc(user.userId).delete()
           .then(() => {
-            this.uiService.showSnackbar(user.name + ' is now gone!', null, 3000);
+            this.uiService.showSnackbar(user.name + '\'s profile is now gone!', null, 3000);
             this.router.navigate(['/']);
           }).catch(error => {
             console.log(error);
@@ -177,8 +177,9 @@ private _user = new BehaviorSubject<User>(null);
       .then(() => {
         this.uiService.showSnackbar('This account is now gone too!', null, 3000);
         // this.router.navigate(['/signup']);
-    }).catch(error => {
-      console.log(error);
+    }).catch(errorResponse => {
+      this.uiService.showSnackbar(errorResponse.message, null, 3000);
+      console.log(errorResponse);
     });
     }
   }

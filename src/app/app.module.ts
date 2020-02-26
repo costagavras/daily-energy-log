@@ -13,7 +13,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AuthService } from './auth/auth.service';
-import { TrainingService } from './energy-expenditure/training/training.service';
+import { TrainingService } from './training/training.service';
 import { UIService } from './shared/ui.service';
 import { FoodService } from './food-intake/food.service';
 import { ProfileService } from './profile/profile.service';
@@ -29,12 +29,11 @@ import { PastFoodIntakeComponent } from './food-intake/past-food-intake/past-foo
 import { AddFoodComponent } from './food-intake/add-food/add-food.component';
 import { FoodGuideComponent } from './food-intake/food-guide/food-guide.component';
 
-import { EnergyExpenditureComponent } from './energy-expenditure/energy-expenditure.component';
-import { TrainingComponent } from './energy-expenditure/training/training.component';
-import { NewTrainingComponent } from './energy-expenditure/training/new-training/new-training.component';
-import { ViewTrainingComponent } from './energy-expenditure/training/view-training/view-training.component';
-import { PastTrainingComponent } from './energy-expenditure/training/past-training/past-training.component';
-import { TrainingGuideComponent } from './energy-expenditure/training/training-guide/training-guide.component';
+import { TrainingComponent } from './training/training.component';
+import { NewTrainingComponent } from './training/new-training/new-training.component';
+import { ViewTrainingComponent } from './training/view-training/view-training.component';
+import { PastTrainingComponent } from './training/past-training/past-training.component';
+import { TrainingGuideComponent } from './training/training-guide/training-guide.component';
 
 import { HomeComponent } from './home/home.component';
 import { BalanceComponent } from './balance/balance.component';
@@ -58,7 +57,6 @@ import { AppSettingsComponent } from './profile/app-settings/app-settings.compon
     FoodIntakeComponent,
     PastFoodIntakeComponent,
     NewFoodIntakeComponent,
-    EnergyExpenditureComponent,
     TrainingComponent,
     NewTrainingComponent,
     PastTrainingComponent,

@@ -1,6 +1,8 @@
 <mat-tab-group selectedIndex="1">
   <mat-tab label="Guide">
-    <app-training-guide></app-training-guide>
+    <ng-template matTabContent>
+      <app-training-guide></app-training-guide>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Training">
     <app-new-training></app-new-training>
@@ -13,3 +15,4 @@
     </ng-template>
   </mat-tab>
 </mat-tab-group>
+

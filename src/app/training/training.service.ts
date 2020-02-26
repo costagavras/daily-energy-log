@@ -6,9 +6,9 @@ import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Exercise } from './exercise.model';
-import { UIService } from '../../shared/ui.service';
-import { ProfileService } from '../../profile/profile.service';
-import { User, UserStamp } from '../../auth/user.model';
+import { UIService } from '../shared/ui.service';
+import { ProfileService } from '../profile/profile.service';
+import { User, UserStamp } from '../auth/user.model';
 
 @Injectable()
 export class TrainingService {
