@@ -5,7 +5,7 @@
     </button>
   </div>
   <div fxFlex fxLayout fxLayoutAlign="flex-start"><a routerLink="/"><mat-icon id="icon_home">home</mat-icon>&nbsp;Energy Log</a></div>
-  <h3 fxFlex fxLayout fxLayoutAlign="center"><mat-icon id="icon_hello">emoji_people</mat-icon>&nbsp;Hi {{userProfileData?.name || 'No Profile User'}}!</h3>
+  <h3 fxFlex fxLayout fxLayoutAlign="center"><mat-icon id="icon_hello">emoji_people</mat-icon>&nbsp;Hi {{ !isAuth ? 'visitor' : userProfileData?.name || 'No Profile User'}}!</h3>
   <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs class="flex-header">
     <ul fxLayout fxLayoutGap="10px" class="navigation-items">
       <li *ngIf="!isAuth"><a routerLink="/signup">Signup</a></li>
